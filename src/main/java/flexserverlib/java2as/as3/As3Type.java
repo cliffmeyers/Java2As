@@ -1,7 +1,6 @@
 package flexserverlib.java2as.as3;
 
-public enum As3Type
-{
+public enum As3Type {
 	Integer,
 	Number,
 	String,

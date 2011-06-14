@@ -1,64 +1,63 @@
 package flexserverlib.java2as.as3.transfer;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import flexserverlib.java2as.as3.As3Type;
 import flexserverlib.java2as.core.conf.AbstractConfiguration;
 import flexserverlib.java2as.core.conf.PropertyMapper;
 import flexserverlib.java2as.core.conf.TypeMapper;
 import flexserverlib.java2as.core.meta.JavaProperty;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
- * Encapsulates the different configuration properties available when generating Transfer Objects. 
- * 
+ * Encapsulates the different configuration properties available when generating Transfer Objects.
+ *
  * @author cliff.meyers
  */
-public class TransferObjectConfiguration extends AbstractConfiguration
-{
+public class TransferObjectConfiguration extends AbstractConfiguration {
 	/*
-	 * Private Fields
-	 */
-	
+		  * Private Fields
+		  */
+
 	private TypeMapper<Class<?>, As3Type> typeMapper;
-	
+
 	private List<PropertyMapper<JavaProperty, As3Type>> propertyMappers;
-	
+
 	/**
-	 * Include [ArrayElementType] metadata for Array and ArrayCollection types. 
+	 * Include [ArrayElementType] metadata for Array and ArrayCollection types.
 	 */
 	private boolean includeArrayElementType;
-	
+
 	/**
-	 * Provide a base class which all Transfer Objects will extend. 
+	 * Provide a base class which all Transfer Objects will extend.
 	 */
 	private String transferObjectBaseClass;
-	
+
 	/*
-	 * Constructor
-	 */
-	
-	public TransferObjectConfiguration()
-	{
+		  * Constructor
+		  */
+
+	public TransferObjectConfiguration() {
 		propertyMappers = new ArrayList<PropertyMapper<JavaProperty, As3Type>>();
-		propertyMappers.add( new DefaultAs3PropertyMapper() );
+		propertyMappers.add(new DefaultAs3PropertyMapper());
 	}
-	
+
 	/*
-	 * Public Methods
-	 */
-	
-	public void addPropertyMapper( PropertyMapper<JavaProperty, As3Type> mapper ) {
-		propertyMappers.add( mapper );
+		  * Public Methods
+		  */
+
+	public void addPropertyMapper(PropertyMapper<JavaProperty, As3Type> mapper) {
+		propertyMappers.add(mapper);
 	}
-	
+
 	/*
-	 * Getters and Setters
-	 */
-	
+		  * Getters and Setters
+		  */
+
 	public TypeMapper<Class<?>, As3Type> getTypeMapper() {
 		return typeMapper;
 	}
+
 	public void setTypeMapper(TypeMapper<Class<?>, As3Type> typeMapper) {
 		this.typeMapper = typeMapper;
 	}
@@ -66,21 +65,24 @@ public class TransferObjectConfiguration extends AbstractConfiguration
 	public List<PropertyMapper<JavaProperty, As3Type>> getPropertyMappers() {
 		return propertyMappers;
 	}
-	public void setPropertyMappers( List<PropertyMapper<JavaProperty, As3Type>> mappers ) {
+
+	public void setPropertyMappers(List<PropertyMapper<JavaProperty, As3Type>> mappers) {
 		this.propertyMappers = mappers;
 	}
-	
+
 	public boolean getIncludeArrayElementType() {
 		return includeArrayElementType;
 	}
-	public void setIncludeArrayElementType( boolean includeArrayElementType ) {
+
+	public void setIncludeArrayElementType(boolean includeArrayElementType) {
 		this.includeArrayElementType = includeArrayElementType;
 	}
-	
+
 	public String getTransferObjectBaseClass() {
 		return transferObjectBaseClass;
 	}
-	public void setTransferObjectBaseClass( String transferObjectBaseClass ) {
+
+	public void setTransferObjectBaseClass(String transferObjectBaseClass) {
 		this.transferObjectBaseClass = transferObjectBaseClass;
 	}
 }

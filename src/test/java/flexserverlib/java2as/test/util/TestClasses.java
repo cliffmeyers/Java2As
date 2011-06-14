@@ -4,23 +4,17 @@ import javassist.CannotCompileException;
 import javassist.ClassPool;
 import javassist.CtClass;
 
-public class TestClasses
-{
+public class TestClasses {
 	private static Class<?> DEFAULT_TEST_CLASS;
-	
-	public static Class<?> getDefaultTestClass()
-	{
-		if ( DEFAULT_TEST_CLASS == null )
-		{
+
+	public static Class<?> getDefaultTestClass() {
+		if (DEFAULT_TEST_CLASS == null) {
 			ClassPool pool = ClassPool.getDefault();
-			CtClass clazz = pool.makeClass( TestClasses.class.getName() + "DefaultTestClass" );
+			CtClass clazz = pool.makeClass(TestClasses.class.getName() + "DefaultTestClass");
 			JavassistUtils.makeProperty(clazz, "name", String.class);
-			try
-			{
+			try {
 				DEFAULT_TEST_CLASS = clazz.toClass();
-			}
-			catch (CannotCompileException e)
-			{
+			} catch (CannotCompileException e) {
 				throw new RuntimeException(e);
 			}
 		}
