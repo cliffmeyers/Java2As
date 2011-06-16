@@ -1,23 +1,36 @@
 package flexserverlib.java2as.as3.transfer;
 
-import flexserverlib.java2as.as3.As3Type;
-import flexserverlib.java2as.core.conf.PropertyMapper;
-import flexserverlib.java2as.core.meta.JavaProperty;
 import flexserverlib.java2as.core.meta.JavaTransferObject;
-import flexserverlib.java2as.core.meta.TransferObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class As3TransferObject implements TransferObject<As3Property> {
+public class As3TransferObject {
+
 	private JavaTransferObject transferObject;
 	private List<As3Property> properties;
+	private List<As3Dependency> dependencies;
 
-	public As3TransferObject(JavaTransferObject transferObject, List<PropertyMapper<JavaProperty, As3Type>> mappers) {
+	public As3TransferObject(JavaTransferObject transferObject, List<As3Property> properties) {
 		this.transferObject = transferObject;
-		this.properties = new ArrayList<As3Property>();
-		for (JavaProperty property : transferObject.getProperties())
-			this.properties.add(new As3Property(property, mappers));
+		this.properties = properties;
+		// TODO: build more metadata from properties to determine dependent types
+		buildMetadata();
+	}
+
+	//
+	// Public Methods
+	//
+
+	protected void buildMetadata() {
+		String packageName = transferObject.getPackageName();
+		String qualifiedName = transferObject.getName();
+		String simpleName = transferObject.getSimpleName();
+
+		dependencies = new ArrayList<As3Dependency>();
+		for (As3Property prop : properties)
+			dependencies.addAll(prop.getDependencies());
+				
 	}
 
 	public String getPackageName() {
@@ -32,7 +45,33 @@ public class As3TransferObject implements TransferObject<As3Property> {
 		return transferObject.getSimpleName();
 	}
 
+	public boolean isPolymorphic() {
+		return hasSuperclass() || hasInterfaces();
+	}
+
+	public boolean hasSuperclass() {
+		return transferObject.hasSuperclass();
+	}
+
+	// TODO: need to handle conversion here
+	public String getSuperclass() {
+		return transferObject.getSuperclass().getSimpleName();
+	}
+
+	public boolean hasInterfaces() {
+		return transferObject.hasInterfaces();
+	}
+
+	public String getInterfaces() {
+		List<String> interfaces = new ArrayList<String>();
+		for (Class<?> clazz : transferObject.getInterfaces()) {
+			interfaces.add(clazz.getSimpleName());
+		}
+		return interfaces.toString();
+	}
+
 	public List<As3Property> getProperties() {
 		return this.properties;
 	}
+
 }

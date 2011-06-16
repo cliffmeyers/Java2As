@@ -1,7 +1,6 @@
 package flexserverlib.java2as.as3.transfer;
 
 import flexserverlib.java2as.as3.As3Type;
-import flexserverlib.java2as.core.conf.PropertyMapper;
 import flexserverlib.java2as.core.meta.JavaProperty;
 import flexserverlib.java2as.core.meta.Property;
 
@@ -10,50 +9,70 @@ import java.util.List;
 
 public class As3Property implements Property<As3Type> {
 
+	//
+	// Fields
+	//
+
 	private JavaProperty property;
-	private List<PropertyMapper<JavaProperty, As3Type>> mappers;
+	private String name;
+	private As3Type type;
+	private As3Type arrayType;
+	private List<As3Dependency> dependencies;
 
-	public As3Property(JavaProperty property, List<PropertyMapper<JavaProperty, As3Type>> mappers) {
-		this.property = property;
-		this.mappers = mappers;
+	//
+	// Constructors
+	//
+
+	public As3Property(JavaProperty property, As3Type type) {
+		this(property, type, null);
 	}
 
-	public As3Property(JavaProperty property, PropertyMapper<JavaProperty, As3Type> mapper) {
+	public As3Property(JavaProperty property, As3Type type, As3Type arrayType) {
 		this.property = property;
-		this.mappers = new ArrayList<PropertyMapper<JavaProperty, As3Type>>();
-		this.mappers.add(mapper);
+		this.name = property.getName();
+		this.type = type;
+		this.arrayType = arrayType;
+		this.dependencies = new ArrayList<As3Dependency>();
 	}
+
+	//
+	// Public Methods
+	//
+
+	public void addDependency(As3Dependency dependency) {
+		this.dependencies.add(dependency);
+	}
+
+	@Override
+	public String toString() {
+		return name + ":" + type;
+	}
+
+	//
+	// Getters and Setters
+	//
 
 	public String getName() {
 		return property.getName();
 	}
 
 	public As3Type getType() {
-		return performMap(property);
-	}
-
-	public As3Type getArrayType() {
-		return performMap(property.getArrayType());
+		return type;
 	}
 
 	public boolean isArrayType() {
-		As3Type type = getType();
-		return type == As3Type.Array || type == As3Type.ArrayCollection;
+		return arrayType != null;
 	}
 
-	protected As3Type performMap(JavaProperty prop) {
-		for (PropertyMapper<JavaProperty, As3Type> mapper : mappers) {
-			if (mapper.canMap(prop))
-				return mapper.performMap(prop);
-		}
-		return null;
+	public As3Type getArrayType() {
+		return arrayType;
 	}
 
-	protected As3Type performMap(Class<?> type) {
-		for (PropertyMapper<JavaProperty, As3Type> mapper : mappers) {
-			if (mapper.canMapType(type))
-				return mapper.performMapType(type);
-		}
-		return null;
+	public List<As3Dependency> getDependencies() {
+		return dependencies;
+	}
+
+	public void setDependencies(List<As3Dependency> dependencies) {
+		this.dependencies = dependencies;
 	}
 }

@@ -3,12 +3,13 @@ package flexserverlib.java2as.core.conf;
 /**
  * Generic mapper interface for mapping types.
  *
- * @param <IN>  Inbound type.
  * @param <OUT> Outbound (mapped) type.
  * @author cliff.meyers
  */
-public interface TypeMapper<IN, OUT> {
-	public boolean canMap(IN type);
+public interface TypeMapper<OUT> {
 
-	public OUT performMap(IN type);
+	public boolean canMap(Class<?> type);
+
+	public OUT performMap(Class<?> type);
+
 }

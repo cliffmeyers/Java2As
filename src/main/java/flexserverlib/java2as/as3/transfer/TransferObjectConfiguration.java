@@ -15,13 +15,14 @@ import java.util.List;
  * @author cliff.meyers
  */
 public class TransferObjectConfiguration extends AbstractConfiguration {
+
 	/*
-		  * Private Fields
-		  */
+	 * Private Fields
+	*/
 
-	private TypeMapper<Class<?>, As3Type> typeMapper;
+	private TypeMapper<As3Type> typeMapper;
 
-	private List<PropertyMapper<JavaProperty, As3Type>> propertyMappers;
+	private List<PropertyMapper<As3Property>> propertyMappers;
 
 	/**
 	 * Include [ArrayElementType] metadata for Array and ArrayCollection types.
@@ -38,7 +39,7 @@ public class TransferObjectConfiguration extends AbstractConfiguration {
 		  */
 
 	public TransferObjectConfiguration() {
-		propertyMappers = new ArrayList<PropertyMapper<JavaProperty, As3Type>>();
+		propertyMappers = new ArrayList<PropertyMapper<As3Property>>();
 		propertyMappers.add(new DefaultAs3PropertyMapper());
 	}
 
@@ -46,7 +47,7 @@ public class TransferObjectConfiguration extends AbstractConfiguration {
 		  * Public Methods
 		  */
 
-	public void addPropertyMapper(PropertyMapper<JavaProperty, As3Type> mapper) {
+	public void addPropertyMapper(PropertyMapper<As3Property> mapper) {
 		propertyMappers.add(mapper);
 	}
 
@@ -54,19 +55,19 @@ public class TransferObjectConfiguration extends AbstractConfiguration {
 		  * Getters and Setters
 		  */
 
-	public TypeMapper<Class<?>, As3Type> getTypeMapper() {
+	public TypeMapper<As3Type> getTypeMapper() {
 		return typeMapper;
 	}
 
-	public void setTypeMapper(TypeMapper<Class<?>, As3Type> typeMapper) {
+	public void setTypeMapper(TypeMapper<As3Type> typeMapper) {
 		this.typeMapper = typeMapper;
 	}
 
-	public List<PropertyMapper<JavaProperty, As3Type>> getPropertyMappers() {
+	public List<PropertyMapper<As3Property>> getPropertyMappers() {
 		return propertyMappers;
 	}
 
-	public void setPropertyMappers(List<PropertyMapper<JavaProperty, As3Type>> mappers) {
+	public void setPropertyMappers(List<PropertyMapper<As3Property>> mappers) {
 		this.propertyMappers = mappers;
 	}
 

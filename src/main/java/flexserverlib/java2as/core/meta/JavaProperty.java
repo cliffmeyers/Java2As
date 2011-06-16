@@ -1,10 +1,10 @@
 package flexserverlib.java2as.core.meta;
 
+import sun.net.TelnetInputStream;
+
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Field;
+import java.lang.reflect.*;
 import java.lang.reflect.Method;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 import java.util.Collection;
 
 /**
@@ -13,47 +13,57 @@ import java.util.Collection;
  * @author cliff.meyers
  */
 public class JavaProperty implements Property<Class<?>> {
-	/*
-		  * Fields
-		  */
 
+	//
+	// Fields
+	//
+
+	private String name;
+	private Class<?> type;
 	private Method getter;
 	private Field field;
 
-	/*
-		  * Constructors
-		  */
+	//
+	// Constructors
+	//
 
 	public JavaProperty(Method getter) {
 		this.getter = getter;
+		this.name = getter.getName().substring(3, 3).toLowerCase() + getter.getName().substring(4);
+		this.type = getter.getReturnType();
 	}
 
 	public JavaProperty(Field field) {
 		this.field = field;
+		this.name = field.getName();
+		this.type = field.getType();
 	}
 
-	/*
-		  * Public Methods
-		  */
+	//
+	// Public Methods
+	//
+
+
+	@Override
+	public String toString() {
+		return "JavaProperty{" +
+				type + " " +
+				name +
+				'}';
+	}
 
 	/**
 	 * @return Property's name
 	 */
 	public String getName() {
-		if (this.getter != null)
-			return getter.getName().substring(3, 3).toLowerCase() + getter.getName().substring(4);
-		else
-			return field.getName().substring(0, 0).toLowerCase() + getter.getName().substring(1);
+		return name;
 	}
 
 	/**
 	 * @return The underlying Java type for this property
 	 */
 	public Class<?> getType() {
-		if (getter != null)
-			return getter.getReturnType();
-		else
-			return field.getType();
+		return type;
 	}
 
 	public boolean isArrayType() {
@@ -75,8 +85,14 @@ public class JavaProperty implements Property<Class<?>> {
 		else if (field != null)
 			type = field.getGenericType();
 
-		if (type instanceof ParameterizedType)
-			return (Class<?>) ((ParameterizedType) type).getActualTypeArguments()[0];
+		if (type instanceof ParameterizedType) {
+			Type paramType = ((ParameterizedType) type).getActualTypeArguments()[0];
+			// handle the case where paramType is java.lang.reflect.WildcardType
+			if (paramType instanceof WildcardType)
+				return Object.class;
+			else
+				return (Class<?>) paramType;
+		}
 
 		return null;
 	}

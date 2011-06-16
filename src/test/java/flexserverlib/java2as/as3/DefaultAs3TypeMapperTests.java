@@ -1,9 +1,7 @@
 package flexserverlib.java2as.as3;
 
+import flexserverlib.java2as.as3.transfer.test.User;
 import flexserverlib.java2as.core.conf.TypeMapper;
-import javassist.CannotCompileException;
-import javassist.ClassPool;
-import javassist.CtClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.w3c.dom.Document;
@@ -15,7 +13,8 @@ import java.util.*;
 import static org.junit.Assert.*;
 
 public class DefaultAs3TypeMapperTests {
-	private static TypeMapper<Class<?>, As3Type> mapper;
+
+	private static TypeMapper<As3Type> mapper;
 
 	@BeforeClass
 	public static void setup() {
@@ -180,14 +179,9 @@ public class DefaultAs3TypeMapperTests {
 	}
 
 	@Test
-	public void testRemoteClassMapping() throws CannotCompileException {
-		ClassPool pool = ClassPool.getDefault();
-		String className = getClass().getName() + "TransferObject";
-		CtClass clazz = pool.makeClass(className);
-		Class<?> testClass = clazz.toClass();
-
-		assertFalse("Must map Person to nothing", mapper.canMap(testClass));
-		assertNull("Must map Person to nothing", mapper.performMap(testClass));
+	public void testRemoteClassMapping() {
+		assertFalse("Must map User to RemoteClass", mapper.canMap(User.class));
+		assertEquals("Must map User to RemoteClass", mapper.performMap(User.class), As3Type.RemoteClass);
 	}
 
 }

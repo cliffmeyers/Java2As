@@ -1,11 +1,13 @@
 package flexserverlib.java2as.core.meta;
 
-public interface Property<T> {
+public interface Property<TYPE> {
+
 	String getName();
 
-	T getType();
+	TYPE getType();
 
 	boolean isArrayType();
 
-	T getArrayType();
+	TYPE getArrayType();
+
 }

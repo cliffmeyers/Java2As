@@ -1,11 +1,12 @@
 package flexserverlib.java2as.core.conf;
 
-public interface PropertyMapper<Property, OUT> extends TypeMapper<Property, OUT> {
+import flexserverlib.java2as.core.meta.JavaProperty;
+import flexserverlib.java2as.core.meta.Property;
 
-	public boolean canMapType(Class<?> type);
+public interface PropertyMapper<OUT extends Property> {
 
-	public OUT performMapType(Class<?> type);
+	public boolean canMap(JavaProperty prop);
 
-	public void setTypeMapper(TypeMapper<Class<?>, OUT> typeMapper);
+	public OUT performMap(JavaProperty prop);
 
 }

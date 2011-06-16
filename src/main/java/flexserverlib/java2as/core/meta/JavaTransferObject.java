@@ -7,9 +7,11 @@ import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-public class JavaTransferObject implements TransferObject<JavaProperty> {
+public class JavaTransferObject {
+
 	private Class<?> clazz;
 	private List<JavaProperty> properties;
 
@@ -22,7 +24,8 @@ public class JavaTransferObject implements TransferObject<JavaProperty> {
 			BeanInfo beanInfo = Introspector.getBeanInfo(clazz);
 			PropertyDescriptor[] props = beanInfo.getPropertyDescriptors();
 			for (PropertyDescriptor prop : props)
-				properties.add(new JavaProperty(prop.getReadMethod()));
+				if (!"class".equals(prop.getName()))
+					properties.add(new JavaProperty(prop.getReadMethod()));
 		} catch (IntrospectionException e) {
 			throw new RuntimeException(e);
 		}
@@ -30,11 +33,26 @@ public class JavaTransferObject implements TransferObject<JavaProperty> {
 		// extract public fields
 		for (Field field : clazz.getDeclaredFields()) {
 			int modifiers = field.getModifiers();
-			if (Modifier.isPublic(modifiers) && !Modifier.isStatic(modifiers) && !Modifier.isTransient(modifiers))
+			if (Modifier.isPublic(modifiers) && !Modifier.isStatic(modifiers) && !Modifier.isTransient(modifiers)) {
 				properties.add(new JavaProperty(field));
+			}
 		}
 	}
 
+	//
+	// Public Methods
+	//
+
+	@Override
+	public String toString() {
+		return "JavaTransferObject{" + clazz + '}';
+	}
+
+
+	//
+	// Getters and Setters
+	//
+	
 	public String getPackageName() {
 		return clazz.getPackage().getName();
 	}
@@ -47,7 +65,24 @@ public class JavaTransferObject implements TransferObject<JavaProperty> {
 		return clazz.getSimpleName();
 	}
 
+	public boolean hasSuperclass() {
+		return !clazz.getSuperclass().equals(Object.class);
+	}
+
+	public Class<?> getSuperclass() {
+		return clazz.getSuperclass();
+	}
+
+	public boolean hasInterfaces() {
+		return clazz.getInterfaces().length > 0;
+	}
+
+	public Class<?>[] getInterfaces() {
+		return clazz.getInterfaces();
+	}
+
 	public List<JavaProperty> getProperties() {
 		return properties;
 	}
+
 }

@@ -13,13 +13,14 @@ import java.util.*;
  *
  * @author cliff.meyers
  */
-public class DefaultAs3TypeMapper implements TypeMapper<Class<?>, As3Type> {
+public class DefaultAs3TypeMapper implements TypeMapper<As3Type> {
 
 	private Map<Class<?>, As3Type> defaultMappings;
 
 	public DefaultAs3TypeMapper() {
 		// mappings for final classes that we can check explicitly
 		defaultMappings = new HashMap<Class<?>, As3Type>();
+		defaultMappings.put(Object.class, As3Type.Object);
 		defaultMappings.put(String.class, As3Type.String);
 		defaultMappings.put(Boolean.class, As3Type.Boolean);
 		defaultMappings.put(boolean.class, As3Type.Boolean);
@@ -71,6 +72,11 @@ public class DefaultAs3TypeMapper implements TypeMapper<Class<?>, As3Type> {
 			return As3Type.Object;
 		if (Document.class.isAssignableFrom(javaType))
 			return As3Type.Xml;
-		return defaultMappings.get(javaType);
+		
+		As3Type type = defaultMappings.get(javaType);
+		if (type != null)
+			return type;
+		else
+			return As3Type.RemoteClass;
 	}
 }

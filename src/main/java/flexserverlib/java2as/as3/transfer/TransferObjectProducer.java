@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 public class TransferObjectProducer extends AbstractProducer {
+	
 	private TransferObjectConfiguration config;
 	private List<Class<?>> classes;
 
@@ -44,24 +45,18 @@ public class TransferObjectProducer extends AbstractProducer {
 			Template template = fmConfig.getTemplate("to-base.ftl");
 			Map<String, Object> model = new HashMap<String, Object>();
 
-			// setup default TypeMapper, if necessary
-			TypeMapper<Class<?>, As3Type> typeMapper = config.getTypeMapper() != null ? config.getTypeMapper() : new DefaultAs3TypeMapper();
-
 			// setup default PropertyMapper, if necessary
-			// provide TypeMapper to PropertyMappers
-			List<PropertyMapper<JavaProperty, As3Type>> propertyMappers = config.getPropertyMappers();
-			if (propertyMappers.size() > 0) {
-				for (PropertyMapper<JavaProperty, As3Type> pm : propertyMappers)
-					pm.setTypeMapper(typeMapper);
-			} else {
-				PropertyMapper<JavaProperty, As3Type> mp = new DefaultAs3PropertyMapper();
-				mp.setTypeMapper(typeMapper);
-				propertyMappers.add(mp);
-			}
+			List<PropertyMapper<As3Property>> propertyMappers = config.getPropertyMappers();
+			if (propertyMappers.size() == 0)
+				propertyMappers.add(new DefaultAs3PropertyMapper());
 
+			// do conversion
+			TransferObjectMapper mapper = new TransferObjectMapper(propertyMappers);
+			List<As3TransferObject> as3TransferObjects = mapper.performMappings(transferObjects);
+			
 			// generate files
-			for (JavaTransferObject transferObject : transferObjects) {
-				model.put("transferObject", new As3TransferObject(transferObject, propertyMappers));
+			for (As3TransferObject transferObject : as3TransferObjects) {
+				model.put("model", transferObject);
 				Writer writer = new PrintWriter(System.out);
 				template.process(model, writer);
 			}
