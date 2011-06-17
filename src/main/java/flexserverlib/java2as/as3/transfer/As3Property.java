@@ -14,6 +14,7 @@ public class As3Property implements Property<As3Type> {
 	private JavaProperty property;
 	private String name;
 	private As3Type type;
+	private String typeName;
 	private boolean arrayType;
 	private As3Type arrayElementType;
 	private As3Dependency dependency;
@@ -30,6 +31,7 @@ public class As3Property implements Property<As3Type> {
 		this.property = property;
 		this.name = property.getName();
 		this.type = type;
+		this.typeName = type.getSimpleName();
 		this.arrayType = arrayType;
 		this.arrayElementType = arrayElementType;
 		this.dependency = new As3Dependency(DependencyKind.PROPERTY, type);
@@ -54,6 +56,10 @@ public class As3Property implements Property<As3Type> {
 
 	public As3Type getType() {
 		return type;
+	}
+
+	public String getTypeName() {
+		return typeName;
 	}
 
 	public boolean isArrayType() {

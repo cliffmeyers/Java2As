@@ -6,19 +6,25 @@ package flexserverlib.java2as.as3;
 public class As3CustomType implements As3Type {
 
 	private Class<?> clazz;
-	private String name;
+	private String qualifiedName;
+	private String simpleName;
 
 	public As3CustomType(Class<?> clazz) {
 		this.clazz = clazz;
-		this.name = clazz.getName();
+		this.qualifiedName = clazz.getName();
+		this.simpleName = clazz.getSimpleName();
 	}
 
-	public boolean isBasicType() {
-		return false;
+	public boolean isCustomType() {
+		return true;
 	}
 
-	public String getName() {
-		return name;
+	public String getQualifiedName() {
+		return qualifiedName;
+	}
+
+	public String getSimpleName() {
+		return simpleName;
 	}
 
 	@Override

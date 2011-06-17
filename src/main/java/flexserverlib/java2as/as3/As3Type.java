@@ -5,8 +5,10 @@ package flexserverlib.java2as.as3;
  */
 public interface As3Type {
 
-	public boolean isBasicType();
+	public boolean isCustomType();
 
-	public String getName();
+	public String getQualifiedName();
+
+	public String getSimpleName();
 
 }

@@ -44,10 +44,12 @@ public class TransferObjectProducer extends AbstractProducer {
 			Template template = fmConfig.getTemplate("to-base.ftl");
 			Map<String, Object> model = new HashMap<String, Object>();
 
-			// TODO: fix config.getTypeMapper()
-			TypeMapper<As3Type> typeMapper = new DefaultAs3TypeMapper();
-
 			// setup mappers
+			TypeMapper<As3Type> typeMapper = config.getTypeMapper();
+			if (typeMapper == null)
+				typeMapper = new DefaultAs3TypeMapper();
+
+
 			CompositePropertyMapper<As3Property> compositePropertyMapper = new CompositePropertyMapper<As3Property>();
 			compositePropertyMapper.addAll(config.getPropertyMappers());
 			if (!compositePropertyMapper.hasMappers())

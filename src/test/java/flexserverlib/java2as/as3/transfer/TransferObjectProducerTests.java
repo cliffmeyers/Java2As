@@ -8,7 +8,7 @@ import org.junit.Test;
 import java.util.Arrays;
 import java.util.List;
 
-public class TransferObjectProducer2Tests {
+public class TransferObjectProducerTests {
 	@Test
 	public void testProduce() {
 		TransferObjectConfiguration config = new TransferObjectConfiguration();

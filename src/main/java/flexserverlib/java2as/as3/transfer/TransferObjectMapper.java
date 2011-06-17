@@ -65,18 +65,16 @@ public class TransferObjectMapper {
 
 		As3TransferObject as3TransferObject = new As3TransferObject(javaTransferObject);
 
+		// create dependencies for polymorphics
+		as3TransferObject.addDependency(new As3Dependency(DependencyKind.SUPERCLASS, typeMapper.mapType(javaTransferObject.getSuperclass())));
+
+		for (Class<?> interfaceClass : javaTransferObject.getInterfaces())
+			as3TransferObject.addDependency(new As3Dependency(DependencyKind.INTERFACE, typeMapper.mapType(interfaceClass)));
+
 		// map each property
 		for (JavaProperty javaProperty : javaTransferObject.getProperties()) {
-
 			As3Property as3Property = propertyMapper.mapProperty(javaProperty);
 			as3TransferObject.addProperty(as3Property);
-
-			As3Dependency superclassType = new As3Dependency(DependencyKind.SUPERCLASS, typeMapper.mapType(javaTransferObject.getSuperclass()));
-
-
-			//for (Class<?> interfaceClass : javaTransferObject.getInterfaces())
-
-
 		}
 
 		return as3TransferObject;

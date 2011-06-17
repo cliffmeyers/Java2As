@@ -11,23 +11,29 @@ public enum As3SimpleType implements As3Type {
 	Boolean("Boolean"),
 	Date("Date"),
 	Array("Array"),
-	ArrayCollection("ArrayCollection"),
-	ByteArray("ByteArray"),
+	ArrayCollection("mx.collections.ArrayCollection"),
+	ByteArray("flash.utils.ByteArray"),
 	Xml("Xml"),
 	Object("Object");
 
-	private String name;
+	private String qualifiedName;
+	private String simpleName;
 
-	private As3SimpleType(String name) {
-		this.name = name;
+	private As3SimpleType(String qualifiedName) {
+		this.qualifiedName = qualifiedName;
+		this.simpleName = qualifiedName.substring(qualifiedName.lastIndexOf(".") + 1 );
 	}
 
-	public boolean isBasicType() {
-		return true;
+	public boolean isCustomType() {
+		return false;
 	}
 
-	public String getName() {
-		return name;
+	public String getQualifiedName() {
+		return qualifiedName;
+	}
+
+	public String getSimpleName() {
+		return simpleName;
 	}
 	
 }
