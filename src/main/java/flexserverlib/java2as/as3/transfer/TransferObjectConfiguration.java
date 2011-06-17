@@ -4,7 +4,6 @@ import flexserverlib.java2as.as3.As3Type;
 import flexserverlib.java2as.core.conf.AbstractConfiguration;
 import flexserverlib.java2as.core.conf.PropertyMapper;
 import flexserverlib.java2as.core.conf.TypeMapper;
-import flexserverlib.java2as.core.meta.JavaProperty;
 
 import java.util.ArrayList;
 import java.util.List;

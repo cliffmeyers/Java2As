@@ -1,5 +1,6 @@
 package flexserverlib.java2as.as3.transfer;
 
+import flexserverlib.java2as.as3.As3SimpleType;
 import flexserverlib.java2as.as3.As3Type;
 import flexserverlib.java2as.as3.transfer.test.ArrayProperties;
 import flexserverlib.java2as.core.conf.PropertyMapper;
@@ -20,21 +21,25 @@ public class As3PropertyTests {
 		As3Type type;
 		PropertyMapper<As3Property> mapper = new DefaultAs3PropertyMapper();
 
-		prop = mapper.performMap(new JavaProperty(CLASS.getField("objectArray")));
+		prop = mapper.mapProperty(new JavaProperty(CLASS.getField("objectArray")));
 		assertTrue("objectArray should be an array type", prop.isArrayType());
-		assertEquals("objectArray ArrayType should be Object", As3Type.Object, prop.getArrayType());
+		assertEquals("objectArray ArrayType should be Object", As3SimpleType.Object, prop.getArrayElementType());
 
-		prop = mapper.performMap(new JavaProperty(CLASS.getField("longArray")));
+		prop = mapper.mapProperty(new JavaProperty(CLASS.getField("longArray")));
 		assertTrue("longArray should be an array type", prop.isArrayType());
-		assertEquals("longArray ArrayType should be Long.class", As3Type.Number, prop.getArrayType());
+		assertEquals("longArray ArrayType should be Long.class", As3SimpleType.Number, prop.getArrayElementType());
 
-		prop = mapper.performMap(new JavaProperty(CLASS.getField("untypedList")));
+		prop = mapper.mapProperty(new JavaProperty(CLASS.getField("untypedList")));
 		assertTrue("untypedList should be an array type", prop.isArrayType());
-		assertEquals("untypedList ArrayType should be Object", As3Type.Object, prop.getArrayType());
+		assertEquals("untypedList ArrayType should be Object", As3SimpleType.Object, prop.getArrayElementType());
 
-		prop = mapper.performMap(new JavaProperty(CLASS.getField("typedList")));
+		prop = mapper.mapProperty(new JavaProperty(CLASS.getField("wildcardList")));
+		assertTrue("wildcardList should be an array type", prop.isArrayType());
+		assertEquals("wildcardList ArrayType should be Object", As3SimpleType.Object, prop.getArrayElementType());
+
+		prop = mapper.mapProperty(new JavaProperty(CLASS.getField("typedList")));
 		assertTrue("typedList should be an array type", prop.isArrayType());
-		assertEquals("typedList ArrayType should be Long", As3Type.Number, prop.getArrayType());
+		assertEquals("typedList ArrayType should be Long", As3SimpleType.Number, prop.getArrayElementType());
 		
 	}
 	

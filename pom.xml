@@ -45,13 +45,6 @@
 			<scope>test</scope>
 			<optional>false</optional>
 		</dependency>
-		<dependency>
-			<groupId>javassist</groupId>
-			<artifactId>javassist</artifactId>
-			<version>3.11.0.GA</version>
-			<scope>test</scope>
-			<optional>false</optional>
-		</dependency>
 	</dependencies>
 
 </project>

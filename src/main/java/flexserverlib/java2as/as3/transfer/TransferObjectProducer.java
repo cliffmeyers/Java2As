@@ -3,9 +3,8 @@ package flexserverlib.java2as.as3.transfer;
 import flexserverlib.java2as.as3.As3Type;
 import flexserverlib.java2as.as3.DefaultAs3TypeMapper;
 import flexserverlib.java2as.core.AbstractProducer;
-import flexserverlib.java2as.core.conf.PropertyMapper;
+import flexserverlib.java2as.core.conf.CompositePropertyMapper;
 import flexserverlib.java2as.core.conf.TypeMapper;
-import flexserverlib.java2as.core.meta.JavaProperty;
 import flexserverlib.java2as.core.meta.JavaTransferObject;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
@@ -20,7 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 public class TransferObjectProducer extends AbstractProducer {
-	
+
 	private TransferObjectConfiguration config;
 	private List<Class<?>> classes;
 
@@ -35,7 +34,7 @@ public class TransferObjectProducer extends AbstractProducer {
 		List<Class<?>> matchingClasses = findMatchingClasses(config.getMatchers(), classes);
 
 		// build metadata
-		List<JavaTransferObject> transferObjects = buildMetadata(matchingClasses);
+		List<JavaTransferObject> javaTOs = buildMetadata(matchingClasses);
 
 		// build template configuration
 		Configuration fmConfig = new Configuration();
@@ -45,15 +44,19 @@ public class TransferObjectProducer extends AbstractProducer {
 			Template template = fmConfig.getTemplate("to-base.ftl");
 			Map<String, Object> model = new HashMap<String, Object>();
 
-			// setup default PropertyMapper, if necessary
-			List<PropertyMapper<As3Property>> propertyMappers = config.getPropertyMappers();
-			if (propertyMappers.size() == 0)
-				propertyMappers.add(new DefaultAs3PropertyMapper());
+			// TODO: fix config.getTypeMapper()
+			TypeMapper<As3Type> typeMapper = new DefaultAs3TypeMapper();
+
+			// setup mappers
+			CompositePropertyMapper<As3Property> compositePropertyMapper = new CompositePropertyMapper<As3Property>();
+			compositePropertyMapper.addAll(config.getPropertyMappers());
+			if (!compositePropertyMapper.hasMappers())
+				compositePropertyMapper.addPropertyMapper(new DefaultAs3PropertyMapper());
 
 			// do conversion
-			TransferObjectMapper mapper = new TransferObjectMapper(propertyMappers);
-			List<As3TransferObject> as3TransferObjects = mapper.performMappings(transferObjects);
-			
+			TransferObjectMapper mapper = new TransferObjectMapper(compositePropertyMapper, typeMapper);
+			List<As3TransferObject> as3TransferObjects = mapper.performMappings(javaTOs);
+
 			// generate files
 			for (As3TransferObject transferObject : as3TransferObjects) {
 				model.put("model", transferObject);

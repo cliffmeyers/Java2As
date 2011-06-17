@@ -5,8 +5,10 @@ import flexserverlib.java2as.core.meta.Property;
 
 public interface PropertyMapper<OUT extends Property> {
 
-	public boolean canMap(JavaProperty prop);
+	public boolean canMapProperty(JavaProperty prop);
 
-	public OUT performMap(JavaProperty prop);
+	public OUT mapProperty(JavaProperty prop);
+
+	public void setTypeMapper(TypeMapper typeMapper);
 
 }

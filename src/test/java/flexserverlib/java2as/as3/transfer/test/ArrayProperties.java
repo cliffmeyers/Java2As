@@ -11,8 +11,10 @@ public class ArrayProperties {
 
 	public Long[] longArray;
 
-	public List<?> untypedList;
+	public List untypedList;
+
+	public List<?> wildcardList;
 
 	public List<Long> typedList;
-	
+
 }

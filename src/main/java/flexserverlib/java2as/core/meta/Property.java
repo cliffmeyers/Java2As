@@ -8,6 +8,6 @@ public interface Property<TYPE> {
 
 	boolean isArrayType();
 
-	TYPE getArrayType();
+	TYPE getArrayElementType();
 
 }

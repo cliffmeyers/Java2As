@@ -1,29 +1,12 @@
 package flexserverlib.java2as.as3;
 
-import java.security.PrivateKey;
+/**
+ * @author cliff.meyers
+ */
+public interface As3Type {
 
-public enum As3Type {
-	Integer,
-	Number,
-	String,
-	Boolean,
-	Date,
-	Array,
-	ArrayCollection,
-	ByteArray,
-	Xml,
-	Object,
-	RemoteClass;
+	public boolean isBasicType();
 
-	private String remoteClass;
+	public String getName();
 
-	As3Type() {}
-
-	private As3Type(String remoteClass) {
-		this.remoteClass = remoteClass;
-	}
-
-	public String getRemoteClass() {
-		return remoteClass;
-	}
 }

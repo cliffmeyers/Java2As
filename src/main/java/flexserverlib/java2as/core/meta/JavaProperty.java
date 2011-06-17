@@ -72,9 +72,9 @@ public class JavaProperty implements Property<Class<?>> {
 	}
 
 	/**
-	 * @return The type contained in the array type, or null if untyped.
+	 * @return The type contained in the array type, or Object.class if untyped.
 	 */
-	public Class<?> getArrayType() {
+	public Class<?> getArrayElementType() {
 		Class<?> javaType = getType();
 		if (javaType.isArray())
 			return javaType.getComponentType();
@@ -87,14 +87,14 @@ public class JavaProperty implements Property<Class<?>> {
 
 		if (type instanceof ParameterizedType) {
 			Type paramType = ((ParameterizedType) type).getActualTypeArguments()[0];
-			// handle the case where paramType is java.lang.reflect.WildcardType
+			// handles the case where paramType is java.lang.reflect.WildcardType
 			if (paramType instanceof WildcardType)
 				return Object.class;
 			else
 				return (Class<?>) paramType;
 		}
 
-		return null;
+		return Object.class;
 	}
 
 	/**

@@ -14,7 +14,6 @@ public class As3Dependency {
 
 	private As3Type dependencyType;
 	private DependencyKind dependencyKind;
-	private As3Class remoteClass;
 
 	//
 	// Constructors
@@ -23,11 +22,6 @@ public class As3Dependency {
 	public As3Dependency(DependencyKind dependencyKind, As3Type dependencyType) {
 		this.dependencyType = dependencyType;
 		this.dependencyKind = dependencyKind;
-	}
-
-	public As3Dependency(DependencyKind dependencyKind, As3Type dependencyType, As3Class remoteClass) {
-		this(dependencyKind, dependencyType);
-		this.remoteClass = remoteClass;
 	}
 
 	//

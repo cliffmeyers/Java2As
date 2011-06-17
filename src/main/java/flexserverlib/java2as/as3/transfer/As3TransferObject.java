@@ -11,27 +11,41 @@ public class As3TransferObject {
 	private List<As3Property> properties;
 	private List<As3Dependency> dependencies;
 
-	public As3TransferObject(JavaTransferObject transferObject, List<As3Property> properties) {
+
+	public As3TransferObject(JavaTransferObject transferObject) {
 		this.transferObject = transferObject;
-		this.properties = properties;
-		// TODO: build more metadata from properties to determine dependent types
-		buildMetadata();
+		this.properties = new ArrayList<As3Property>();
+		this.dependencies = new ArrayList<As3Dependency>();
 	}
 
 	//
 	// Public Methods
 	//
 
+	public void addProperty(As3Property property) {
+		this.properties.add(property);
+		addDependency(property.getDependency());
+	}
+
+	public void addDependency(As3Dependency dependency) {
+		this.dependencies.add(dependency);
+	}
+
+	//
+	// Protected Methods
+	//
+
 	protected void buildMetadata() {
-		String packageName = transferObject.getPackageName();
+
 		String qualifiedName = transferObject.getName();
+		String packageName = transferObject.getPackageName();
 		String simpleName = transferObject.getSimpleName();
 
-		dependencies = new ArrayList<As3Dependency>();
-		for (As3Property prop : properties)
-			dependencies.addAll(prop.getDependencies());
-				
 	}
+
+	//
+	// Getters and Setters
+	//
 
 	public String getPackageName() {
 		return transferObject.getPackageName();

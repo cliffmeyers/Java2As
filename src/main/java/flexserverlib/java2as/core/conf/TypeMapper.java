@@ -1,15 +1,23 @@
 package flexserverlib.java2as.core.conf;
 
+import java.lang.annotation.Annotation;
+
 /**
- * Generic mapper interface for mapping types.
- *
- * @param <OUT> Outbound (mapped) type.
  * @author cliff.meyers
  */
 public interface TypeMapper<OUT> {
 
-	public boolean canMap(Class<?> type);
+	public boolean canMapType(Class<?> type);
 
-	public OUT performMap(Class<?> type);
+	public OUT mapType(Class<?> type);
+
+	public enum Context {
+
+		PROPERTY,
+		SUPERCLASS,
+		INTERFACE,
+		METHOD_PARAMETER
+
+	}
 
 }

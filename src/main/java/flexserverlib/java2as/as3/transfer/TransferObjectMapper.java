@@ -1,6 +1,9 @@
 package flexserverlib.java2as.as3.transfer;
 
+import flexserverlib.java2as.as3.As3Type;
 import flexserverlib.java2as.core.conf.PropertyMapper;
+import flexserverlib.java2as.core.conf.TypeMapper;
+import flexserverlib.java2as.core.meta.DependencyKind;
 import flexserverlib.java2as.core.meta.JavaProperty;
 import flexserverlib.java2as.core.meta.JavaTransferObject;
 
@@ -14,7 +17,9 @@ import java.util.Map;
  */
 public class TransferObjectMapper {
 
-	private List<PropertyMapper<As3Property>> propertyMappers;
+	private PropertyMapper<As3Property> propertyMapper;
+	private TypeMapper<As3Type> typeMapper;
+
 	private Map<JavaTransferObject, As3TransferObject> transferObjectMap;
 	private List<JavaTransferObject> javaTransferObjects;
 	private List<As3TransferObject> as3TransferObjects;
@@ -23,8 +28,9 @@ public class TransferObjectMapper {
 	// Constructors
 	//
 
-	public TransferObjectMapper(List<PropertyMapper<As3Property>> propertyMappers) {
-		this.propertyMappers = propertyMappers;
+	public TransferObjectMapper(PropertyMapper<As3Property> propertyMapper, TypeMapper<As3Type> typeMapper) {
+		this.propertyMapper = propertyMapper;
+		this.typeMapper = typeMapper;
 		this.transferObjectMap = new HashMap<JavaTransferObject, As3TransferObject>();
 	}
 
@@ -57,23 +63,23 @@ public class TransferObjectMapper {
 
 	protected As3TransferObject performMap(JavaTransferObject javaTransferObject) {
 
-		List<As3Property> as3PropertyList = new ArrayList<As3Property>();
+		As3TransferObject as3TransferObject = new As3TransferObject(javaTransferObject);
 
 		// map each property
 		for (JavaProperty javaProperty : javaTransferObject.getProperties()) {
-			boolean wasMapped = false;
-			for (PropertyMapper<As3Property> mapper : propertyMappers) {
-				if (mapper.canMap(javaProperty)) {
-					as3PropertyList.add(mapper.performMap(javaProperty));
-					wasMapped = true;
-					break;
-				}
-			}
-			if (!wasMapped)
-				System.out.println("No appropriate mapper found for " + javaTransferObject.getName() + "." + javaProperty.getName());
+
+			As3Property as3Property = propertyMapper.mapProperty(javaProperty);
+			as3TransferObject.addProperty(as3Property);
+
+			As3Dependency superclassType = new As3Dependency(DependencyKind.SUPERCLASS, typeMapper.mapType(javaTransferObject.getSuperclass()));
+
+
+			//for (Class<?> interfaceClass : javaTransferObject.getInterfaces())
+
+
 		}
 
-		return new As3TransferObject(javaTransferObject, as3PropertyList);
+		return as3TransferObject;
 
 	}
 
