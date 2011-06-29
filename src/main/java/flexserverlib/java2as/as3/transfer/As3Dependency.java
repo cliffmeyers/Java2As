@@ -10,6 +10,10 @@ import org.apache.commons.lang.ArrayUtils;
  */
 public class As3Dependency {
 
+    //
+    // Statics
+    //
+
 	private static final As3Type[] BUILTIN_TYPES = new As3Type[]{
 			As3SimpleType.Array,
 			As3SimpleType.Boolean,

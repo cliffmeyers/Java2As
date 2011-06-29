@@ -1,7 +1,9 @@
 package ${model.getPackageName()} {
 
+    <#if model.importsFragment?length gt 0>
 	${model.getImportsFragment()}
-
+    
+    </#if>
 	[Bindable]
 	public class ${model.getSimpleName()}Base ${model.getPolymorphicsFragment()} {
 
