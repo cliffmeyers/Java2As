@@ -3,7 +3,11 @@ package flexserverlib.java2as.core.conf;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Base class that provides support for
+ */
 public abstract class AbstractConfiguration {
+
 	protected List<TypeMatcher> matchers;
 
 	public AbstractConfiguration() {

@@ -15,9 +15,9 @@ import java.util.List;
  */
 public class TransferObjectConfiguration extends AbstractConfiguration {
 
-	/*
-	 * Private Fields
-	*/
+	//
+    // Fields
+    //
 
 	private TypeMapper<As3Type> typeMapper;
 
@@ -33,26 +33,26 @@ public class TransferObjectConfiguration extends AbstractConfiguration {
 	 */
 	private String transferObjectBaseClass;
 
-	/*
-		  * Constructor
-		  */
+	//
+    // Constructors
+    //
 
 	public TransferObjectConfiguration() {
 		propertyMappers = new ArrayList<PropertyMapper<As3Property>>();
 		propertyMappers.add(new DefaultAs3PropertyMapper());
 	}
 
-	/*
-		  * Public Methods
-		  */
+	//
+    // Public Methods
+    //
 
 	public void addPropertyMapper(PropertyMapper<As3Property> mapper) {
 		propertyMappers.add(mapper);
 	}
 
-	/*
-		  * Getters and Setters
-		  */
+	//
+    // Getters and Setters
+    //
 
 	public TypeMapper<As3Type> getTypeMapper() {
 		return typeMapper;
