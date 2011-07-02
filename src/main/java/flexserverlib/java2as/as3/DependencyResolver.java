@@ -1,6 +1,7 @@
-package flexserverlib.java2as.as3.transfer;
+package flexserverlib.java2as.as3;
 
 import flexserverlib.java2as.as3.As3Type;
+import flexserverlib.java2as.as3.transfer.As3Dependency;
 import flexserverlib.java2as.core.meta.DependencyKind;
 
 /**

@@ -1,5 +1,6 @@
 package flexserverlib.java2as.as3.transfer;
 
+import flexserverlib.java2as.as3.DependencyResolver;
 import flexserverlib.java2as.core.PackageMapper;
 import flexserverlib.java2as.core.meta.DependencyKind;
 import flexserverlib.java2as.core.meta.JavaTransferObject;

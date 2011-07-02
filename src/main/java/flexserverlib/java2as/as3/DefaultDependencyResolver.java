@@ -1,4 +1,7 @@
-package flexserverlib.java2as.as3.transfer;
+package flexserverlib.java2as.as3;
+
+import flexserverlib.java2as.as3.DependencyResolver;
+import flexserverlib.java2as.as3.transfer.As3Dependency;
 
 /**
  * 
@@ -24,15 +27,11 @@ public class DefaultDependencyResolver implements DependencyResolver {
     }
 
     public String resolveQualifiedName(As3Dependency dependency) {
-
         return dependency.getQualifiedName();
-
     }
 
     public String resolveSimpleName(As3Dependency dependency) {
-
         return dependency.getSimpleName();
-
     }
 
 }
