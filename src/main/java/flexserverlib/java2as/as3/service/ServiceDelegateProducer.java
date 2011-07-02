@@ -2,13 +2,9 @@ package flexserverlib.java2as.as3.service;
 
 import flexserverlib.java2as.as3.As3Type;
 import flexserverlib.java2as.as3.DefaultAs3TypeMapper;
-import flexserverlib.java2as.as3.transfer.As3Property;
-import flexserverlib.java2as.as3.transfer.As3TransferObject;
-import flexserverlib.java2as.as3.transfer.DefaultAs3PropertyMapper;
 import flexserverlib.java2as.core.AbstractProducer;
-import flexserverlib.java2as.core.conf.CompositePropertyMapper;
 import flexserverlib.java2as.core.conf.TypeMapper;
-import flexserverlib.java2as.core.meta.JavaTransferObject;
+import flexserverlib.java2as.core.meta.JavaService;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
@@ -23,7 +19,13 @@ import java.util.Map;
 
 public class ServiceDelegateProducer extends AbstractProducer {
 
-	private ServiceDelegateConfiguration config;
+    //
+    // Statics
+    //
+
+    private static final String SERVICE_IMPL_FTL = "service-impl.ftl";
+
+    private ServiceDelegateConfiguration config;
 	private List<Class<?>> classes;
 
 	public ServiceDelegateProducer(ServiceDelegateConfiguration config, List<Class<?>> classes) {
@@ -37,14 +39,14 @@ public class ServiceDelegateProducer extends AbstractProducer {
 		List<Class<?>> matchingClasses = findMatchingClasses(config.getMatchers(), classes);
 
 		// build metadata
-		List<JavaTransferObject> javaTOs = buildMetadata(matchingClasses);
+		List<JavaService> javaServices = buildMetadata(matchingClasses);
 
 		// build template configuration
 		Configuration fmConfig = new Configuration();
 		fmConfig.setClassForTemplateLoading(ServiceDelegateProducer.class, "");
 
 		try {
-			Template template = fmConfig.getTemplate("to-base.ftl");
+			Template template = fmConfig.getTemplate(SERVICE_IMPL_FTL);
 			Map<String, Object> model = new HashMap<String, Object>();
 
 			// setup mappers
@@ -52,19 +54,17 @@ public class ServiceDelegateProducer extends AbstractProducer {
 			if (typeMapper == null)
 				typeMapper = new DefaultAs3TypeMapper();
 
-
-			CompositePropertyMapper<As3Property> compositePropertyMapper = new CompositePropertyMapper<As3Property>();
-			compositePropertyMapper.addAll(config.getPropertyMappers());
-			if (!compositePropertyMapper.hasMappers())
-				compositePropertyMapper.addPropertyMapper(new DefaultAs3PropertyMapper());
+            MethodMapper methodMapper = config.getMethodMapper();
+            if (methodMapper == null)
+                methodMapper = new DefaultMethodMapper(typeMapper);
 
 			// do conversion
-			ServiceDelegateMapper mapper = new ServiceDelegateMapper(compositePropertyMapper, typeMapper);
-			List<As3TransferObject> as3TransferObjects = mapper.performMappings(javaTOs);
+			ServiceDelegateMapper mapper = new ServiceDelegateMapper(methodMapper, typeMapper);
+			List<As3ServiceDelegate> as3Services = mapper.performMappings(javaServices);
 
 			// generate files
-			for (As3TransferObject transferObject : as3TransferObjects) {
-				model.put("model", transferObject);
+			for (As3ServiceDelegate service : as3Services) {
+				model.put("model", service);
 				Writer writer = new PrintWriter(System.out);
 				template.process(model, writer);
 			}
@@ -75,10 +75,10 @@ public class ServiceDelegateProducer extends AbstractProducer {
 		}
 	}
 
-	private List<JavaTransferObject> buildMetadata(List<Class<?>> classes) {
-		List<JavaTransferObject> transferObjects = new ArrayList<JavaTransferObject>();
+	private List<JavaService> buildMetadata(List<Class<?>> classes) {
+		List<JavaService> delegates = new ArrayList<JavaService>();
 		for (Class<?> clazz : classes)
-			transferObjects.add(new JavaTransferObject(clazz));
-		return transferObjects;
+			delegates.add(new JavaService(clazz));
+		return delegates;
 	}
 }

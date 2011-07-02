@@ -5,6 +5,7 @@ package flexserverlib.java2as.core.meta;
 */
 public enum DependencyKind {
 	PROPERTY,
+    PARAMETER,
 	SUPERCLASS,
 	INTERFACE
 }

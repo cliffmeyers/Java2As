@@ -1,5 +1,7 @@
 package flexserverlib.java2as.core.meta;
 
+import com.sun.xml.internal.bind.v2.schemagen.xmlschema.TypeHost;
+
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
@@ -15,12 +17,18 @@ import java.util.List;
  *
  * @author cliff.meyers
  */
-public class JavaServiceDelegate {
+public class JavaService {
 
     private Class<?> clazz;
 	private List<JavaMethod> methods;
 
-    public JavaServiceDelegate(Class<?> clazz) {
+    /**
+     * 
+     */
+    private boolean implementation;
+
+    public JavaService(Class<?> clazz) {
+
 		this.clazz = clazz;
 		this.methods = new ArrayList<JavaMethod>();
 
@@ -28,6 +36,9 @@ public class JavaServiceDelegate {
             JavaMethod javaMethod = new JavaMethod(method);
             methods.add(javaMethod);
         }
+
+        this.implementation = !clazz.isInterface();
+
 	}
 
 	//
@@ -36,7 +47,7 @@ public class JavaServiceDelegate {
 
 	@Override
 	public String toString() {
-		return "JavaServiceDelegate{" + clazz + '}';
+		return "JavaService{" + clazz + '}';
 	}
 
 
@@ -76,4 +87,8 @@ public class JavaServiceDelegate {
 		return methods;
 	}
 
+    public boolean isImplementation() {
+        return implementation;
+    }
+    
 }

@@ -7,14 +7,8 @@ import flexserverlib.java2as.core.meta.JavaMethod;
  *
  * @author cliff.meyers
  */
-public class MethodMapper {
+public interface MethodMapper {
 
-    public boolean canMapMethod(JavaMethod method) {
-        return false;
-    }
-
-    public Object mapMethod(JavaMethod method) {
-        return null;
-    }
-
+    As3Method mapMethod(JavaMethod method);
+    
 }
