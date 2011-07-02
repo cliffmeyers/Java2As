@@ -6,8 +6,10 @@ import flexserverlib.java2as.as3.transfer.TransferObjectProducer;
 import flexserverlib.java2as.as3.transfer.test.ArrayProperties;
 import flexserverlib.java2as.as3.transfer.test.User;
 import flexserverlib.java2as.as3.transfer.test.User2;
+import org.junit.Ignore;
 import org.junit.Test;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
@@ -17,15 +19,42 @@ import java.util.List;
  * @author cliff.meyers
  */
 public class ServiceDelegateProducerTests {
+
     @Test
-	public void testProduce() {
-		ServiceDelegateConfiguration config = new ServiceDelegateConfiguration();
-		List<Class<?>> classes = Arrays.asList(
+    @Ignore
+    public void testProduceFilesystem() {
+
+        ServiceDelegateConfiguration config = new ServiceDelegateConfiguration();
+        File tempDir = new File("c:" + File.separatorChar + "temp" + File.separator + "java2as" + File.separator + "service");
+        File baseDir = new File(tempDir + File.separator + "impl");
+        config.setServiceImplDir(baseDir);
+
+        List<Class<?>> classes = Arrays.asList(
                 new Class<?>[]{
                         IUserService.class,
                 }
         );
-		ServiceDelegateProducer producer = new ServiceDelegateProducer(config, classes);
-		producer.produce();
-	}
+
+        ServiceDelegateProducer producer = new ServiceDelegateProducer(config, classes);
+        producer.produce();
+
+    }
+
+    @Test
+    public void testProduceSystemOut() {
+
+        ServiceDelegateConfiguration config = new ServiceDelegateConfiguration();
+
+        List<Class<?>> classes = Arrays.asList(
+                new Class<?>[]{
+                        IUserService.class,
+                }
+        );
+
+        ServiceDelegateProducer producer = new ServiceDelegateProducer(config, classes);
+        producer.setWriterResolver(new PrintWriterResolver());
+        producer.produce();
+
+    }
+
 }
