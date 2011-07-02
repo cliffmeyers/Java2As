@@ -20,13 +20,31 @@ import java.util.Map;
 
 public class TransferObjectProducer extends AbstractProducer {
 
-	private TransferObjectConfiguration config;
+    //
+    // Statics
+    //
+
+    private static final String TO_BASE_FTL = "to-base.ftl";
+
+    //
+    // Fields
+    //
+
+    private TransferObjectConfiguration config;
 	private List<Class<?>> classes;
+
+    //
+    // Constructors
+    //
 
 	public TransferObjectProducer(TransferObjectConfiguration config, List<Class<?>> classes) {
 		this.config = config;
 		this.classes = classes;
 	}
+
+    //
+    // Public Methods
+    //
 
 	@Override
 	public void produce() {
@@ -41,7 +59,7 @@ public class TransferObjectProducer extends AbstractProducer {
 		fmConfig.setClassForTemplateLoading(TransferObjectProducer.class, "");
 
 		try {
-			Template template = fmConfig.getTemplate("to-base.ftl");
+			Template template = fmConfig.getTemplate(TO_BASE_FTL);
 			Map<String, Object> model = new HashMap<String, Object>();
 
 			// setup mappers
@@ -72,10 +90,15 @@ public class TransferObjectProducer extends AbstractProducer {
 		}
 	}
 
-	private List<JavaTransferObject> buildMetadata(List<Class<?>> classes) {
+    //
+    // Protected Methods
+    //
+
+	protected List<JavaTransferObject> buildMetadata(List<Class<?>> classes) {
 		List<JavaTransferObject> transferObjects = new ArrayList<JavaTransferObject>();
 		for (Class<?> clazz : classes)
 			transferObjects.add(new JavaTransferObject(clazz));
 		return transferObjects;
 	}
+    
 }
