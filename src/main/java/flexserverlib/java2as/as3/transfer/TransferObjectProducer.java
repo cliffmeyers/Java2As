@@ -25,80 +25,88 @@ public class TransferObjectProducer extends AbstractProducer {
     //
 
     private static final String TO_BASE_FTL = "to-base.ftl";
+    private static final String TO_CUSTOM_FTL = "to-custom.ftl";
 
     //
     // Fields
     //
 
     private TransferObjectConfiguration config;
-	private List<Class<?>> classes;
+    private List<Class<?>> classes;
 
     //
     // Constructors
     //
 
-	public TransferObjectProducer(TransferObjectConfiguration config, List<Class<?>> classes) {
-		this.config = config;
-		this.classes = classes;
-	}
+    public TransferObjectProducer(TransferObjectConfiguration config, List<Class<?>> classes) {
+        this.config = config;
+        this.classes = classes;
+    }
 
     //
     // Public Methods
     //
 
-	@Override
-	public void produce() {
-		// filter
-		List<Class<?>> matchingClasses = findMatchingClasses(config.getMatchers(), classes);
+    @Override
+    public void produce() {
 
-		// build metadata
-		List<JavaTransferObject> javaTOs = buildMetadata(matchingClasses);
+        // filter
+        List<Class<?>> matchingClasses = findMatchingClasses(config.getMatchers(), classes);
 
-		// build template configuration
-		Configuration fmConfig = new Configuration();
-		fmConfig.setClassForTemplateLoading(TransferObjectProducer.class, "");
+        // build metadata
+        List<JavaTransferObject> javaTOs = buildMetadata(matchingClasses);
 
-		try {
-			Template template = fmConfig.getTemplate(TO_BASE_FTL);
-			Map<String, Object> model = new HashMap<String, Object>();
+        // setup mappers
+        TypeMapper<As3Type> typeMapper = config.getTypeMapper();
+        if (typeMapper == null)
+            typeMapper = new DefaultAs3TypeMapper();
 
-			// setup mappers
-			TypeMapper<As3Type> typeMapper = config.getTypeMapper();
-			if (typeMapper == null)
-				typeMapper = new DefaultAs3TypeMapper();
+        CompositePropertyMapper<As3Property> compositePropertyMapper = new CompositePropertyMapper<As3Property>();
+        compositePropertyMapper.addAll(config.getPropertyMappers());
+        if (!compositePropertyMapper.hasMappers())
+            compositePropertyMapper.addPropertyMapper(new DefaultAs3PropertyMapper());
 
+        // do conversion
+        // TODO: pass in CompositePropertyMapper
+        TransferObjectMapper mapper = new TransferObjectMapper(compositePropertyMapper, typeMapper);
+        List<As3TransferObject> as3TransferObjects = mapper.performMappings(javaTOs);
 
-			CompositePropertyMapper<As3Property> compositePropertyMapper = new CompositePropertyMapper<As3Property>();
-			compositePropertyMapper.addAll(config.getPropertyMappers());
-			if (!compositePropertyMapper.hasMappers())
-				compositePropertyMapper.addPropertyMapper(new DefaultAs3PropertyMapper());
+        // build template configuration
+        Configuration fmConfig = new Configuration();
+        fmConfig.setClassForTemplateLoading(TransferObjectProducer.class, "");
 
-			// do conversion
-			TransferObjectMapper mapper = new TransferObjectMapper(compositePropertyMapper, typeMapper);
-			List<As3TransferObject> as3TransferObjects = mapper.performMappings(javaTOs);
+        try {
+            Map<String, Object> model = new HashMap<String, Object>();
+            Template baseTemplate = fmConfig.getTemplate(TO_BASE_FTL);
+            Template customTemplate = fmConfig.getTemplate(TO_CUSTOM_FTL);
 
-			// generate files
-			for (As3TransferObject transferObject : as3TransferObjects) {
-				model.put("model", transferObject);
-				Writer writer = new PrintWriter(System.out);
-				template.process(model, writer);
-			}
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		} catch (TemplateException e) {
-			throw new RuntimeException(e);
-		}
-	}
+            // generate files
+            for (As3TransferObject transferObject : as3TransferObjects) {
+                model.put("model", transferObject);
+
+                // TODO: delegate to another class to get a Writer
+                Writer writer1 = new PrintWriter(System.out);
+                customTemplate.process(model, writer1);
+
+                Writer writer2 = new PrintWriter(System.out);
+                baseTemplate.process(model, writer2);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (TemplateException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     //
     // Protected Methods
     //
 
-	protected List<JavaTransferObject> buildMetadata(List<Class<?>> classes) {
-		List<JavaTransferObject> transferObjects = new ArrayList<JavaTransferObject>();
-		for (Class<?> clazz : classes)
-			transferObjects.add(new JavaTransferObject(clazz));
-		return transferObjects;
-	}
-    
+    protected List<JavaTransferObject> buildMetadata(List<Class<?>> classes) {
+        List<JavaTransferObject> transferObjects = new ArrayList<JavaTransferObject>();
+        for (Class<?> clazz : classes)
+            transferObjects.add(new JavaTransferObject(clazz));
+        return transferObjects;
+    }
+
 }

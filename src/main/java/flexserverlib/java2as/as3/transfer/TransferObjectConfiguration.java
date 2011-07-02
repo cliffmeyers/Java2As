@@ -5,6 +5,7 @@ import flexserverlib.java2as.core.conf.AbstractConfiguration;
 import flexserverlib.java2as.core.conf.PropertyMapper;
 import flexserverlib.java2as.core.conf.TypeMapper;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +23,16 @@ public class TransferObjectConfiguration extends AbstractConfiguration {
 	private TypeMapper<As3Type> typeMapper;
 
 	private List<PropertyMapper<As3Property>> propertyMappers;
+
+    /**
+     * Directory in which to generate "custom" classes (e.g. User)
+     */
+    private File customClassDir;
+
+    /**
+     * Directory in which to generate "base" classes (e.g. UserBase)
+     */
+    private File baseClassDir;
 
 	/**
 	 * Include [ArrayElementType] metadata for Array and ArrayCollection types.
@@ -70,7 +81,23 @@ public class TransferObjectConfiguration extends AbstractConfiguration {
 		this.propertyMappers = mappers;
 	}
 
-	public boolean getIncludeArrayElementType() {
+    public File getBaseClassDir() {
+        return baseClassDir;
+    }
+
+    public void setBaseClassDir(File baseClassDir) {
+        this.baseClassDir = baseClassDir;
+    }
+
+    public File getCustomClassDir() {
+        return customClassDir;
+    }
+
+    public void setCustomClassDir(File customClassDir) {
+        this.customClassDir = customClassDir;
+    }
+
+    public boolean getIncludeArrayElementType() {
 		return includeArrayElementType;
 	}
 

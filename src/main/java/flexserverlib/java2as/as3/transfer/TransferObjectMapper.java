@@ -48,11 +48,9 @@ public class TransferObjectMapper {
         List<As3TransferObject> as3TransferObjects = new ArrayList<As3TransferObject>();
 
         for (JavaTransferObject javaTransferObject : javaTransferObjects) {
-
             As3TransferObject as3TransferObject = performMap(javaTransferObject);
             as3TransferObjects.add(as3TransferObject);
             transferObjectMap.put(javaTransferObject, as3TransferObject);
-
         }
 
         return as3TransferObjects;
