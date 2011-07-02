@@ -1,9 +1,12 @@
 package flexserverlib.java2as.as3.service;
 
 import flexserverlib.java2as.as3.As3Type;
+import flexserverlib.java2as.as3.DefaultDependencyResolver;
+import flexserverlib.java2as.as3.DependencyResolver;
 import flexserverlib.java2as.as3.transfer.As3Dependency;
 import flexserverlib.java2as.as3.transfer.As3Property;
 import flexserverlib.java2as.as3.transfer.As3TransferObject;
+import flexserverlib.java2as.core.PackageMapper;
 import flexserverlib.java2as.core.conf.TypeMapper;
 import flexserverlib.java2as.core.meta.*;
 
@@ -17,62 +20,74 @@ import java.util.Map;
  */
 public class ServiceDelegateMapper {
 
-	private MethodMapper methodMapper;
-	private TypeMapper<As3Type> typeMapper;
+    private MethodMapper methodMapper;
+    private TypeMapper<As3Type> typeMapper;
+    private PackageMapper packageMapper;
+    private DependencyResolver dependencyResolver;
 
-	private Map<JavaService, As3ServiceDelegate> serviceMap;
-	private List<As3ServiceDelegate> as3Delegates;
+    private Map<JavaService, As3ServiceDelegate> serviceMap;
+    private List<As3ServiceDelegate> as3Delegates;
 
-	//
-	// Constructors
-	//
+    //
+    // Constructors
+    //
 
-	public ServiceDelegateMapper(MethodMapper methodMapper, TypeMapper<As3Type> typeMapper) {
-		this.methodMapper = methodMapper;
-		this.typeMapper = typeMapper;
-		this.serviceMap = new HashMap<JavaService, As3ServiceDelegate>();
-	}
+    public ServiceDelegateMapper(MethodMapper methodMapper, TypeMapper<As3Type> typeMapper, PackageMapper packageMapper) {
+        this.methodMapper = methodMapper;
+        this.typeMapper = typeMapper;
+        this.packageMapper = packageMapper;
+        this.serviceMap = new HashMap<JavaService, As3ServiceDelegate>();
+        this.dependencyResolver = new DefaultDependencyResolver();
+    }
 
-	//
-	// Public Methods
-	//
+    //
+    // Public Methods
+    //
 
-	public List<As3ServiceDelegate> performMappings(List<JavaService> javaServices) {
+    public List<As3ServiceDelegate> performMappings(List<JavaService> javaServices) {
 
-		this.as3Delegates = new ArrayList<As3ServiceDelegate>();
+        this.as3Delegates = new ArrayList<As3ServiceDelegate>();
 
-		for (JavaService javaService : javaServices) {
-			As3ServiceDelegate as3Delegate = performMap(javaService);
-			as3Delegates.add(as3Delegate);
-			serviceMap.put(javaService, as3Delegate);
-		}
+        for (JavaService javaService : javaServices) {
+            As3ServiceDelegate as3Delegate = performMap(javaService);
+            as3Delegates.add(as3Delegate);
+            serviceMap.put(javaService, as3Delegate);
+        }
 
-		return as3Delegates;
+        return as3Delegates;
 
-	}
+    }
 
-	//
-	// Protected Methods
-	//
+    //
+    // Protected Methods
+    //
 
-	protected As3ServiceDelegate performMap(JavaService javaService) {
+    protected As3ServiceDelegate performMap(JavaService javaService) {
 
-		As3ServiceDelegate as3Delegate = new As3ServiceDelegate(javaService);
+        As3ServiceDelegate as3Delegate = new As3ServiceDelegate(javaService);
 
-		// create dependencies for polymorphics
-		as3Delegate.addDependency(new As3Dependency(DependencyKind.SUPERCLASS, typeMapper.mapType(javaService.getSuperclass())));
+        if (as3Delegate.isImplementation()) {
+            // create dependencies for polymorphics
+            As3Type superClassType = typeMapper.mapType(javaService.getSuperclass());
+            As3Dependency superClassDependency = new As3Dependency(DependencyKind.SUPERCLASS, superClassType);
+            as3Delegate.addDependency(superClassDependency);
 
-		for (Class<?> interfaceClass : javaService.getInterfaces())
-			as3Delegate.addDependency(new As3Dependency(DependencyKind.INTERFACE, typeMapper.mapType(interfaceClass)));
+            for (Class<?> interfaceClass : javaService.getInterfaces()) {
+                As3Type interfaceType = typeMapper.mapType(interfaceClass);
+                As3Dependency interfaceDependency = new As3Dependency(DependencyKind.INTERFACE, interfaceType);
+                as3Delegate.addDependency(interfaceDependency);
+            }
+        }
 
-		// map each method
-		for (JavaMethod javaMethod : javaService.getMethods()) {
-			As3Method as3Method = methodMapper.mapMethod(javaMethod);
-			as3Delegate.addMethod(as3Method);
-		}
+        // map each method
+        for (JavaMethod javaMethod : javaService.getMethods()) {
+            As3Method as3Method = methodMapper.mapMethod(javaMethod);
+            as3Delegate.addMethod(as3Method);
+        }
 
-		return as3Delegate;
+        as3Delegate.buildMetadata(packageMapper, dependencyResolver);
+        return as3Delegate;
 
-	}
+    }
 
 }

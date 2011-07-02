@@ -19,13 +19,16 @@ import java.util.List;
  */
 public class JavaService {
 
+    //
+    // Fields
+    //
+
     private Class<?> clazz;
 	private List<JavaMethod> methods;
 
-    /**
-     * 
-     */
-    private boolean implementation;
+    //
+    // Constructors
+    //
 
     public JavaService(Class<?> clazz) {
 
@@ -36,8 +39,6 @@ public class JavaService {
             JavaMethod javaMethod = new JavaMethod(method);
             methods.add(javaMethod);
         }
-
-        this.implementation = !clazz.isInterface();
 
 	}
 
@@ -88,7 +89,7 @@ public class JavaService {
 	}
 
     public boolean isImplementation() {
-        return implementation;
+        return !clazz.isInterface();
     }
     
 }

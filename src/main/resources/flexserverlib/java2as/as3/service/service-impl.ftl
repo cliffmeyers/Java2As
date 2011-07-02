@@ -7,9 +7,9 @@ package ${model.packageName} {
 	public class ${model.simpleName} ${model.polymorphicsFragment} {
 
 		<#if model.methods?size gt 0>
-		<#list model.methods as meth>
-		public function ${meth.name}():${meth.returnType.simpleName} {
-            
+		<#list model.methods as method>
+		public function ${method.name}(${method.parameterList}):${method.returnType.simpleName} {
+            return getOperation("${method.name}").send(${method.parameterNameList});
         }
 
 		</#list>

@@ -1,5 +1,7 @@
 package flexserverlib.java2as.core.conf;
 
+import flexserverlib.java2as.core.SimplePackageMapper;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,25 +10,52 @@ import java.util.List;
  */
 public abstract class AbstractConfiguration {
 
-	protected List<TypeMatcher> matchers;
+    //
+    // Fields
+    //
 
-	public AbstractConfiguration() {
-		matchers = new ArrayList<TypeMatcher>();
-	}
+    protected List<TypeMatcher> matchers;
+    protected List<SimplePackageMapper> packageMappers;
 
-	public void addMatcher(TypeMatcher matcher) {
-		matchers.add(matcher);
-	}
+    //
+    // Constructors
+    //
 
-	/*
-		  * Getters and Setters
-		  */
+    public AbstractConfiguration() {
+        matchers = new ArrayList<TypeMatcher>();
+        packageMappers = new ArrayList<SimplePackageMapper>();
+    }
 
-	public List<TypeMatcher> getMatchers() {
-		return matchers;
-	}
+    //
+    // Public Methods
+    //
 
-	public void setMatchers(List<TypeMatcher> matchers) {
-		this.matchers = matchers;
-	}
+    public void addMatcher(TypeMatcher matcher) {
+        matchers.add(matcher);
+    }
+
+    public void addPackageMapper(SimplePackageMapper mapper) {
+        packageMappers.add(mapper);
+    }
+
+    //
+    // Getters and Setters
+    //
+
+    public List<TypeMatcher> getMatchers() {
+        return matchers;
+    }
+
+    public void setMatchers(List<TypeMatcher> matchers) {
+        this.matchers = matchers;
+    }
+
+    public List<SimplePackageMapper> getPackageMappers() {
+        return packageMappers;
+    }
+
+    public void setPackageMappers(List<SimplePackageMapper> packageMappers) {
+        this.packageMappers = packageMappers;
+    }
+
 }

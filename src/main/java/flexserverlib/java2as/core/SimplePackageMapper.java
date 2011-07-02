@@ -17,7 +17,7 @@ public class SimplePackageMapper implements Comparable<SimplePackageMapper>, Pac
     private String originPackage;
 
     /**
-     * AS3 package converting to.
+     * Target package converting to.
      */
     private String targetPackage;
 

@@ -2,6 +2,8 @@ package flexserverlib.java2as.as3.service;
 
 import flexserverlib.java2as.as3.As3Type;
 import flexserverlib.java2as.as3.transfer.As3Dependency;
+import flexserverlib.java2as.core.meta.DependencyKind;
+import org.apache.commons.lang.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +18,7 @@ public class As3Method {
     //
     // Fields
     //
-    
+
     private String name;
 
     private List<As3MethodParameter> parameters;
@@ -30,22 +32,38 @@ public class As3Method {
     //
 
     public As3Method(String name, List<As3MethodParameter> parameters, As3Type returnType) {
+
         this.name = name;
         this.parameters = parameters;
         this.returnType = returnType;
         this.dependencies = new ArrayList<As3Dependency>();
+
+        for (As3MethodParameter param : parameters)
+            this.dependencies.add(new As3Dependency(DependencyKind.PARAMETER, param.getType()));
+        this.dependencies.add(new As3Dependency(DependencyKind.PARAMETER, returnType));
+
     }
 
     //
     // Public Methods
     //
 
-    public void addDependency(As3Dependency dependency) {
-        this.dependencies.add(dependency);
-    }
-
     public String getReturnTypeName() {
         return returnType.getQualifiedName();
+    }
+
+    public String getParameterList() {
+        List<String> params = new ArrayList<String>();
+        for (As3MethodParameter param : parameters)
+            params.add(param.getName() + ":" + param.getType().getSimpleName());
+        return StringUtils.join(params, ",");
+    }
+
+    public String getParameterNameList() {
+        List<String> paramNames = new ArrayList<String>();
+        for (As3MethodParameter param : parameters)
+            paramNames.add(param.getName());
+        return StringUtils.join(paramNames, ",");
     }
 
     //
@@ -75,4 +93,9 @@ public class As3Method {
     public void setReturnType(As3Type returnType) {
         this.returnType = returnType;
     }
+
+    public List<As3Dependency> getDependencies() {
+        return dependencies;
+    }
+
 }

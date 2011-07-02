@@ -21,7 +21,8 @@ public class As3Dependency {
 			As3SimpleType.Integer,
 			As3SimpleType.Number,
 			As3SimpleType.Object,
-			As3SimpleType.String
+			As3SimpleType.String,
+            As3SimpleType.Void
 	};
 
 	//

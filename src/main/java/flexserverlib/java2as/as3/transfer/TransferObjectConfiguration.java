@@ -25,8 +25,6 @@ public class TransferObjectConfiguration extends AbstractConfiguration {
 
 	private List<PropertyMapper<As3Property>> propertyMappers;
 
-    private List<SimplePackageMapper> packageMappers;
-
     /**
      * Directory in which to generate "custom" classes (e.g. User)
      */
@@ -40,11 +38,13 @@ public class TransferObjectConfiguration extends AbstractConfiguration {
 	/**
 	 * Include [ArrayElementType] metadata for Array and ArrayCollection types.
 	 */
+    // TODO: needs impl
 	private boolean includeArrayElementType;
 
 	/**
 	 * Provide a base class which all Transfer Objects will extend.
 	 */
+    // TODO: needs impl
 	private String transferObjectBaseClass;
 
 	//
@@ -52,10 +52,10 @@ public class TransferObjectConfiguration extends AbstractConfiguration {
     //
 
 	public TransferObjectConfiguration() {
-		propertyMappers = new ArrayList<PropertyMapper<As3Property>>();
+        super();
+        propertyMappers = new ArrayList<PropertyMapper<As3Property>>();
 		propertyMappers.add(new DefaultAs3PropertyMapper());
-        packageMappers = new ArrayList<SimplePackageMapper>();
-	}
+    }
 
 	//
     // Public Methods
@@ -65,11 +65,7 @@ public class TransferObjectConfiguration extends AbstractConfiguration {
 		propertyMappers.add(mapper);
 	}
 
-    public void addPackageMapper(SimplePackageMapper mapper) {
-        packageMappers.add(mapper);
-    }
-
-	//
+    //
     // Getters and Setters
     //
 
@@ -88,14 +84,6 @@ public class TransferObjectConfiguration extends AbstractConfiguration {
 	public void setPropertyMappers(List<PropertyMapper<As3Property>> mappers) {
 		this.propertyMappers = mappers;
 	}
-
-    public List<SimplePackageMapper> getPackageMappers() {
-        return packageMappers;
-    }
-
-    public void setPackageMappers(List<SimplePackageMapper> packageMappers) {
-        this.packageMappers = packageMappers;
-    }
 
     public File getBaseClassDir() {
         return baseClassDir;

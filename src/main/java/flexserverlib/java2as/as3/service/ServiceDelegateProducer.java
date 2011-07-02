@@ -2,7 +2,9 @@ package flexserverlib.java2as.as3.service;
 
 import flexserverlib.java2as.as3.As3Type;
 import flexserverlib.java2as.as3.DefaultAs3TypeMapper;
+import flexserverlib.java2as.as3.transfer.TransferObjectWriterResolver;
 import flexserverlib.java2as.core.AbstractProducer;
+import flexserverlib.java2as.core.CompositePackageMapper;
 import flexserverlib.java2as.core.conf.TypeMapper;
 import flexserverlib.java2as.core.meta.JavaService;
 import freemarker.template.Configuration;
@@ -10,7 +12,6 @@ import freemarker.template.Template;
 import freemarker.template.TemplateException;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,61 +25,105 @@ public class ServiceDelegateProducer extends AbstractProducer {
     //
 
     private static final String SERVICE_IMPL_FTL = "service-impl.ftl";
+    private static final String SERVICE_INTERFACE_FTL = "service-interface.ftl";
+
+    //
+    // Fields
+    //
 
     private ServiceDelegateConfiguration config;
-	private List<Class<?>> classes;
+    private List<Class<?>> classes;
+    private ServiceDelegateWriterResolver writerResolver;
 
-	public ServiceDelegateProducer(ServiceDelegateConfiguration config, List<Class<?>> classes) {
-		this.config = config;
-		this.classes = classes;
-	}
+    //
+    // Constructors
+    //
 
-	@Override
-	public void produce() {
-		// filter
-		List<Class<?>> matchingClasses = findMatchingClasses(config.getMatchers(), classes);
+    public ServiceDelegateProducer(ServiceDelegateConfiguration config, List<Class<?>> classes) {
+        this.config = config;
+        this.classes = classes;
+        this.writerResolver = new DefaultServiceDelegateWriterResolver(config.getServiceImplDir(), config.getServiceInterfaceDir());
+    }
 
-		// build metadata
-		List<JavaService> javaServices = buildMetadata(matchingClasses);
+    //
+    // Public Methods
+    //
 
-		// build template configuration
-		Configuration fmConfig = new Configuration();
-		fmConfig.setClassForTemplateLoading(ServiceDelegateProducer.class, "");
+    @Override
+    public void produce() {
+        // filter
+        List<Class<?>> matchingClasses = findMatchingClasses(config.getMatchers(), classes);
 
-		try {
-			Template template = fmConfig.getTemplate(SERVICE_IMPL_FTL);
-			Map<String, Object> model = new HashMap<String, Object>();
+        // build metadata
+        List<JavaService> javaServices = buildMetadata(matchingClasses);
 
-			// setup mappers
-			TypeMapper<As3Type> typeMapper = config.getTypeMapper();
-			if (typeMapper == null)
-				typeMapper = new DefaultAs3TypeMapper();
+        // setup mappers
+        TypeMapper<As3Type> typeMapper = config.getTypeMapper();
+        if (typeMapper == null)
+            typeMapper = new DefaultAs3TypeMapper();
 
-            MethodMapper methodMapper = config.getMethodMapper();
-            if (methodMapper == null)
-                methodMapper = new DefaultMethodMapper(typeMapper);
+        MethodMapper methodMapper = config.getMethodMapper();
+        if (methodMapper == null)
+            methodMapper = new DefaultMethodMapper(typeMapper);
 
-			// do conversion
-			ServiceDelegateMapper mapper = new ServiceDelegateMapper(methodMapper, typeMapper);
-			List<As3ServiceDelegate> as3Services = mapper.performMappings(javaServices);
+        CompositePackageMapper compositePackageMapper = new CompositePackageMapper();
+        compositePackageMapper.addMappers(config.getPackageMappers());
 
-			// generate files
-			for (As3ServiceDelegate service : as3Services) {
-				model.put("model", service);
-				Writer writer = new PrintWriter(System.out);
-				template.process(model, writer);
-			}
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		} catch (TemplateException e) {
-			throw new RuntimeException(e);
-		}
-	}
+        // do conversion
+        ServiceDelegateMapper mapper = new ServiceDelegateMapper(methodMapper, typeMapper, compositePackageMapper);
+        List<As3ServiceDelegate> as3Services = mapper.performMappings(javaServices);
 
-	private List<JavaService> buildMetadata(List<Class<?>> classes) {
-		List<JavaService> delegates = new ArrayList<JavaService>();
-		for (Class<?> clazz : classes)
-			delegates.add(new JavaService(clazz));
-		return delegates;
-	}
+        // build template configuration
+        Configuration fmConfig = new Configuration();
+        fmConfig.setClassForTemplateLoading(ServiceDelegateProducer.class, "");
+
+        try {
+
+            Template serviceImplTemplate = fmConfig.getTemplate(SERVICE_IMPL_FTL);
+            Template serviceInterfaceTemplate = fmConfig.getTemplate(SERVICE_INTERFACE_FTL);
+            Map<String, Object> model = new HashMap<String, Object>();
+
+            // generate files
+            for (As3ServiceDelegate service : as3Services) {
+
+                model.put("model", service);
+
+                Writer writer1 = writerResolver.resolveServiceImpl(service);
+                serviceImplTemplate.process(model, writer1);
+
+                /*
+                if (config.isGenerateInterfaces()) {
+                    Writer writer2 = writerResolver.resolveServiceInterface(service);
+                    serviceInterfaceTemplate.process(model, writer2);
+                }
+                */
+                
+            }
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (TemplateException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    //
+    // Protected Methods
+    //
+
+    protected List<JavaService> buildMetadata(List<Class<?>> classes) {
+        List<JavaService> delegates = new ArrayList<JavaService>();
+        for (Class<?> clazz : classes)
+            delegates.add(new JavaService(clazz));
+        return delegates;
+    }
+
+    //
+    // Getters and Setters
+    //
+
+    public void setWriterResolver(ServiceDelegateWriterResolver writerResolver) {
+        this.writerResolver = writerResolver;
+    }
+
 }
