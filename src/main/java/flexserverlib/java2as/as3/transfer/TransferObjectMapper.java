@@ -1,6 +1,7 @@
 package flexserverlib.java2as.as3.transfer;
 
 import flexserverlib.java2as.as3.As3Type;
+import flexserverlib.java2as.core.PackageMapper;
 import flexserverlib.java2as.core.conf.PropertyMapper;
 import flexserverlib.java2as.core.conf.TypeMapper;
 import flexserverlib.java2as.core.meta.DependencyKind;
@@ -19,6 +20,7 @@ public class TransferObjectMapper {
 
     private PropertyMapper<As3Property> propertyMapper;
     private TypeMapper<As3Type> typeMapper;
+    private PackageMapper packageMapper;
     private DependencyResolver dependencyResolver;
 
     private Map<JavaTransferObject, As3TransferObject> transferObjectMap;
@@ -29,9 +31,10 @@ public class TransferObjectMapper {
     // Constructors
     //
 
-    public TransferObjectMapper(PropertyMapper<As3Property> propertyMapper, TypeMapper<As3Type> typeMapper) {
+    public TransferObjectMapper(PropertyMapper<As3Property> propertyMapper, TypeMapper<As3Type> typeMapper, PackageMapper packageMapper) {
         this.propertyMapper = propertyMapper;
         this.typeMapper = typeMapper;
+        this.packageMapper = packageMapper;
         this.transferObjectMap = new HashMap<JavaTransferObject, As3TransferObject>();
         this.dependencyResolver = new DefaultDependencyResolver();
     }
@@ -82,7 +85,7 @@ public class TransferObjectMapper {
             as3TransferObject.addProperty(as3Property);
         }
 
-        as3TransferObject.buildMetadata(dependencyResolver);
+        as3TransferObject.buildMetadata(packageMapper, dependencyResolver);
         return as3TransferObject;
 
     }

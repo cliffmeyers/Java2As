@@ -1,6 +1,7 @@
 package flexserverlib.java2as.as3.transfer;
 
 import flexserverlib.java2as.as3.As3Type;
+import flexserverlib.java2as.core.SimplePackageMapper;
 import flexserverlib.java2as.core.conf.AbstractConfiguration;
 import flexserverlib.java2as.core.conf.PropertyMapper;
 import flexserverlib.java2as.core.conf.TypeMapper;
@@ -23,6 +24,8 @@ public class TransferObjectConfiguration extends AbstractConfiguration {
 	private TypeMapper<As3Type> typeMapper;
 
 	private List<PropertyMapper<As3Property>> propertyMappers;
+
+    private List<SimplePackageMapper> packageMappers;
 
     /**
      * Directory in which to generate "custom" classes (e.g. User)
@@ -51,6 +54,7 @@ public class TransferObjectConfiguration extends AbstractConfiguration {
 	public TransferObjectConfiguration() {
 		propertyMappers = new ArrayList<PropertyMapper<As3Property>>();
 		propertyMappers.add(new DefaultAs3PropertyMapper());
+        packageMappers = new ArrayList<SimplePackageMapper>();
 	}
 
 	//
@@ -60,6 +64,10 @@ public class TransferObjectConfiguration extends AbstractConfiguration {
 	public void addPropertyMapper(PropertyMapper<As3Property> mapper) {
 		propertyMappers.add(mapper);
 	}
+
+    public void addPackageMapper(SimplePackageMapper mapper) {
+        packageMappers.add(mapper);
+    }
 
 	//
     // Getters and Setters
@@ -80,6 +88,14 @@ public class TransferObjectConfiguration extends AbstractConfiguration {
 	public void setPropertyMappers(List<PropertyMapper<As3Property>> mappers) {
 		this.propertyMappers = mappers;
 	}
+
+    public List<SimplePackageMapper> getPackageMappers() {
+        return packageMappers;
+    }
+
+    public void setPackageMappers(List<SimplePackageMapper> packageMappers) {
+        this.packageMappers = packageMappers;
+    }
 
     public File getBaseClassDir() {
         return baseClassDir;

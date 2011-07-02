@@ -3,6 +3,8 @@ package flexserverlib.java2as.as3.transfer;
 import flexserverlib.java2as.as3.As3Type;
 import flexserverlib.java2as.as3.DefaultAs3TypeMapper;
 import flexserverlib.java2as.core.AbstractProducer;
+import flexserverlib.java2as.core.CompositePackageMapper;
+import flexserverlib.java2as.core.PackageMapper;
 import flexserverlib.java2as.core.conf.CompositePropertyMapper;
 import flexserverlib.java2as.core.conf.TypeMapper;
 import flexserverlib.java2as.core.meta.JavaTransferObject;
@@ -33,6 +35,7 @@ public class TransferObjectProducer extends AbstractProducer {
 
     private TransferObjectConfiguration config;
     private List<Class<?>> classes;
+    private TransferObjectWriterResolver writerResolver;
 
     //
     // Constructors
@@ -41,6 +44,7 @@ public class TransferObjectProducer extends AbstractProducer {
     public TransferObjectProducer(TransferObjectConfiguration config, List<Class<?>> classes) {
         this.config = config;
         this.classes = classes;
+        this.writerResolver = new DefaultTransferObjectWriterResolver(config.getCustomClassDir(), config.getBaseClassDir());
     }
 
     //
@@ -66,9 +70,11 @@ public class TransferObjectProducer extends AbstractProducer {
         if (!compositePropertyMapper.hasMappers())
             compositePropertyMapper.addPropertyMapper(new DefaultAs3PropertyMapper());
 
+        CompositePackageMapper compositePackageMapper = new CompositePackageMapper();
+        compositePackageMapper.addMappers(config.getPackageMappers());
+
         // do conversion
-        // TODO: pass in CompositePropertyMapper
-        TransferObjectMapper mapper = new TransferObjectMapper(compositePropertyMapper, typeMapper);
+        TransferObjectMapper mapper = new TransferObjectMapper(compositePropertyMapper, typeMapper, compositePackageMapper);
         List<As3TransferObject> as3TransferObjects = mapper.performMappings(javaTOs);
 
         // build template configuration
@@ -76,6 +82,7 @@ public class TransferObjectProducer extends AbstractProducer {
         fmConfig.setClassForTemplateLoading(TransferObjectProducer.class, "");
 
         try {
+
             Map<String, Object> model = new HashMap<String, Object>();
             Template baseTemplate = fmConfig.getTemplate(TO_BASE_FTL);
             Template customTemplate = fmConfig.getTemplate(TO_CUSTOM_FTL);
@@ -84,13 +91,15 @@ public class TransferObjectProducer extends AbstractProducer {
             for (As3TransferObject transferObject : as3TransferObjects) {
                 model.put("model", transferObject);
 
-                // TODO: delegate to another class to get a Writer
-                Writer writer1 = new PrintWriter(System.out);
-                customTemplate.process(model, writer1);
+                if (writerResolver.shouldCreateCustomClass(transferObject)) {
+                    Writer writer1 = writerResolver.resolveCustomClass(transferObject);
+                    customTemplate.process(model, writer1);
+                }
 
-                Writer writer2 = new PrintWriter(System.out);
+                Writer writer2 = writerResolver.resolveBaseClass(transferObject);
                 baseTemplate.process(model, writer2);
             }
+
         } catch (IOException e) {
             throw new RuntimeException(e);
         } catch (TemplateException e) {
@@ -107,6 +116,14 @@ public class TransferObjectProducer extends AbstractProducer {
         for (Class<?> clazz : classes)
             transferObjects.add(new JavaTransferObject(clazz));
         return transferObjects;
+    }
+
+    //
+    // Getters and Setters
+    //
+
+    public void setWriterResolver(TransferObjectWriterResolver writerResolver) {
+        this.writerResolver = writerResolver;
     }
 
 }

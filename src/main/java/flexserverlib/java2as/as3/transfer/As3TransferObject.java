@@ -1,5 +1,6 @@
 package flexserverlib.java2as.as3.transfer;
 
+import flexserverlib.java2as.core.PackageMapper;
 import flexserverlib.java2as.core.meta.DependencyKind;
 import flexserverlib.java2as.core.meta.JavaTransferObject;
 
@@ -41,13 +42,22 @@ public class As3TransferObject {
     /**
      * Updates metadata based on the supplied DependencyResolver.
      *
+     * @param packageMapper
      * @param dependencyResolver
      */
-    public void buildMetadata(DependencyResolver dependencyResolver) {
+    public void buildMetadata(PackageMapper packageMapper, DependencyResolver dependencyResolver) {
 
-        qualifiedName = transferObject.getName();
-		packageName = transferObject.getPackageName();
-		simpleName = transferObject.getSimpleName();
+        simpleName = transferObject.getSimpleName();
+
+        // modify the package name and qualified name if package mapper is applicable
+        if (packageMapper.canMap(transferObject.getPackageName())) {
+            packageName = packageMapper.performMap(transferObject.getPackageName());
+            qualifiedName = packageName + "." + simpleName;
+        } else {
+            packageName = transferObject.getPackageName();
+            qualifiedName = transferObject.getName();
+        }
+
         buildImportsFragment(dependencyResolver);
         buildPolymorphicsFragment(dependencyResolver);
 

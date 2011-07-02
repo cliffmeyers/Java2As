@@ -49,4 +49,10 @@ public class CompositePackageMapper implements PackageMapper {
         Collections.sort(mappers);
     }
 
+    public void addMappers(List<SimplePackageMapper> mappers) {
+        this.mappers.addAll(mappers);
+        // keep mappers sorted alphabetically so we can map just by looping through the list
+        Collections.sort(this.mappers);
+    }
+
 }
