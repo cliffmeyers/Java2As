@@ -8,6 +8,9 @@ package ${model.packageName} {
 
 		<#if model.methods?size gt 0>
 		<#list model.methods as method>
+        /**
+         * returns ${method.returnType.qualifiedName}
+         */
 		public function ${method.name}(${method.parameterList}):${method.returnType.simpleName} {
             return getOperation("${method.name}").send(${method.parameterNameList});
         }
