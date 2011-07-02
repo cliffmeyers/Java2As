@@ -14,7 +14,8 @@ public enum As3SimpleType implements As3Type {
 	ArrayCollection("mx.collections.ArrayCollection"),
 	ByteArray("flash.utils.ByteArray"),
 	Xml("Xml"),
-	Object("Object");
+	Object("Object"),
+    Void("void");
 
 	private String qualifiedName;
 	private String simpleName;
