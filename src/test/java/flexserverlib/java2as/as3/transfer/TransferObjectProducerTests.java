@@ -18,7 +18,7 @@ public class TransferObjectProducerTests {
 
         TransferObjectConfiguration config = new TransferObjectConfiguration();
 
-        File tempDir = new File("c:" + File.separatorChar + "temp" + File.separator + "java2as");
+        File tempDir = new File("c:" + File.separatorChar + "temp" + File.separator + "java2as" + File.separator + "dto");
         File baseDir = new File(tempDir + File.separator + "base");
         File customDir = new File(tempDir + File.separator + "custom");
         config.setBaseClassDir(baseDir);
