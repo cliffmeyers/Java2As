@@ -10,7 +10,7 @@
 
 	<modules>
 		<module>java2as-core</module>
-		<module>java2as-maven</module>
+		<module>java2as-maven-plugin</module>
 	</modules>
 
 	<dependencies>

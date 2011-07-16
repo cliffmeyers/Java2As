@@ -9,7 +9,7 @@
 		<version>1.0-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>maven-java2as-plugin</artifactId>
+	<artifactId>java2as-maven-plugin</artifactId>
 	<packaging>maven-plugin</packaging>
 
 	<dependencies>
