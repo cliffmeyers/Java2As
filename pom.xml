@@ -11,6 +11,7 @@
 	<modules>
 		<module>java2as-core</module>
 		<module>java2as-maven-plugin</module>
+		<module>java2as-ant-task</module>
 	</modules>
 
 	<dependencies>

@@ -1,4 +1,4 @@
-package flexserverlib;
+package flexserverlib.java2as.maven;
 
 import flexserverlib.java2as.as3.As3Type;
 import flexserverlib.java2as.as3.transfer.TransferObjectConfiguration;
@@ -8,18 +8,14 @@ import flexserverlib.java2as.core.conf.TypeMapper;
 import flexserverlib.java2as.core.conf.TypeMatcher;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
 
 import java.io.File;
-import java.io.FilenameFilter;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 

@@ -31,9 +31,16 @@
 				<include name="java2as-core-*.jar"/>
 			</fileset>
 		</copy>
+		<copy todir="${lib.dir}">
+			<fileset dir="../java2as-ant-task/target">
+				<include name="java2as-ant-task-*.jar"/>
+			</fileset>
+		</copy>
 	</target>
 
 	<target name="compile">
+		<delete dir="${build.dir}"/>
+		<mkdir dir="${build.classes}"/>
 		<javac destdir="${build.classes}" srcdir="${src.java}" classpathref="master.classpath"/>
 	</target>
 
