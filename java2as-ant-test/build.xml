@@ -2,6 +2,7 @@
 <project name="java2as-ant-test" default="test" basedir=".">
 
 	<!-- GENERAL PROPERTIES -->
+
 	<property name="build.dir" value="target"/>
 	<property name="build.classes" value="${build.dir}/classes"/>
 
@@ -11,19 +12,20 @@
 	<property name="src.java" value="${src.dir}/java"/>
 	<property name="src.resources" value="${src.dir}/resources"/>
 
-	<!-- TASK DEFINITIONS (maven) -->
-	<path id="libs.classpath">
+	<!-- PATH DEFINITIONS -->
+
+	<path id="classpath.libs">
 		<fileset dir="${lib.dir}">
 			<include name="*.jar"/>
 		</fileset>
 	</path>
 
-	<path id="master.classpath">
-		<path refid="libs.classpath"/>
-		<path location="${build.classes}"/>
+	<path id="classpath.all">
+		<path refid="classpath.libs"/>
+		<path id="classpath.compile" location="${build.classes}"/>
 	</path>
 
-	<!-- TESTING TARGETS -->
+	<!-- TARGETS -->
 
 	<target name="copy-lib">
 		<copy todir="${lib.dir}">
@@ -41,18 +43,24 @@
 	<target name="compile">
 		<delete dir="${build.dir}"/>
 		<mkdir dir="${build.classes}"/>
-		<javac destdir="${build.classes}" srcdir="${src.java}" classpathref="master.classpath"/>
+		<javac srcdir="${src.java}" target="1.5" destdir="${build.classes}"
+		       classpathref="classpath.libs" includeantruntime="false"/>
 	</target>
 
-	<target name="test" depends="copy-lib, compile"> <!-- depends="maven.classpath" -->
+	<target name="test" depends="copy-lib, compile">
 
 		<property name="tmp.dir" value="${java.io.tmpdir}/_java2as/dto"/>
 
-		<taskdef classname="flexserverlib.java2as.ant.TransferObjectTask" classpathref="master.classpath" name="dto"/>
-		<!--<typedef name="matcher" classname="com.foo.DefaultTypeMatcher" classpathref="master.classpath"/>-->
+		<taskdef name="dto" classname="flexserverlib.java2as.ant.TransferObjectTask" classpathref="classpath.all" loaderref="classes.all"/>
+		<typedef name="propertyMapper" classname="flexserverlib.java2as.ant.AntPropertyMapper" classpathref="classpath.all" loaderref="classes.all"/>
+		<typedef name="typeMatcher" classname="flexserverlib.java2as.ant.AntTypeMatcher" classpathref="classpath.all" loaderref="classes.all"/>
 
-		<dto baseClassDir="$[tmp.dir}/base" customClassDir="$[tmp.dir}/base">
-			<myTypeMatcher className="com.foo.DefaultTypeMatcher"/>
+		<dto baseClassDir="$[tmp.dir}/base" customClassDir="$[tmp.dir}/base" typemapper="com.foo.java2as.MyDefaultTypeMapper">
+			<propertyMapper classname="com.foo.java2as.MyDefaultPropertyMapper"/>
+			<typeMatcher className="com.foo.java2as.MyDefaultTypeMatcher"/>
+			<fileset dir="${build.classes}">
+				<include name="**/*.class"/>
+			</fileset>
 		</dto>
 
 	</target>

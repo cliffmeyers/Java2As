@@ -1,4 +1,4 @@
-package com.foo.java2as.dto;
+package com.foo.dto;
 
 /**
  * @author cliff.meyers
