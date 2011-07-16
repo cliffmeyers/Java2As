@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="java2as-ant-test" default="test" basedir=".">
+
+	<!-- GENERAL PROPERTIES -->
+	<property name="build.dir" value="target"/>
+	<property name="build.classes" value="${build.dir}/classes"/>
+
+	<property name="lib.dir" value="lib"/>
+
+	<property name="src.dir" value="src/main"/>
+	<property name="src.java" value="${src.dir}/java"/>
+	<property name="src.resources" value="${src.dir}/resources"/>
+
+	<!-- TASK DEFINITIONS (maven) -->
+	<path id="libs.classpath">
+		<fileset dir="${lib.dir}">
+			<include name="*.jar"/>
+		</fileset>
+	</path>
+
+	<path id="master.classpath">
+		<path refid="libs.classpath"/>
+		<path location="${build.classes}"/>
+	</path>
+
+	<!-- TESTING TARGETS -->
+
+	<target name="copy-lib">
+		<copy todir="${lib.dir}">
+			<fileset dir="../java2as-core/target">
+				<include name="java2as-core-*.jar"/>
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="compile">
+		<javac destdir="${build.classes}" srcdir="${src.java}" classpathref="master.classpath"/>
+	</target>
+
+	<target name="test" depends="copy-lib, compile"> <!-- depends="maven.classpath" -->
+
+		<property name="tmp.dir" value="${java.io.tmpdir}/_java2as/dto"/>
+
+		<taskdef classname="flexserverlib.java2as.ant.TransferObjectTask" classpathref="master.classpath" name="dto"/>
+		<!--<typedef name="matcher" classname="com.foo.DefaultTypeMatcher" classpathref="master.classpath"/>-->
+
+		<dto baseClassDir="$[tmp.dir}/base" customClassDir="$[tmp.dir}/base">
+			<myTypeMatcher className="com.foo.DefaultTypeMatcher"/>
+		</dto>
+
+	</target>
+
+</project>
