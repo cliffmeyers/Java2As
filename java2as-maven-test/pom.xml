@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<artifactId>java2as</artifactId>
+		<groupId>flexserverlib</groupId>
+		<version>1.0-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>java2as-maven-test</artifactId>
+
+	<dependencies>
+		<dependency>
+			<groupId>flexserverlib</groupId>
+			<artifactId>java2as-core</artifactId>
+			<version>1.0-SNAPSHOT</version>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>flexserverlib</groupId>
+				<artifactId>maven-java2as-plugin</artifactId>
+				<version>1.0-SNAPSHOT</version>
+				<configuration>
+
+				</configuration>
+				<executions>
+					<execution>
+						<id>generate</id>
+						<phase>process-classes</phase>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<configuration>
+							<compiledClassesLocations>
+								<string>${project.build.outputDirectory}</string>
+							</compiledClassesLocations>
+							<typeMapper>com.foo.java2as.MyDefaultTypeMapper</typeMapper>
+							<propertyMappers>
+								<string>com.foo.java2as.MyDefaultPropertyMapper</string>
+							</propertyMappers>
+							<typeMatchers>
+								<string>com.foo.java2as.MyDefaultTypeMatcher</string>
+							</typeMatchers>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
+
+</project>
