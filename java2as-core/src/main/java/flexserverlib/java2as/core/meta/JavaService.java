@@ -1,14 +1,6 @@
 package flexserverlib.java2as.core.meta;
 
-import com.sun.xml.internal.bind.v2.schemagen.xmlschema.TypeHost;
-
-import java.beans.BeanInfo;
-import java.beans.IntrospectionException;
-import java.beans.Introspector;
-import java.beans.PropertyDescriptor;
-import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 

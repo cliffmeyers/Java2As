@@ -1,10 +1,7 @@
 package flexserverlib.java2as.core.meta;
 
-import sun.net.TelnetInputStream;
-
 import java.lang.annotation.Annotation;
 import java.lang.reflect.*;
-import java.lang.reflect.Method;
 import java.util.Collection;
 
 /**
