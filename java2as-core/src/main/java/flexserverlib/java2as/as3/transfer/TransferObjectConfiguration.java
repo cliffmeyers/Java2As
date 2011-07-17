@@ -101,6 +101,8 @@ public class TransferObjectConfiguration extends AbstractConfiguration {
 		summary.append("baseClassDir=" + baseClassDir + N);
 		summary.append("customClassTemplate=" + (customClassTemplate != null ? customClassTemplate : "null; will use default") + N);
 		summary.append("baseClassTemplate=" + (baseClassTemplate != null ? baseClassTemplate : "null; will use default") + N);
+		summary.append("customClassTemplate=" + (customClassTemplate != null ? customClassTemplate : "null; will use default") + N);
+		summary.append("baseClassTemplate=" + (baseClassTemplate != null ? baseClassTemplate : "null; will use default") + N);
 
 		return summary.toString().split(N);
 		
