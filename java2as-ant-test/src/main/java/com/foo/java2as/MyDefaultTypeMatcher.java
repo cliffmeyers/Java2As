@@ -9,7 +9,7 @@ public class MyDefaultTypeMatcher implements TypeMatcher {
 
 	public boolean match(Class<?> clazz) {
 		String name = clazz.getName();
-		return name.startsWith("com.foo.java2as.dto");
+		return name.startsWith("com.foo.dto");
 	}
 	
 }

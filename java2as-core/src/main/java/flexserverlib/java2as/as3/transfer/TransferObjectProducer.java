@@ -57,6 +57,8 @@ public class TransferObjectProducer extends AbstractProducer {
         // filter
         List<Class<?>> matchingClasses = findMatchingClasses(config.getMatchers(), classes);
 
+	    System.out.println("java2as found classes to generate: " + matchingClasses.size() + " total");
+
         // build metadata
         List<JavaTransferObject> javaTOs = buildMetadata(matchingClasses);
 

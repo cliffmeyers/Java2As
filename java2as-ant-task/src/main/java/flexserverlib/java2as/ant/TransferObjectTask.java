@@ -2,32 +2,62 @@ package flexserverlib.java2as.ant;
 
 import flexserverlib.java2as.as3.As3Type;
 import flexserverlib.java2as.as3.transfer.TransferObjectConfiguration;
+import flexserverlib.java2as.as3.transfer.TransferObjectProducer;
 import flexserverlib.java2as.core.conf.PropertyMapper;
 import flexserverlib.java2as.core.conf.TypeMapper;
 import flexserverlib.java2as.core.conf.TypeMatcher;
+import org.apache.commons.lang.StringUtils;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
 import org.apache.tools.ant.types.FileSet;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * Generates transfer objects
+ */
 public class TransferObjectTask extends Task {
 
 	//
 	// Fields
 	//
 
+	// internal infrastructure
+
+	/**
+	 * The configuration object to supply to the producer.
+	 */
 	private TransferObjectConfiguration config;
 
+	/**
+	 * The producer that creates the files.
+	 */
+	protected TransferObjectProducer producer;
+
+	// parameters supplied by task end-users
+
+	/**
+	 * Locations of classes that are candidates for generation.
+	 */
+	private List<FileSet> fileSets = new ArrayList<FileSet>();
+
+	/**
+	 * Custom TypeMapper class name to be used by java2as.
+	 */
 	private String typeMapper;
 
+	/**
+	 * List of PropertyMapper class names to be used by java2as.
+	 */
 	private List<AntPropertyMapper> propertyMappers = new ArrayList<AntPropertyMapper>();
 
+	/**
+	 * List of TypeMatcher class names to be used by java2as.
+	 */
 	private List<AntTypeMatcher> typeMatchers = new ArrayList<AntTypeMatcher>();
-
-	private List<FileSet> fileSets = new ArrayList<FileSet>();
 
 	//
 	// Public Methods
@@ -47,6 +77,7 @@ public class TransferObjectTask extends Task {
 		// TODO: read the config properties and build up objects
 		System.out.println("execute");
 		loadConfiguratonClasses(config);
+		executeProduce();
 	}
 
 	public void addConfigured(AntPropertyMapper propertyMapper) {
@@ -58,12 +89,55 @@ public class TransferObjectTask extends Task {
 	}
 
 	public void addFileset(FileSet fileset) {
-        fileSets.add(fileset);
-    }
+		fileSets.add(fileset);
+	}
 
 	//
 	// Protected Methods
 	//
+
+	protected void executeProduce() {
+
+		final String SLASH = File.separator;
+		final String EXT = "class";
+		final String DOT_EXT = "." + EXT;
+		final String PACKAGE_DELIM = ".";
+
+		List<String> candidateClassNames = new LinkedList<String>();
+
+		for (FileSet fileSet : fileSets) {
+			for (String filePath : fileSet.getDirectoryScanner().getIncludedFiles()) {
+				if (filePath.endsWith(DOT_EXT)) {
+					String className = filePath.substring(0, filePath.length() - DOT_EXT.length());
+					className = StringUtils.replace(className, SLASH, PACKAGE_DELIM);
+					candidateClassNames.add(className);
+				}
+			}
+		}
+
+		// now let's load some classes!
+		List<Class<?>> candidateClasses = new ArrayList<Class<?>>(500);
+
+		for (String name : candidateClassNames) {
+			try {
+				Class<?> clazz = Class.forName(name);
+				candidateClasses.add(clazz);
+			} catch (ClassNotFoundException e) {
+				System.out.println("Could not load candidate class: " + name + "; will be ignored");
+			}
+		}
+
+		if (candidateClasses.size() == 0) {
+			System.out.println("No candidate classes were found; produce will be skipped.");
+			System.out.println("This is probably due to a configuration error in compiledClassesLocations");
+			return;
+		}
+
+		System.out.println("Candidate classes were found for generation: " + candidateClasses.size() + " total");
+		producer = new TransferObjectProducer(config, candidateClasses);
+		producer.produce();
+
+	}
 
 	protected void loadConfiguratonClasses(TransferObjectConfiguration config) {
 
@@ -102,7 +176,7 @@ public class TransferObjectTask extends Task {
 	}
 
 	public void setBaseClassDir(File value) {
-		config.setCustomClassDir(value);
+		config.setBaseClassDir(value);
 	}
 
 	public void setTypeMapper(String value) {

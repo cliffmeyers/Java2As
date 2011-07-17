@@ -49,13 +49,14 @@
 
 	<target name="test" depends="copy-lib, compile">
 
-		<property name="tmp.dir" value="${java.io.tmpdir}/_java2as/dto"/>
+		<property name="output.dir" value="${build.dir}/java2as"/>
+		<echo>${build.dir}/java2as</echo>
 
 		<taskdef name="dto" classname="flexserverlib.java2as.ant.TransferObjectTask" classpathref="classpath.all" loaderref="classes.all"/>
 		<typedef name="propertyMapper" classname="flexserverlib.java2as.ant.AntPropertyMapper" classpathref="classpath.all" loaderref="classes.all"/>
 		<typedef name="typeMatcher" classname="flexserverlib.java2as.ant.AntTypeMatcher" classpathref="classpath.all" loaderref="classes.all"/>
 
-		<dto baseClassDir="$[tmp.dir}/base" customClassDir="$[tmp.dir}/base" typemapper="com.foo.java2as.MyDefaultTypeMapper">
+		<dto baseClassDir="${output.dir}" customClassDir="${output.dir}" typemapper="com.foo.java2as.MyDefaultTypeMapper">
 			<propertyMapper classname="com.foo.java2as.MyDefaultPropertyMapper"/>
 			<typeMatcher className="com.foo.java2as.MyDefaultTypeMatcher"/>
 			<fileset dir="${build.classes}">
