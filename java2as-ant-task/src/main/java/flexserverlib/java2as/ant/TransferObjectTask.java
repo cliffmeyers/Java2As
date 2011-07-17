@@ -219,5 +219,5 @@ public class TransferObjectTask extends Task {
 	public void setBaseClassTemplate(File baseClassTemplate) {
 		this.baseClassTemplate = baseClassTemplate;
 	}
-	
+
 }
