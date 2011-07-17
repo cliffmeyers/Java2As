@@ -6,7 +6,9 @@ import flexserverlib.java2as.as3.DependencyResolver;
 import flexserverlib.java2as.as3.transfer.As3Dependency;
 import flexserverlib.java2as.core.conf.PackageMapper;
 import flexserverlib.java2as.core.conf.TypeMapper;
-import flexserverlib.java2as.core.meta.*;
+import flexserverlib.java2as.core.meta.DependencyKind;
+import flexserverlib.java2as.core.meta.JavaMethod;
+import flexserverlib.java2as.core.meta.JavaService;
 
 import java.util.ArrayList;
 import java.util.HashMap;

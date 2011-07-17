@@ -1,6 +1,5 @@
 package flexserverlib.java2as.as3.transfer;
 
-import java.io.File;
 import java.io.Writer;
 
 /**

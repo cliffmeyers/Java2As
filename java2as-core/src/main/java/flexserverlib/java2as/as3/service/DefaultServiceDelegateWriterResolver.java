@@ -1,6 +1,5 @@
 package flexserverlib.java2as.as3.service;
 
-import flexserverlib.java2as.as3.transfer.As3TransferObject;
 import org.apache.commons.lang.StringUtils;
 
 import java.io.File;

@@ -1,11 +1,6 @@
 package flexserverlib.java2as.as3.service;
 
 import flexserverlib.java2as.as3.service.test.IUserService;
-import flexserverlib.java2as.as3.transfer.TransferObjectConfiguration;
-import flexserverlib.java2as.as3.transfer.TransferObjectProducer;
-import flexserverlib.java2as.as3.transfer.test.ArrayProperties;
-import flexserverlib.java2as.as3.transfer.test.User;
-import flexserverlib.java2as.as3.transfer.test.User2;
 import org.junit.Ignore;
 import org.junit.Test;
 

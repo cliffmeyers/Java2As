@@ -1,7 +1,6 @@
 package flexserverlib.java2as.core.conf;
 
 import flexserverlib.java2as.core.conf.packages.DefaultPackageMapper;
-import flexserverlib.java2as.core.conf.packages.PackageMapperRule;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,6 +1,5 @@
 package flexserverlib.java2as.as3;
 
-import flexserverlib.java2as.as3.DependencyResolver;
 import flexserverlib.java2as.as3.transfer.As3Dependency;
 
 /**

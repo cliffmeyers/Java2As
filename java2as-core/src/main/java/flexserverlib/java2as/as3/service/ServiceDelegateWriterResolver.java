@@ -1,7 +1,5 @@
 package flexserverlib.java2as.as3.service;
 
-import flexserverlib.java2as.as3.transfer.As3TransferObject;
-
 import java.io.Writer;
 
 /**

@@ -1,7 +1,5 @@
 package flexserverlib.java2as.core.conf;
 
-import java.lang.annotation.Annotation;
-
 /**
  * @author cliff.meyers
  */

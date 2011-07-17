@@ -1,7 +1,7 @@
 package flexserverlib.java2as.core;
 
-import flexserverlib.java2as.core.conf.packages.RuleBasedPackageMapper;
 import flexserverlib.java2as.core.conf.packages.PackageMapperRule;
+import flexserverlib.java2as.core.conf.packages.RuleBasedPackageMapper;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
