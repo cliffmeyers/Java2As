@@ -8,6 +8,8 @@ import java.math.BigInteger;
 import java.util.*;
 
 /**
+ * Default implementation for mapping Java types to ActionScript.
+ *
  * @author cliff.meyers
  */
 public class DefaultAs3TypeMapper implements TypeMapper<As3Type> {

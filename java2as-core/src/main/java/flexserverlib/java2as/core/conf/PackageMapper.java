@@ -1,4 +1,4 @@
-package flexserverlib.java2as.core;
+package flexserverlib.java2as.core.conf;
 
 /**
  * Description

@@ -182,7 +182,7 @@ public class TransferObjectTask extends Task {
 
 			for (AntTypeMatcher matcher : typeMatchers) {
 				Class<TypeMatcher> typeMatcherClass = (Class<TypeMatcher>) Class.forName(matcher.getClassName());
-				config.addMatcher(typeMatcherClass.newInstance());
+				config.addTypeMatcher(typeMatcherClass.newInstance());
 			}
 
 			System.out.println("Configuration classes loaded successfully!");

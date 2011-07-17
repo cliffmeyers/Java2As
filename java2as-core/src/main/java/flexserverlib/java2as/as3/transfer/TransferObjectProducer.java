@@ -1,11 +1,9 @@
 package flexserverlib.java2as.as3.transfer;
 
 import flexserverlib.java2as.as3.As3Type;
-import flexserverlib.java2as.as3.DefaultAs3TypeMapper;
 import flexserverlib.java2as.core.AbstractProducer;
-import flexserverlib.java2as.core.CompositePackageMapper;
-import flexserverlib.java2as.core.PackageMapper;
 import flexserverlib.java2as.core.conf.CompositePropertyMapper;
+import flexserverlib.java2as.core.conf.PackageMapper;
 import flexserverlib.java2as.core.conf.TypeMapper;
 import flexserverlib.java2as.core.meta.JavaTransferObject;
 import freemarker.template.Configuration;
@@ -14,13 +12,16 @@ import freemarker.template.TemplateException;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ *
+ * @author cliff.meyers
+ */
 public class TransferObjectProducer extends AbstractProducer {
 
 	//
@@ -56,7 +57,7 @@ public class TransferObjectProducer extends AbstractProducer {
 	public void produce() {
 
 		// filter
-		List<Class<?>> matchingClasses = findMatchingClasses(config.getMatchers(), classes);
+		List<Class<?>> matchingClasses = findMatchingClasses(config.getTypeMatchers(), classes);
 
 		System.out.println("java2as found classes to generate: " + matchingClasses.size() + " total");
 
@@ -65,19 +66,16 @@ public class TransferObjectProducer extends AbstractProducer {
 
 		// setup mappers
 		TypeMapper<As3Type> typeMapper = config.getTypeMapper();
-		if (typeMapper == null)
-			typeMapper = new DefaultAs3TypeMapper();
 
 		CompositePropertyMapper<As3Property> compositePropertyMapper = new CompositePropertyMapper<As3Property>();
 		compositePropertyMapper.addAll(config.getPropertyMappers());
 		if (!compositePropertyMapper.hasMappers())
 			compositePropertyMapper.addPropertyMapper(new DefaultAs3PropertyMapper());
 
-		CompositePackageMapper compositePackageMapper = new CompositePackageMapper();
-		compositePackageMapper.addMappers(config.getPackageMappers());
+		PackageMapper packageMapper = config.getPackageMapper();
 
 		// do conversion
-		TransferObjectMapper mapper = new TransferObjectMapper(compositePropertyMapper, typeMapper, compositePackageMapper);
+		TransferObjectMapper mapper = new TransferObjectMapper(compositePropertyMapper, typeMapper, packageMapper);
 		List<As3TransferObject> as3TransferObjects = mapper.performMappings(javaTOs);
 
 		try {

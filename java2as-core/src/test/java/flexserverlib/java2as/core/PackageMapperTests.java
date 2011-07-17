@@ -1,5 +1,7 @@
 package flexserverlib.java2as.core;
 
+import flexserverlib.java2as.core.conf.packages.RuleBasedPackageMapper;
+import flexserverlib.java2as.core.conf.packages.PackageMapperRule;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -19,33 +21,33 @@ public class PackageMapperTests {
     }
     
     @Test
-    public void testSimplePackageMapper() {
+    public void testPackageMapperRule() {
 
-        SimplePackageMapper mapper = new SimplePackageMapper("net.histos.java2as.dto", "net.histos.java2as.vo");
+        PackageMapperRule mapperRule = new PackageMapperRule("net.histos.java2as.dto", "net.histos.java2as.vo");
         String packageName;
 
         packageName = "net.histos";
-        Assert.assertFalse(mapper.canMap(packageName));
+        Assert.assertFalse(mapperRule.canMap(packageName));
 
         packageName = "net.histos.java2as.dto";
-        Assert.assertTrue(mapper.canMap(packageName));
-        Assert.assertEquals("net.histos.java2as.vo", mapper.performMap("net.histos.java2as.dto"));
+        Assert.assertTrue(mapperRule.canMap(packageName));
+        Assert.assertEquals("net.histos.java2as.vo", mapperRule.performMap("net.histos.java2as.dto"));
 
         packageName = "net.histos.java2as.dto.user";
-        Assert.assertTrue(mapper.canMap(packageName));
-        Assert.assertEquals("net.histos.java2as.vo.user", mapper.performMap("net.histos.java2as.dto.user"));
+        Assert.assertTrue(mapperRule.canMap(packageName));
+        Assert.assertEquals("net.histos.java2as.vo.user", mapperRule.performMap("net.histos.java2as.dto.user"));
         
     }
 
     @Test
-    public void testCompositePackageMapper() {
+    public void testRuleBasedPackageMapper() {
 
         String packageName;
-        CompositePackageMapper mapper = new CompositePackageMapper();
-        mapper.addMapper(new SimplePackageMapper("net.histos", "com.foo"));
-        mapper.addMapper(new SimplePackageMapper("net.histos.java2as", "com.foo.java2as"));
-        mapper.addMapper(new SimplePackageMapper("net.histos.java2as.dto", "com.foo.java2as.vo"));
-        mapper.addMapper(new SimplePackageMapper("net.histos.java2as.zzz", "com.foo.java2as.aaa"));
+        RuleBasedPackageMapper mapper = new RuleBasedPackageMapper();
+        mapper.addMapperRule(new PackageMapperRule("net.histos", "com.foo"));
+        mapper.addMapperRule(new PackageMapperRule("net.histos.java2as", "com.foo.java2as"));
+        mapper.addMapperRule(new PackageMapperRule("net.histos.java2as.dto", "com.foo.java2as.vo"));
+        mapper.addMapperRule(new PackageMapperRule("net.histos.java2as.zzz", "com.foo.java2as.aaa"));
 
         packageName = "net.histos.java2as.dto.user";
         Assert.assertTrue(mapper.canMap(packageName));

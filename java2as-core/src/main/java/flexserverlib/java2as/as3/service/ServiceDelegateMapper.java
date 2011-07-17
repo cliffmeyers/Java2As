@@ -4,9 +4,7 @@ import flexserverlib.java2as.as3.As3Type;
 import flexserverlib.java2as.as3.DefaultDependencyResolver;
 import flexserverlib.java2as.as3.DependencyResolver;
 import flexserverlib.java2as.as3.transfer.As3Dependency;
-import flexserverlib.java2as.as3.transfer.As3Property;
-import flexserverlib.java2as.as3.transfer.As3TransferObject;
-import flexserverlib.java2as.core.PackageMapper;
+import flexserverlib.java2as.core.conf.PackageMapper;
 import flexserverlib.java2as.core.conf.TypeMapper;
 import flexserverlib.java2as.core.meta.*;
 

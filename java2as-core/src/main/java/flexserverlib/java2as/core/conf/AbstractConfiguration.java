@@ -1,6 +1,7 @@
 package flexserverlib.java2as.core.conf;
 
-import flexserverlib.java2as.core.SimplePackageMapper;
+import flexserverlib.java2as.core.conf.packages.DefaultPackageMapper;
+import flexserverlib.java2as.core.conf.packages.PackageMapperRule;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,53 +11,48 @@ import java.util.List;
  */
 public abstract class AbstractConfiguration {
 
-    //
-    // Fields
-    //
+	//
+	// Fields
+	//
 
-    protected List<TypeMatcher> matchers;
-	// TODO: add support for configuring packageMappers
-    protected List<SimplePackageMapper> packageMappers;
+	protected List<TypeMatcher> typeMatchers;
+	protected PackageMapper packageMapper;
 
-    //
-    // Constructors
-    //
+	//
+	// Constructors
+	//
 
-    public AbstractConfiguration() {
-        matchers = new ArrayList<TypeMatcher>();
-        packageMappers = new ArrayList<SimplePackageMapper>();
-    }
+	public AbstractConfiguration() {
+		typeMatchers = new ArrayList<TypeMatcher>();
+		packageMapper = new DefaultPackageMapper();
+	}
 
-    //
-    // Public Methods
-    //
+	//
+	// Public Methods
+	//
 
-    public void addMatcher(TypeMatcher matcher) {
-        matchers.add(matcher);
-    }
+	public void addTypeMatcher(TypeMatcher typeMatcher) {
+		typeMatchers.add(typeMatcher);
+	}
 
-    public void addPackageMapper(SimplePackageMapper mapper) {
-        packageMappers.add(mapper);
-    }
+	//
+	// Getters and Setters
+	//
 
-    //
-    // Getters and Setters
-    //
+	public List<TypeMatcher> getTypeMatchers() {
+		return typeMatchers;
+	}
 
-    public List<TypeMatcher> getMatchers() {
-        return matchers;
-    }
+	public void setTypeMatchers(List<TypeMatcher> typeMatchers) {
+		this.typeMatchers = typeMatchers;
+	}
 
-    public void setMatchers(List<TypeMatcher> matchers) {
-        this.matchers = matchers;
-    }
+	public PackageMapper getPackageMapper() {
+		return packageMapper;
+	}
 
-    public List<SimplePackageMapper> getPackageMappers() {
-        return packageMappers;
-    }
-
-    public void setPackageMappers(List<SimplePackageMapper> packageMappers) {
-        this.packageMappers = packageMappers;
-    }
+	public void setPackageMapper(PackageMapper packageMapper) {
+		this.packageMapper = packageMapper;
+	}
 
 }

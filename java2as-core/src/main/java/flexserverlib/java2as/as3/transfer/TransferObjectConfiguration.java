@@ -1,7 +1,7 @@
 package flexserverlib.java2as.as3.transfer;
 
+import flexserverlib.java2as.as3.AbstractAs3Configuration;
 import flexserverlib.java2as.as3.As3Type;
-import flexserverlib.java2as.core.conf.AbstractConfiguration;
 import flexserverlib.java2as.core.conf.PropertyMapper;
 import flexserverlib.java2as.core.conf.TypeMapper;
 import flexserverlib.java2as.core.conf.TypeMatcher;
@@ -15,7 +15,7 @@ import java.util.List;
  *
  * @author cliff.meyers
  */
-public class TransferObjectConfiguration extends AbstractConfiguration {
+public class TransferObjectConfiguration extends AbstractAs3Configuration {
 
 	//
 	// Statics
@@ -26,11 +26,6 @@ public class TransferObjectConfiguration extends AbstractConfiguration {
 	//
 	// Fields
 	//
-
-	/**
-	 * TypeMapper to convert Java to AS3 types
-	 */
-	private TypeMapper<As3Type> typeMapper;
 
 	/**
 	 * PropertyMappers to convert Java properties to AS3 properties
@@ -94,31 +89,22 @@ public class TransferObjectConfiguration extends AbstractConfiguration {
 		summary.append("typeMapper=" + typeMapper.getClass().getName() + N);
 		for (PropertyMapper propertyMapper : propertyMappers)
 			summary.append("propertyMapper=" + propertyMapper.getClass().getName() + N);
-		for (TypeMatcher matcher : matchers)
-			summary.append("matcher=" + matcher.getClass().getName() + N);
+		summary.append("packageMapper=" + packageMapper.getClass().getName() + N);
+		for (TypeMatcher matcher : typeMatchers)
+			summary.append("typeMatcher=" + matcher.getClass().getName() + N);
 
 		summary.append("customClassDir=" + customClassDir + N);
 		summary.append("baseClassDir=" + baseClassDir + N);
 		summary.append("customClassTemplate=" + (customClassTemplate != null ? customClassTemplate : "null; will use default") + N);
 		summary.append("baseClassTemplate=" + (baseClassTemplate != null ? baseClassTemplate : "null; will use default") + N);
-		summary.append("customClassTemplate=" + (customClassTemplate != null ? customClassTemplate : "null; will use default") + N);
-		summary.append("baseClassTemplate=" + (baseClassTemplate != null ? baseClassTemplate : "null; will use default") + N);
 
 		return summary.toString().split(N);
-		
+
 	}
 
 	//
 	// Getters and Setters
 	//
-
-	public TypeMapper<As3Type> getTypeMapper() {
-		return typeMapper;
-	}
-
-	public void setTypeMapper(TypeMapper<As3Type> typeMapper) {
-		this.typeMapper = typeMapper;
-	}
 
 	public List<PropertyMapper<As3Property>> getPropertyMappers() {
 		return propertyMappers;

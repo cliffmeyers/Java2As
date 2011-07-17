@@ -3,9 +3,12 @@ package flexserverlib.java2as.maven;
 import flexserverlib.java2as.as3.As3Type;
 import flexserverlib.java2as.as3.transfer.TransferObjectConfiguration;
 import flexserverlib.java2as.as3.transfer.TransferObjectProducer;
+import flexserverlib.java2as.core.conf.PackageMapper;
 import flexserverlib.java2as.core.conf.PropertyMapper;
 import flexserverlib.java2as.core.conf.TypeMapper;
 import flexserverlib.java2as.core.conf.TypeMatcher;
+import flexserverlib.java2as.core.conf.packages.PackageMapperRule;
+import flexserverlib.java2as.core.conf.packages.RuleBasedPackageMapper;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.maven.plugin.AbstractMojo;
@@ -81,6 +84,20 @@ public class TransferObjectMojo extends AbstractMojo {
 	private String[] propertyMappers = new String[]{};
 
 	/**
+	 * Custom PackageMapper class name to be used by java2as.
+	 *
+	 * @parameter
+	 */
+	private String packageMapper;
+
+	/**
+	 * List of PackageMapperRule class names to be used by java2as.
+	 *
+	 * @parameter
+	 */
+	private PackageMapperRule[] packageMapperRules = new PackageMapperRule[]{};
+
+	/**
 	 * List of TypeMatcher class names to be used by java2as.
 	 *
 	 * @parameter
@@ -123,20 +140,16 @@ public class TransferObjectMojo extends AbstractMojo {
 
 	public void execute() throws MojoExecutionException {
 
-		getLog().info("baseClassDir=" + baseClassDir.getAbsolutePath());
-		getLog().info("customClassDir=" + customClassDir.getAbsolutePath());
-		getLog().info("typeMapper=" + typeMapper);
-		for (String mapper : propertyMappers)
-			getLog().info("propertyMapper=" + mapper);
-		for (String matcher : typeMatchers)
-			getLog().info("typeMatcher=" + matcher);
-
 		config = new TransferObjectConfiguration();
 		config.setBaseClassDir(baseClassDir);
 		config.setCustomClassDir(customClassDir);
 		config.setBaseClassTemplate(baseClassTemplate);
 		config.setCustomClassTemplate(customClassTemplate);
 		loadConfiguratonClasses(config);
+
+		getLog().info("Configuration classes loaded successfully!");
+		for (String line : config.getConfigurationSummary())
+			getLog().info(line);
 
 		executeProduce();
 	}
@@ -204,22 +217,35 @@ public class TransferObjectMojo extends AbstractMojo {
 
 			ClassLoader loader = getClassLoader();
 
-			Class<TypeMapper<As3Type>> typeMapperClass = (Class<TypeMapper<As3Type>>) loader.loadClass(typeMapper);
-			config.setTypeMapper(typeMapperClass.newInstance());
+			if (typeMapper != null) {
+				Class<TypeMapper<As3Type>> typeMapperClass = (Class<TypeMapper<As3Type>>) loader.loadClass(typeMapper);
+				config.setTypeMapper(typeMapperClass.newInstance());
+			}
 
 			for (String propertyMapper : propertyMappers) {
 				Class<PropertyMapper> propertyMapperClass = (Class<PropertyMapper>) loader.loadClass(propertyMapper);
 				config.addPropertyMapper(propertyMapperClass.newInstance());
 			}
 
-			for (String matcher : typeMatchers) {
-				Class<TypeMatcher> typeMatcherClass = (Class<TypeMatcher>) loader.loadClass(matcher);
-				config.addMatcher(typeMatcherClass.newInstance());
+			if (packageMapper != null) {
+				Class<PackageMapper> packageMapperClass = (Class<PackageMapper>) loader.loadClass(packageMapper);
+				config.setPackageMapper(packageMapperClass.newInstance());
 			}
 
-			getLog().info("Configuration classes loaded successfully!");
-			for (String line : config.getConfigurationSummary())
-				getLog().info(line);
+			if (packageMapperRules.length > 0) {
+				if (config.getPackageMapper() instanceof RuleBasedPackageMapper) {
+					RuleBasedPackageMapper ruleBasedPackageMapper = (RuleBasedPackageMapper) config.getPackageMapper();
+					for (PackageMapperRule packageMapperRule : packageMapperRules)
+						ruleBasedPackageMapper.addMapperRule(packageMapperRule);
+				} else {
+					getLog().warn("PackageMapper is not an instance of RuleBasedPackageMapper; packageMapperRules have been ignored");
+				}
+			}
+
+			for (String matcher : typeMatchers) {
+				Class<TypeMatcher> typeMatcherClass = (Class<TypeMatcher>) loader.loadClass(matcher);
+				config.addTypeMatcher(typeMatcherClass.newInstance());
+			}
 
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();

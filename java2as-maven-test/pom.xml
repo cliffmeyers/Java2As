@@ -48,6 +48,13 @@
 							<typeMatchers>
 								<string>com.foo.java2as.MyDefaultTypeMatcher</string>
 							</typeMatchers>
+							<packageMapper>flexserverlib.java2as.core.conf.packages.RuleBasedPackageMapper</packageMapper>
+							<packageMapperRules>
+								<rule>
+									<originPackage>com.foo</originPackage>
+									<targetPackage>com.bar</targetPackage>
+								</rule>
+							</packageMapperRules>
 							<!--
 							<customClassTemplate>${project.basedir}/src/main/resources/ftl/transfer/to-custom.ftl</customClassTemplate>
 							<baseClassTemplate>${project.basedir}/src/main/resources/ftl/transfer/to-base.ftl</baseClassTemplate>

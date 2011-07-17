@@ -15,27 +15,43 @@ import java.util.List;
  */
 public class DefaultMethodMapper implements MethodMapper {
 
-    private TypeMapper<As3Type> typeMapper;
+	//
+	// Fields
+	//
 
-    public DefaultMethodMapper(TypeMapper<As3Type> typeMapper) {
-        this.typeMapper = typeMapper;
-    }
+	private TypeMapper<As3Type> typeMapper;
 
-    public As3Method mapMethod(JavaMethod method) {
+	//
+	// Constructors
+	//
+	
+	public DefaultMethodMapper(TypeMapper<As3Type> typeMapper) {
+		this.typeMapper = typeMapper;
+	}
 
-        String name = method.getName();
-        As3Type returnType = typeMapper.mapType(method.getReturnType());
-        List<As3MethodParameter> parameters = new ArrayList<As3MethodParameter>();
+	//
+	// Publid Methods
+	//
 
-        for (JavaMethodParameter javaParameter : method.getParameters()) {
-            String paramName = javaParameter.getName();
-            As3Type type = typeMapper.mapType(javaParameter.getType());
-            As3MethodParameter parameter = new As3MethodParameter(paramName, type);
-            parameters.add(parameter);
-        }
+	public As3Method mapMethod(JavaMethod method) {
 
-        return new As3Method(name, parameters, returnType);
+		String name = method.getName();
+		As3Type returnType = typeMapper.mapType(method.getReturnType());
+		List<As3MethodParameter> parameters = new ArrayList<As3MethodParameter>();
 
-    }
+		for (JavaMethodParameter javaParameter : method.getParameters()) {
+			String paramName = javaParameter.getName();
+			As3Type type = typeMapper.mapType(javaParameter.getType());
+			As3MethodParameter parameter = new As3MethodParameter(paramName, type);
+			parameters.add(parameter);
+		}
+
+		return new As3Method(name, parameters, returnType);
+
+	}
+
+	public void setTypeMapper(TypeMapper<As3Type> typeMapper) {
+		this.typeMapper = typeMapper;
+	}
 
 }

@@ -1,9 +1,7 @@
 package flexserverlib.java2as.as3.service;
 
-import flexserverlib.java2as.as3.As3Type;
+import flexserverlib.java2as.as3.AbstractAs3Configuration;
 import flexserverlib.java2as.as3.DefaultAs3TypeMapper;
-import flexserverlib.java2as.core.conf.AbstractConfiguration;
-import flexserverlib.java2as.core.conf.TypeMapper;
 
 import java.io.File;
 
@@ -12,14 +10,15 @@ import java.io.File;
  *
  * @author cliff.meyers
  */
-public class ServiceDelegateConfiguration extends AbstractConfiguration {
+public class ServiceDelegateConfiguration extends AbstractAs3Configuration {
 
 	//
     // Fields
     //
 
-	private TypeMapper<As3Type> typeMapper;
-
+	/**
+	 * Implementation to map methods
+	 */
 	private MethodMapper methodMapper;
 
     /**
@@ -56,14 +55,6 @@ public class ServiceDelegateConfiguration extends AbstractConfiguration {
 	//
     // Getters and Setters
     //
-
-	public TypeMapper<As3Type> getTypeMapper() {
-		return typeMapper;
-	}
-
-	public void setTypeMapper(TypeMapper<As3Type> typeMapper) {
-		this.typeMapper = typeMapper;
-	}
 
     public MethodMapper getMethodMapper() {
         return methodMapper;
