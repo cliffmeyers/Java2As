@@ -40,7 +40,7 @@ public class As3PropertyTests {
 		prop = mapper.mapProperty(new JavaProperty(CLASS.getField("typedList")));
 		assertTrue("typedList should be an array type", prop.isArrayType());
 		assertEquals("typedList ArrayType should be Long", As3SimpleType.Number, prop.getArrayElementType());
-		
+
 	}
-	
+
 }

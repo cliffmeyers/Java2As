@@ -11,25 +11,25 @@ import java.io.Writer;
  */
 public class PrintWriterResolver implements TransferObjectWriterResolver {
 
-    /**
-     * @inheritDoc
-     */
-    public Writer resolveBaseClass(As3TransferObject transferObject) {
-        return new PrintWriter(System.out);
-    }
+	/**
+	 * @inheritDoc
+	 */
+	public Writer resolveBaseClass(As3TransferObject transferObject) {
+		return new PrintWriter(System.out);
+	}
 
-    /**
-     * @inheritDoc
-     */
-    public Writer resolveCustomClass(As3TransferObject transferObject) {
-        return new PrintWriter(System.out);
-    }
+	/**
+	 * @inheritDoc
+	 */
+	public Writer resolveCustomClass(As3TransferObject transferObject) {
+		return new PrintWriter(System.out);
+	}
 
-    /**
-     * @inheritDoc
-     */
-    public boolean shouldCreateCustomClass(As3TransferObject transferObject) {
-        return true;
-    }
-    
+	/**
+	 * @inheritDoc
+	 */
+	public boolean shouldCreateCustomClass(As3TransferObject transferObject) {
+		return true;
+	}
+
 }

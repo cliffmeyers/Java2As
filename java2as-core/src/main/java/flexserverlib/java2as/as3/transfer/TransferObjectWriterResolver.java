@@ -10,10 +10,10 @@ import java.io.Writer;
  */
 public interface TransferObjectWriterResolver {
 
-    public Writer resolveBaseClass(As3TransferObject transferObject);
+	public Writer resolveBaseClass(As3TransferObject transferObject);
 
-    public Writer resolveCustomClass(As3TransferObject transferObject);
+	public Writer resolveCustomClass(As3TransferObject transferObject);
 
-    public boolean shouldCreateCustomClass(As3TransferObject transferObject);
-    
+	public boolean shouldCreateCustomClass(As3TransferObject transferObject);
+
 }

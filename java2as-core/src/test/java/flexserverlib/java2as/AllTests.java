@@ -13,8 +13,8 @@ import org.junit.runners.Suite;
 		As3PropertyTests.class,
 		TransferObjectProducerTests.class,
 		DefaultAs3TypeMapperTests.class,
-        JavaMethodTests.class,
-        JavaTransferObjectTests.class
+		JavaMethodTests.class,
+		JavaTransferObjectTests.class
 })
 public class AllTests {
 

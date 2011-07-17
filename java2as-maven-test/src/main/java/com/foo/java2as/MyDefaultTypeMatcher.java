@@ -11,5 +11,5 @@ public class MyDefaultTypeMatcher implements TypeMatcher {
 		String name = clazz.getName();
 		return name.startsWith("com.foo.dto");
 	}
-	
+
 }

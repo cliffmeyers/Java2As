@@ -11,26 +11,26 @@ import java.util.List;
  */
 public class JavaService {
 
-    //
-    // Fields
-    //
+	//
+	// Fields
+	//
 
-    private Class<?> clazz;
+	private Class<?> clazz;
 	private List<JavaMethod> methods;
 
-    //
-    // Constructors
-    //
+	//
+	// Constructors
+	//
 
-    public JavaService(Class<?> clazz) {
+	public JavaService(Class<?> clazz) {
 
 		this.clazz = clazz;
 		this.methods = new ArrayList<JavaMethod>();
 
-        for (Method method : clazz.getMethods()) {
-            JavaMethod javaMethod = new JavaMethod(method);
-            methods.add(javaMethod);
-        }
+		for (Method method : clazz.getMethods()) {
+			JavaMethod javaMethod = new JavaMethod(method);
+			methods.add(javaMethod);
+		}
 
 	}
 
@@ -80,8 +80,8 @@ public class JavaService {
 		return methods;
 	}
 
-    public boolean isImplementation() {
-        return !clazz.isInterface();
-    }
-    
+	public boolean isImplementation() {
+		return !clazz.isInterface();
+	}
+
 }

@@ -43,7 +43,7 @@ public class DefaultAs3PropertyMapper implements PropertyMapper<As3Property> {
 		}
 
 		return property;
-		
+
 	}
 
 	//

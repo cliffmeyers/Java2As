@@ -4,34 +4,32 @@ import flexserverlib.java2as.as3.DependencyResolver;
 import flexserverlib.java2as.as3.transfer.As3Dependency;
 
 /**
- * 
- *
  * @author cliff.meyers
  */
 public class DefaultDependencyResolver implements DependencyResolver {
 
-    public boolean shouldResolve(String packageName, As3Dependency dependency) {
+	public boolean shouldResolve(String packageName, As3Dependency dependency) {
 
-        if (!dependency.requiresImport())
-            return false;
+		if (!dependency.requiresImport())
+			return false;
 
-        String name = dependency.getQualifiedName();
+		String name = dependency.getQualifiedName();
 
-	    if (name.startsWith(packageName))
-		    return false;
-        else if (name.startsWith("java"))
-            return false;
+		if (name.startsWith(packageName))
+			return false;
+		else if (name.startsWith("java"))
+			return false;
 
-        return true;
+		return true;
 
-    }
+	}
 
-    public String resolveQualifiedName(As3Dependency dependency) {
-        return dependency.getQualifiedName();
-    }
+	public String resolveQualifiedName(As3Dependency dependency) {
+		return dependency.getQualifiedName();
+	}
 
-    public String resolveSimpleName(As3Dependency dependency) {
-        return dependency.getSimpleName();
-    }
+	public String resolveSimpleName(As3Dependency dependency) {
+		return dependency.getSimpleName();
+	}
 
 }

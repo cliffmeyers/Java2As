@@ -17,167 +17,167 @@ import java.util.List;
  */
 public class As3ServiceDelegate {
 
-    //
-    // Statics
-    //
+	//
+	// Statics
+	//
 
-    private static final String REMOTE_OBJECT = "mx.rpc.remoting.RemoteObject";
-    private static final String ASYNC_TOKEN = "mx.rpc.AsyncToken";
+	private static final String REMOTE_OBJECT = "mx.rpc.remoting.RemoteObject";
+	private static final String ASYNC_TOKEN = "mx.rpc.AsyncToken";
 
-    //
-    // Fields
-    //
+	//
+	// Fields
+	//
 
-    private JavaService service;
-    private List<As3Method> methods;
-    private List<As3Dependency> dependencies;
+	private JavaService service;
+	private List<As3Method> methods;
+	private List<As3Dependency> dependencies;
 
-    private String qualifiedName = "";
+	private String qualifiedName = "";
 	private String packageName = "";
 	private String simpleName = "";
-    private String importsFragment = "";
-    private String polymorphicsFragment = "";
-    private boolean implementation;
+	private String importsFragment = "";
+	private String polymorphicsFragment = "";
+	private boolean implementation;
 
-    //
-    // Constructors
-    //
+	//
+	// Constructors
+	//
 
-    public As3ServiceDelegate(JavaService service) {
-        this.service = service;
-        this.methods = new ArrayList<As3Method>();
-        this.dependencies = new ArrayList<As3Dependency>();
-        this.implementation = service.isImplementation();
-    }
+	public As3ServiceDelegate(JavaService service) {
+		this.service = service;
+		this.methods = new ArrayList<As3Method>();
+		this.dependencies = new ArrayList<As3Dependency>();
+		this.implementation = service.isImplementation();
+	}
 
-    //
-    // Public Methods
-    //
+	//
+	// Public Methods
+	//
 
-    public void addDependency(As3Dependency dependency) {
-        this.dependencies.add(dependency);
-    }
+	public void addDependency(As3Dependency dependency) {
+		this.dependencies.add(dependency);
+	}
 
-    public void addMethod(As3Method method) {
-        this.methods.add(method);
-        this.dependencies.addAll(method.getDependencies());
-    }
+	public void addMethod(As3Method method) {
+		this.methods.add(method);
+		this.dependencies.addAll(method.getDependencies());
+	}
 
-    public void buildMetadata(PackageMapper packageMapper, DependencyResolver dependencyResolver) {
+	public void buildMetadata(PackageMapper packageMapper, DependencyResolver dependencyResolver) {
 
-        simpleName = service.getSimpleName();
+		simpleName = service.getSimpleName();
 
-        // modify the package name and qualified name if package mapper is applicable
-        if (packageMapper.canMap(service.getPackageName())) {
-            packageName = packageMapper.performMap(service.getPackageName());
-            qualifiedName = packageName + "." + simpleName;
-        } else {
-            packageName = service.getPackageName();
-            qualifiedName = service.getName();
-        }
-        
-        buildImportsFragment(dependencyResolver);
-        buildPolymorphicsFragment(dependencyResolver);
-        
-    }
+		// modify the package name and qualified name if package mapper is applicable
+		if (packageMapper.canMap(service.getPackageName())) {
+			packageName = packageMapper.performMap(service.getPackageName());
+			qualifiedName = packageName + "." + simpleName;
+		} else {
+			packageName = service.getPackageName();
+			qualifiedName = service.getName();
+		}
 
-    //
-    // Protected Methods
-    //
-    
-    protected void buildImportsFragment(DependencyResolver dependencyResolver) {
+		buildImportsFragment(dependencyResolver);
+		buildPolymorphicsFragment(dependencyResolver);
 
-        List<String> imports = new ArrayList<String>();
-        imports.add(ASYNC_TOKEN);
+	}
 
-	    // loop over all deps and determine which to add
-        for (As3Dependency dependency : dependencies) {
-            if (dependencyResolver.shouldResolve(packageName, dependency)) {
-	            String resolvedName = dependencyResolver.resolveQualifiedName(dependency);
-	            // check for dups
-	            if (!imports.contains(resolvedName))
-                    imports.add(resolvedName);
-            }
-        }
+	//
+	// Protected Methods
+	//
 
-        Collections.sort(imports);
+	protected void buildImportsFragment(DependencyResolver dependencyResolver) {
 
-        StringBuilder fragment = new StringBuilder();
+		List<String> imports = new ArrayList<String>();
+		imports.add(ASYNC_TOKEN);
 
-	    // build a nicely formatted string with empty lines between new top-level packages
-        String prevTopLevelPackage = "";
-        for (String importLine : imports) {
-            String nextTopLevelPackage = importLine.substring(0, importLine.indexOf("."));
-            if (!prevTopLevelPackage.equals(nextTopLevelPackage)) {
-                fragment.append("\n");
-                prevTopLevelPackage = nextTopLevelPackage;
-            }
-            fragment.append("\t");
-            fragment.append(importLine);
-            fragment.append(";\n");
-        }
+		// loop over all deps and determine which to add
+		for (As3Dependency dependency : dependencies) {
+			if (dependencyResolver.shouldResolve(packageName, dependency)) {
+				String resolvedName = dependencyResolver.resolveQualifiedName(dependency);
+				// check for dups
+				if (!imports.contains(resolvedName))
+					imports.add(resolvedName);
+			}
+		}
 
-        this.importsFragment = fragment.toString().trim();
+		Collections.sort(imports);
 
-    }
+		StringBuilder fragment = new StringBuilder();
 
-    protected void buildPolymorphicsFragment(DependencyResolver dependencyResolver) {
+		// build a nicely formatted string with empty lines between new top-level packages
+		String prevTopLevelPackage = "";
+		for (String importLine : imports) {
+			String nextTopLevelPackage = importLine.substring(0, importLine.indexOf("."));
+			if (!prevTopLevelPackage.equals(nextTopLevelPackage)) {
+				fragment.append("\n");
+				prevTopLevelPackage = nextTopLevelPackage;
+			}
+			fragment.append("\t");
+			fragment.append(importLine);
+			fragment.append(";\n");
+		}
 
-        String fragment = "";
+		this.importsFragment = fragment.toString().trim();
 
-        for (As3Dependency dependency : dependencies)
-            if (dependency.getDependencyKind() == DependencyKind.SUPERCLASS && dependencyResolver.shouldResolve(packageName, dependency)) {
-                fragment += " extends " + dependency.getSimpleName() + "";
-                break;
-            }
+	}
 
-        for (As3Dependency dependency : dependencies) {
-            int count = 0;
-            if (dependency.getDependencyKind() == DependencyKind.INTERFACE && dependencyResolver.shouldResolve(packageName, dependency)) {
-                count++;
-                if (count == 1)
-                    fragment += " implements ";
-                if (count > 1)
-                    fragment += ", ";
-                fragment += dependency.getSimpleName();
-            }
-        }
+	protected void buildPolymorphicsFragment(DependencyResolver dependencyResolver) {
 
-        if (fragment != null && fragment.length() > 0) {
-            fragment = fragment.trim();
-            fragment = fragment.replaceAll("  ", " ");
-        }
+		String fragment = "";
 
-        this.polymorphicsFragment = fragment;
-        
-    }
+		for (As3Dependency dependency : dependencies)
+			if (dependency.getDependencyKind() == DependencyKind.SUPERCLASS && dependencyResolver.shouldResolve(packageName, dependency)) {
+				fragment += " extends " + dependency.getSimpleName() + "";
+				break;
+			}
 
-    //
-    // Getters and Setters
-    //
+		for (As3Dependency dependency : dependencies) {
+			int count = 0;
+			if (dependency.getDependencyKind() == DependencyKind.INTERFACE && dependencyResolver.shouldResolve(packageName, dependency)) {
+				count++;
+				if (count == 1)
+					fragment += " implements ";
+				if (count > 1)
+					fragment += ", ";
+				fragment += dependency.getSimpleName();
+			}
+		}
 
-    public String getPackageName() {
-        return service.getPackageName();
-    }
+		if (fragment != null && fragment.length() > 0) {
+			fragment = fragment.trim();
+			fragment = fragment.replaceAll("  ", " ");
+		}
 
-    public String getSimpleName() {
-        return service.getSimpleName();
-    }
+		this.polymorphicsFragment = fragment;
 
-    public String getImportsFragment() {
-        return importsFragment;
-    }
+	}
 
-    public String getPolymorphicsFragment() {
-        return polymorphicsFragment;
-    }
+	//
+	// Getters and Setters
+	//
 
-    public List<As3Method> getMethods() {
-        return methods;
-    }
+	public String getPackageName() {
+		return service.getPackageName();
+	}
 
-    public boolean isImplementation() {
-        return implementation;
-    }
-    
+	public String getSimpleName() {
+		return service.getSimpleName();
+	}
+
+	public String getImportsFragment() {
+		return importsFragment;
+	}
+
+	public String getPolymorphicsFragment() {
+		return polymorphicsFragment;
+	}
+
+	public List<As3Method> getMethods() {
+		return methods;
+	}
+
+	public boolean isImplementation() {
+		return implementation;
+	}
+
 }

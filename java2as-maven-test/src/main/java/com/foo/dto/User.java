@@ -6,5 +6,5 @@ package com.foo.dto;
 public class User {
 
 	public String name;
-	
+
 }

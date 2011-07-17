@@ -15,87 +15,87 @@ import java.util.List;
  */
 public class As3Method {
 
-    //
-    // Fields
-    //
+	//
+	// Fields
+	//
 
-    private String name;
+	private String name;
 
-    private List<As3MethodParameter> parameters;
+	private List<As3MethodParameter> parameters;
 
-    private As3Type returnType;
+	private As3Type returnType;
 
-    private List<As3Dependency> dependencies;
+	private List<As3Dependency> dependencies;
 
-    //
-    // Constructors
-    //
+	//
+	// Constructors
+	//
 
-    public As3Method(String name, List<As3MethodParameter> parameters, As3Type returnType) {
+	public As3Method(String name, List<As3MethodParameter> parameters, As3Type returnType) {
 
-        this.name = name;
-        this.parameters = parameters;
-        this.returnType = returnType;
-        this.dependencies = new ArrayList<As3Dependency>();
+		this.name = name;
+		this.parameters = parameters;
+		this.returnType = returnType;
+		this.dependencies = new ArrayList<As3Dependency>();
 
-        for (As3MethodParameter param : parameters)
-            this.dependencies.add(new As3Dependency(DependencyKind.PARAMETER, param.getType()));
-        this.dependencies.add(new As3Dependency(DependencyKind.PARAMETER, returnType));
+		for (As3MethodParameter param : parameters)
+			this.dependencies.add(new As3Dependency(DependencyKind.PARAMETER, param.getType()));
+		this.dependencies.add(new As3Dependency(DependencyKind.PARAMETER, returnType));
 
-    }
+	}
 
-    //
-    // Public Methods
-    //
+	//
+	// Public Methods
+	//
 
-    public String getReturnTypeName() {
-        return returnType.getQualifiedName();
-    }
+	public String getReturnTypeName() {
+		return returnType.getQualifiedName();
+	}
 
-    public String getParameterList() {
-        List<String> params = new ArrayList<String>();
-        for (As3MethodParameter param : parameters)
-            params.add(param.getName() + ":" + param.getType().getSimpleName());
-        return StringUtils.join(params, ",");
-    }
+	public String getParameterList() {
+		List<String> params = new ArrayList<String>();
+		for (As3MethodParameter param : parameters)
+			params.add(param.getName() + ":" + param.getType().getSimpleName());
+		return StringUtils.join(params, ",");
+	}
 
-    public String getParameterNameList() {
-        List<String> paramNames = new ArrayList<String>();
-        for (As3MethodParameter param : parameters)
-            paramNames.add(param.getName());
-        return StringUtils.join(paramNames, ",");
-    }
+	public String getParameterNameList() {
+		List<String> paramNames = new ArrayList<String>();
+		for (As3MethodParameter param : parameters)
+			paramNames.add(param.getName());
+		return StringUtils.join(paramNames, ",");
+	}
 
-    //
-    // Getters and Setters
-    //
+	//
+	// Getters and Setters
+	//
 
-    public String getName() {
-        return name;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public List<As3MethodParameter> getParameters() {
-        return parameters;
-    }
+	public List<As3MethodParameter> getParameters() {
+		return parameters;
+	}
 
-    public void setParameters(List<As3MethodParameter> parameters) {
-        this.parameters = parameters;
-    }
+	public void setParameters(List<As3MethodParameter> parameters) {
+		this.parameters = parameters;
+	}
 
-    public As3Type getReturnType() {
-        return returnType;
-    }
+	public As3Type getReturnType() {
+		return returnType;
+	}
 
-    public void setReturnType(As3Type returnType) {
-        this.returnType = returnType;
-    }
+	public void setReturnType(As3Type returnType) {
+		this.returnType = returnType;
+	}
 
-    public List<As3Dependency> getDependencies() {
-        return dependencies;
-    }
+	public List<As3Dependency> getDependencies() {
+		return dependencies;
+	}
 
 }

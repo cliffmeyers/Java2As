@@ -52,7 +52,7 @@ public class JavaTransferObject {
 	//
 	// Getters and Setters
 	//
-	
+
 	public String getPackageName() {
 		return clazz.getPackage().getName();
 	}

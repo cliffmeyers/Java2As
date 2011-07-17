@@ -14,80 +14,80 @@ import java.io.Writer;
  */
 public class DefaultTransferObjectWriterResolver implements TransferObjectWriterResolver {
 
-    //
-    // Statics
-    //
+	//
+	// Statics
+	//
 
-    private static final String FILENAME_SUFFIX = ".as";
+	private static final String FILENAME_SUFFIX = ".as";
 
-    //
-    // Fields
-    //
+	//
+	// Fields
+	//
 
-    private File customClassDirectory;
-    private File baseClassDirectory;
+	private File customClassDirectory;
+	private File baseClassDirectory;
 
-    //
-    // Constructor
-    //
+	//
+	// Constructor
+	//
 
-    public DefaultTransferObjectWriterResolver(File customClassDirectory, File baseClassDirectory) {
-        this.customClassDirectory = customClassDirectory;
-        this.baseClassDirectory = baseClassDirectory;
-    }
+	public DefaultTransferObjectWriterResolver(File customClassDirectory, File baseClassDirectory) {
+		this.customClassDirectory = customClassDirectory;
+		this.baseClassDirectory = baseClassDirectory;
+	}
 
-    //
-    // Public Methods
-    //
+	//
+	// Public Methods
+	//
 
-    public Writer resolveBaseClass(As3TransferObject transferObject) {
+	public Writer resolveBaseClass(As3TransferObject transferObject) {
 
-        File directory = resolveDirectoryForClass(baseClassDirectory, transferObject);
-        directory.mkdirs();
-        File file = resolveFileForClass(baseClassDirectory, transferObject, true);
+		File directory = resolveDirectoryForClass(baseClassDirectory, transferObject);
+		directory.mkdirs();
+		File file = resolveFileForClass(baseClassDirectory, transferObject, true);
 
-        try {
-            return new FileWriter(file);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+		try {
+			return new FileWriter(file);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 
-    }
+	}
 
-    public Writer resolveCustomClass(As3TransferObject transferObject) {
+	public Writer resolveCustomClass(As3TransferObject transferObject) {
 
-        File directory = resolveDirectoryForClass(customClassDirectory, transferObject);
-        directory.mkdirs();
-        File file = resolveFileForClass(customClassDirectory, transferObject, false);
+		File directory = resolveDirectoryForClass(customClassDirectory, transferObject);
+		directory.mkdirs();
+		File file = resolveFileForClass(customClassDirectory, transferObject, false);
 
-        try {
-            return new FileWriter(file);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+		try {
+			return new FileWriter(file);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 
-    }
+	}
 
-    public boolean shouldCreateCustomClass(As3TransferObject transferObject) {
-        File file = resolveFileForClass(customClassDirectory, transferObject, false);
-        return !file.exists();
-    }
+	public boolean shouldCreateCustomClass(As3TransferObject transferObject) {
+		File file = resolveFileForClass(customClassDirectory, transferObject, false);
+		return !file.exists();
+	}
 
-    //
-    // Protected Methods
-    //
+	//
+	// Protected Methods
+	//
 
-    protected File resolveDirectoryForClass(File rootDirectory, As3TransferObject transferObject) {
-        String rootDir = rootDirectory.getAbsolutePath();
-        String relativePath = StringUtils.replace(transferObject.getPackageName(), ".", File.separator);
-        String pathToDirectory = rootDir + File.separator + relativePath;
-        return new File(pathToDirectory);
-    }
+	protected File resolveDirectoryForClass(File rootDirectory, As3TransferObject transferObject) {
+		String rootDir = rootDirectory.getAbsolutePath();
+		String relativePath = StringUtils.replace(transferObject.getPackageName(), ".", File.separator);
+		String pathToDirectory = rootDir + File.separator + relativePath;
+		return new File(pathToDirectory);
+	}
 
-    protected File resolveFileForClass(File rootDirectory, As3TransferObject transferObject, boolean baseClass) {
-        String pathToDirectory = resolveDirectoryForClass(rootDirectory, transferObject).getAbsolutePath();
-        String fullPath = pathToDirectory + File.separator + transferObject.getSimpleName() + (baseClass ? "Base" : "") + FILENAME_SUFFIX;
-        return new File(fullPath);
-    }
+	protected File resolveFileForClass(File rootDirectory, As3TransferObject transferObject, boolean baseClass) {
+		String pathToDirectory = resolveDirectoryForClass(rootDirectory, transferObject).getAbsolutePath();
+		String fullPath = pathToDirectory + File.separator + transferObject.getSimpleName() + (baseClass ? "Base" : "") + FILENAME_SUFFIX;
+		return new File(fullPath);
+	}
 
 }

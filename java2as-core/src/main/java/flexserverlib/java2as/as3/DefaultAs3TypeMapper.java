@@ -68,8 +68,8 @@ public class DefaultAs3TypeMapper implements TypeMapper<As3Type> {
 		if (defaultMappings.containsKey(javaType))
 			return defaultMappings.get(javaType);
 
-        if ("void".equals(javaType.getName()))
-            return As3SimpleType.Void;
+		if ("void".equals(javaType.getName()))
+			return As3SimpleType.Void;
 
 		return new As3CustomType(javaType);
 	}

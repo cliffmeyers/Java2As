@@ -11,8 +11,8 @@ import java.io.Writer;
  */
 public interface ServiceDelegateWriterResolver {
 
-    public Writer resolveServiceInterface(As3ServiceDelegate service);
+	public Writer resolveServiceInterface(As3ServiceDelegate service);
 
-    public Writer resolveServiceImpl(As3ServiceDelegate service);
+	public Writer resolveServiceImpl(As3ServiceDelegate service);
 
 }

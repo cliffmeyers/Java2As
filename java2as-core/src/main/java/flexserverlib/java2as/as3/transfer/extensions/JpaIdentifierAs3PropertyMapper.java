@@ -30,5 +30,5 @@ public class JpaIdentifierAs3PropertyMapper implements PropertyMapper<As3Propert
 	public void setTypeMapper(TypeMapper typeMapper) {
 		return;
 	}
-	
+
 }

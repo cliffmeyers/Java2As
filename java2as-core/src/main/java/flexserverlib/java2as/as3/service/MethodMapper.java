@@ -11,8 +11,8 @@ import flexserverlib.java2as.core.meta.JavaMethod;
  */
 public interface MethodMapper {
 
-    As3Method mapMethod(JavaMethod method);
+	As3Method mapMethod(JavaMethod method);
 
 	void setTypeMapper(TypeMapper<As3Type> typeMapper);
-    
+
 }

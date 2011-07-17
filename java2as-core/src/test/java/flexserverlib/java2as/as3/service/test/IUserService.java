@@ -11,8 +11,8 @@ import java.util.List;
  */
 public interface IUserService {
 
-    List<User> listUsers();
+	List<User> listUsers();
 
-    void saveUser(User user);
+	void saveUser(User user);
 
 }

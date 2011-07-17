@@ -10,9 +10,9 @@ import org.apache.commons.lang.ArrayUtils;
  */
 public class As3Dependency {
 
-    //
-    // Statics
-    //
+	//
+	// Statics
+	//
 
 	private static final As3Type[] BUILTIN_TYPES = new As3Type[]{
 			As3SimpleType.Array,
@@ -22,7 +22,7 @@ public class As3Dependency {
 			As3SimpleType.Number,
 			As3SimpleType.Object,
 			As3SimpleType.String,
-            As3SimpleType.Void
+			As3SimpleType.Void
 	};
 
 	//

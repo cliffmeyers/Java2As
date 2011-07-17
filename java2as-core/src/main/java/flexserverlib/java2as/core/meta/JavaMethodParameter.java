@@ -9,38 +9,38 @@ import java.lang.annotation.Annotation;
  */
 public class JavaMethodParameter {
 
-    //
-    // Fields
-    //
+	//
+	// Fields
+	//
 
-    private String name;
-    private Class<?> type;
-    private Annotation[] annotations;
+	private String name;
+	private Class<?> type;
+	private Annotation[] annotations;
 
-    //
-    // Constructors
-    //
+	//
+	// Constructors
+	//
 
-    public JavaMethodParameter(String name, Class<?> type, Annotation[] annotations) {
-        this.name = name;
-        this.type = type;
-        this.annotations = annotations;
-    }
+	public JavaMethodParameter(String name, Class<?> type, Annotation[] annotations) {
+		this.name = name;
+		this.type = type;
+		this.annotations = annotations;
+	}
 
-    //
-    // Getters and Setters
-    //
+	//
+	// Getters and Setters
+	//
 
-    public String getName() {
-        return name;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public Class<?> getType() {
-        return type;
-    }
+	public Class<?> getType() {
+		return type;
+	}
 
-    public Annotation[] getAnnotations() {
-        return annotations;
-    }
+	public Annotation[] getAnnotations() {
+		return annotations;
+	}
 
 }

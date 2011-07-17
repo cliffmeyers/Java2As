@@ -40,5 +40,5 @@ public class As3CustomType implements As3Type {
 	public int hashCode() {
 		return clazz.hashCode();
 	}
-	
+
 }

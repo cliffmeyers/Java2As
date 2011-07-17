@@ -39,5 +39,5 @@ public abstract class AbstractAs3Configuration extends AbstractConfiguration {
 	public void setTypeMapper(TypeMapper<As3Type> typeMapper) {
 		this.typeMapper = typeMapper;
 	}
-	
+
 }

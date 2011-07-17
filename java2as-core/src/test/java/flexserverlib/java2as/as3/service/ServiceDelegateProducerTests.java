@@ -20,41 +20,41 @@ import java.util.List;
  */
 public class ServiceDelegateProducerTests {
 
-    @Test
-    @Ignore
-    public void testProduceFilesystem() {
+	@Test
+	@Ignore
+	public void testProduceFilesystem() {
 
-        ServiceDelegateConfiguration config = new ServiceDelegateConfiguration();
-        File tempDir = new File("c:" + File.separatorChar + "temp" + File.separator + "java2as" + File.separator + "service");
-        File baseDir = new File(tempDir + File.separator + "impl");
-        config.setServiceImplDir(baseDir);
+		ServiceDelegateConfiguration config = new ServiceDelegateConfiguration();
+		File tempDir = new File("c:" + File.separatorChar + "temp" + File.separator + "java2as" + File.separator + "service");
+		File baseDir = new File(tempDir + File.separator + "impl");
+		config.setServiceImplDir(baseDir);
 
-        List<Class<?>> classes = Arrays.asList(
-                new Class<?>[]{
-                        IUserService.class,
-                }
-        );
+		List<Class<?>> classes = Arrays.asList(
+				new Class<?>[]{
+						IUserService.class,
+				}
+		);
 
-        ServiceDelegateProducer producer = new ServiceDelegateProducer(config, classes);
-        producer.produce();
+		ServiceDelegateProducer producer = new ServiceDelegateProducer(config, classes);
+		producer.produce();
 
-    }
+	}
 
-    @Test
-    public void testProduceSystemOut() {
+	@Test
+	public void testProduceSystemOut() {
 
-        ServiceDelegateConfiguration config = new ServiceDelegateConfiguration();
+		ServiceDelegateConfiguration config = new ServiceDelegateConfiguration();
 
-        List<Class<?>> classes = Arrays.asList(
-                new Class<?>[]{
-                        IUserService.class,
-                }
-        );
+		List<Class<?>> classes = Arrays.asList(
+				new Class<?>[]{
+						IUserService.class,
+				}
+		);
 
-        ServiceDelegateProducer producer = new ServiceDelegateProducer(config, classes);
-        producer.setWriterResolver(new PrintWriterResolver());
-        producer.produce();
+		ServiceDelegateProducer producer = new ServiceDelegateProducer(config, classes);
+		producer.setWriterResolver(new PrintWriterResolver());
+		producer.produce();
 
-    }
+	}
 
 }

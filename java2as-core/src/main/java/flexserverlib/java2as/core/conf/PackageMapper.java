@@ -7,8 +7,8 @@ package flexserverlib.java2as.core.conf;
  */
 public interface PackageMapper {
 
-    boolean canMap(String packageName);
+	boolean canMap(String packageName);
 
-    String performMap(String packageName);
-    
+	String performMap(String packageName);
+
 }

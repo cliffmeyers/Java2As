@@ -73,5 +73,5 @@ public class As3Property implements Property<As3Type> {
 	public As3Dependency getDependency() {
 		return dependency;
 	}
-    
+
 }

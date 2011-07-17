@@ -15,30 +15,30 @@ import java.util.List;
  */
 public class JavaMethodTests {
 
-    @Test
-    public void testMethodParameters() {
+	@Test
+	public void testMethodParameters() {
 
-        for (Method method : IUserService.class.getDeclaredMethods()) {
+		for (Method method : IUserService.class.getDeclaredMethods()) {
 
-            JavaMethod javaMethod = new JavaMethod(method);
-            String name = javaMethod.getName();
-            List<JavaMethodParameter> params = javaMethod.getParameters();
+			JavaMethod javaMethod = new JavaMethod(method);
+			String name = javaMethod.getName();
+			List<JavaMethodParameter> params = javaMethod.getParameters();
 
-            if ("listUsers".equals(name)) {
-                Assert.assertEquals(0, params.size());
-                Assert.assertEquals(List.class, javaMethod.getReturnType());
-            } else if ("saveUser".equals(name)) {
-                if (!"user".equals(params.get(0).getName()) && !"arg0".equals(params.get(0).getName()))
-                    Assert.fail("Parameter name must be either 'user' or 'arg0'");
-                Assert.assertEquals(User.class, params.get(0).getType());
-                Assert.assertEquals(0, params.get(0).getAnnotations().length);
-                Assert.assertEquals("void", javaMethod.getReturnType().getName());
-            } else {
-                Assert.fail("No test cases written for method=" + name);
-            }
+			if ("listUsers".equals(name)) {
+				Assert.assertEquals(0, params.size());
+				Assert.assertEquals(List.class, javaMethod.getReturnType());
+			} else if ("saveUser".equals(name)) {
+				if (!"user".equals(params.get(0).getName()) && !"arg0".equals(params.get(0).getName()))
+					Assert.fail("Parameter name must be either 'user' or 'arg0'");
+				Assert.assertEquals(User.class, params.get(0).getType());
+				Assert.assertEquals(0, params.get(0).getAnnotations().length);
+				Assert.assertEquals("void", javaMethod.getReturnType().getName());
+			} else {
+				Assert.fail("No test cases written for method=" + name);
+			}
 
-        }
+		}
 
-    }
-    
+	}
+
 }

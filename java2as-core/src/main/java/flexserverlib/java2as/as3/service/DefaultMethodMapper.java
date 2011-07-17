@@ -24,7 +24,7 @@ public class DefaultMethodMapper implements MethodMapper {
 	//
 	// Constructors
 	//
-	
+
 	public DefaultMethodMapper(TypeMapper<As3Type> typeMapper) {
 		this.typeMapper = typeMapper;
 	}

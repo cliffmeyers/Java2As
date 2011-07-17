@@ -19,7 +19,6 @@ import java.util.List;
 import java.util.Map;
 
 /**
- *
  * @author cliff.meyers
  */
 public class TransferObjectProducer extends AbstractProducer {

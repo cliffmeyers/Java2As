@@ -10,12 +10,12 @@ import java.io.Writer;
  */
 public class PrintWriterResolver implements ServiceDelegateWriterResolver {
 
-    public Writer resolveServiceInterface(As3ServiceDelegate service) {
-        return new PrintWriter(System.out);
-    }
+	public Writer resolveServiceInterface(As3ServiceDelegate service) {
+		return new PrintWriter(System.out);
+	}
 
-    public Writer resolveServiceImpl(As3ServiceDelegate service) {
-        return new PrintWriter(System.out);
-    }
+	public Writer resolveServiceImpl(As3ServiceDelegate service) {
+		return new PrintWriter(System.out);
+	}
 
 }

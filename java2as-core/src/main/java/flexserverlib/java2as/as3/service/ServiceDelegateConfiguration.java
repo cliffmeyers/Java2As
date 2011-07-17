@@ -13,74 +13,74 @@ import java.io.File;
 public class ServiceDelegateConfiguration extends AbstractAs3Configuration {
 
 	//
-    // Fields
-    //
+	// Fields
+	//
 
 	/**
 	 * Implementation to map methods
 	 */
 	private MethodMapper methodMapper;
 
-    /**
-     * Directory in which to generate service interfaces (e.g. IUserService)
-     */
-    private File serviceInterfaceDir;
+	/**
+	 * Directory in which to generate service interfaces (e.g. IUserService)
+	 */
+	private File serviceInterfaceDir;
 
-    /**
-     * Directory in which to generate service implementations (e.g. UserService implements IUserService)
-     */
-    private File serviceImplDir;
+	/**
+	 * Directory in which to generate service implementations (e.g. UserService implements IUserService)
+	 */
+	private File serviceImplDir;
 
 	/**
 	 * Provide a base class which all Service Delegates will extend.
 	 */
-    // TODO: needs impl
+	// TODO: needs impl
 	private String serviceDelegateBaseClass;
 
-    /**
-     * True if interfaces should be generated.
-     */
-    // TODO: needs impl
-    private boolean generateInterfaces;
+	/**
+	 * True if interfaces should be generated.
+	 */
+	// TODO: needs impl
+	private boolean generateInterfaces;
 
 	//
-    // Constructors
-    //
+	// Constructors
+	//
 
 	public ServiceDelegateConfiguration() {
 		typeMapper = new DefaultAs3TypeMapper();
-        methodMapper = new DefaultMethodMapper(typeMapper);
+		methodMapper = new DefaultMethodMapper(typeMapper);
 	}
 
 	//
-    // Getters and Setters
-    //
+	// Getters and Setters
+	//
 
-    public MethodMapper getMethodMapper() {
-        return methodMapper;
-    }
+	public MethodMapper getMethodMapper() {
+		return methodMapper;
+	}
 
-    public void setMethodMapper(MethodMapper methodMapper) {
-        this.methodMapper = methodMapper;
-    }
+	public void setMethodMapper(MethodMapper methodMapper) {
+		this.methodMapper = methodMapper;
+	}
 
-    public File getServiceImplDir() {
-        return serviceImplDir;
-    }
+	public File getServiceImplDir() {
+		return serviceImplDir;
+	}
 
-    public void setServiceImplDir(File serviceImplDir) {
-        this.serviceImplDir = serviceImplDir;
-    }
+	public void setServiceImplDir(File serviceImplDir) {
+		this.serviceImplDir = serviceImplDir;
+	}
 
-    public File getServiceInterfaceDir() {
-        return serviceInterfaceDir;
-    }
+	public File getServiceInterfaceDir() {
+		return serviceInterfaceDir;
+	}
 
-    public void setServiceInterfaceDir(File serviceInterfaceDir) {
-        this.serviceInterfaceDir = serviceInterfaceDir;
-    }
+	public void setServiceInterfaceDir(File serviceInterfaceDir) {
+		this.serviceInterfaceDir = serviceInterfaceDir;
+	}
 
-    public String getServiceDelegateBaseClass() {
+	public String getServiceDelegateBaseClass() {
 		return serviceDelegateBaseClass;
 	}
 
@@ -88,12 +88,12 @@ public class ServiceDelegateConfiguration extends AbstractAs3Configuration {
 		this.serviceDelegateBaseClass = serviceDelegateBaseClass;
 	}
 
-    public boolean isGenerateInterfaces() {
-        return generateInterfaces;
-    }
+	public boolean isGenerateInterfaces() {
+		return generateInterfaces;
+	}
 
-    public void setGenerateInterfaces(boolean generateInterfaces) {
-        this.generateInterfaces = generateInterfaces;
-    }
-    
+	public void setGenerateInterfaces(boolean generateInterfaces) {
+		this.generateInterfaces = generateInterfaces;
+	}
+
 }

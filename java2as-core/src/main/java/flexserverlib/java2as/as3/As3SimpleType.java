@@ -15,14 +15,14 @@ public enum As3SimpleType implements As3Type {
 	ByteArray("flash.utils.ByteArray"),
 	Xml("Xml"),
 	Object("Object"),
-    Void("void");
+	Void("void");
 
 	private String qualifiedName;
 	private String simpleName;
 
 	private As3SimpleType(String qualifiedName) {
 		this.qualifiedName = qualifiedName;
-		this.simpleName = qualifiedName.substring(qualifiedName.lastIndexOf(".") + 1 );
+		this.simpleName = qualifiedName.substring(qualifiedName.lastIndexOf(".") + 1);
 	}
 
 	public boolean isCustomType() {
@@ -36,5 +36,5 @@ public enum As3SimpleType implements As3Type {
 	public String getSimpleName() {
 		return simpleName;
 	}
-	
+
 }

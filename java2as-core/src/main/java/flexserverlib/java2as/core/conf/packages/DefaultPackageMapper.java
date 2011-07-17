@@ -16,5 +16,5 @@ public class DefaultPackageMapper implements PackageMapper {
 	public String performMap(String packageName) {
 		return packageName;
 	}
-	
+
 }
