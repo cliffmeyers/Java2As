@@ -50,7 +50,6 @@
 	<target name="test" depends="copy-lib, compile">
 
 		<property name="output.dir" value="${build.dir}/java2as"/>
-		<echo>${build.dir}/java2as</echo>
 
 		<taskdef name="dto" classname="flexserverlib.java2as.ant.TransferObjectTask" classpathref="classpath.all" loaderref="classes.all"/>
 		<typedef name="propertyMapper" classname="flexserverlib.java2as.ant.AntPropertyMapper" classpathref="classpath.all" loaderref="classes.all"/>
