@@ -88,6 +88,14 @@ public class TransferObjectMojo extends AbstractMojo {
 	private String[] typeMatchers = new String[]{};
 
 	/**
+	 * Location to write custom classes.
+	 *
+	 * @parameter default-value="${project.build.directory}/java2as"
+	 * @required
+	 */
+	private File customClassDir;
+
+	/**
 	 * Location to write base classes.
 	 *
 	 * @parameter default-value="${project.build.directory}/java2as"
@@ -96,12 +104,18 @@ public class TransferObjectMojo extends AbstractMojo {
 	private File baseClassDir;
 
 	/**
-	 * Location to write custom classes.
+	 * Freemarker template to use for generation of custom classes.
 	 *
-	 * @parameter default-value="${project.build.directory}/java2as"
-	 * @required
+	 * @parameter
 	 */
-	private File customClassDir;
+	private File customClassTemplate;
+
+	/**
+	 * Freemarker template to use for generation of base classes.
+	 *
+	 * @parameter
+	 */
+	private File baseClassTemplate;
 
 	//
 	// Public Methods
@@ -120,6 +134,8 @@ public class TransferObjectMojo extends AbstractMojo {
 		config = new TransferObjectConfiguration();
 		config.setBaseClassDir(baseClassDir);
 		config.setCustomClassDir(customClassDir);
+		config.setBaseClassTemplate(baseClassTemplate);
+		config.setCustomClassTemplate(customClassTemplate);
 		loadConfiguratonClasses(config);
 
 		executeProduce();
@@ -139,10 +155,13 @@ public class TransferObjectMojo extends AbstractMojo {
 		List<String> candidateClassNames = new LinkedList<String>();
 
 		for (File location : compiledClassesLocations) {
+
 			if (!location.isDirectory())
 				throw new IllegalArgumentException("Only directories can be supplied as a compiledClassLocation; error for " + location.getAbsolutePath());
 
 			String sourceRootPath = location.getAbsolutePath();
+
+			// convert full path to class file to fully-qualified Java class name
 			for (File file : FileUtils.listFiles(location, new String[]{EXT}, true)) {
 				String filePath = file.getAbsolutePath();
 				String packageFragment = filePath.substring(sourceRootPath.length(), filePath.length() - DOT_EXT.length());
@@ -151,6 +170,7 @@ public class TransferObjectMojo extends AbstractMojo {
 					className = className.substring(PACKAGE_DELIM.length());
 				candidateClassNames.add(className);
 			}
+
 		}
 
 		// now let's load some classes!
