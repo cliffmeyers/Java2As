@@ -15,6 +15,7 @@ public abstract class AbstractConfiguration {
     //
 
     protected List<TypeMatcher> matchers;
+	// TODO: add support for configuring packageMappers
     protected List<SimplePackageMapper> packageMappers;
 
     //

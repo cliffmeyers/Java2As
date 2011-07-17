@@ -59,25 +59,54 @@ public class TransferObjectTask extends Task {
 	 */
 	private List<AntTypeMatcher> typeMatchers = new ArrayList<AntTypeMatcher>();
 
+	/**
+	 *
+	 */
+	private File customClassDir;
+
+	/**
+	 *
+	 */
+	private File baseClassDir;
+
+	/**
+	 * Freemarker template to use for generation of custom classes.
+	 *
+	 * @parameter
+	 */
+	private File customClassTemplate;
+
+	/**
+	 * Freemarker template to use for generation of base classes.
+	 *
+	 * @parameter
+	 */
+	private File baseClassTemplate;
+
 	//
 	// Public Methods
 	//
 
 	@Override
 	public void init() throws BuildException {
-
 		super.init();
 		System.out.println("init");
 		config = new TransferObjectConfiguration();
-
 	}
 
 	@Override
 	public void execute() throws BuildException {
-		// TODO: read the config properties and build up objects
+
 		System.out.println("execute");
+
+		config.setCustomClassDir(customClassDir);
+		config.setBaseClassDir(baseClassDir);
+		config.setCustomClassTemplate(customClassTemplate);
+		config.setBaseClassTemplate(baseClassTemplate);
 		loadConfiguratonClasses(config);
+
 		executeProduce();
+
 	}
 
 	public void addConfigured(AntPropertyMapper propertyMapper) {
@@ -171,16 +200,24 @@ public class TransferObjectTask extends Task {
 	// Getters and Setters
 	//
 
-	public void setCustomClassDir(File value) {
-		config.setCustomClassDir(value);
-	}
-
-	public void setBaseClassDir(File value) {
-		config.setBaseClassDir(value);
-	}
-
 	public void setTypeMapper(String value) {
 		typeMapper = value;
 	}
 
+	public void setCustomClassDir(File value) {
+		customClassDir = value;
+	}
+
+	public void setBaseClassDir(File value) {
+		baseClassDir = value;
+	}
+
+	public void setCustomClassTemplate(File customClassTemplate) {
+		this.customClassTemplate = customClassTemplate;
+	}
+
+	public void setBaseClassTemplate(File baseClassTemplate) {
+		this.baseClassTemplate = baseClassTemplate;
+	}
+	
 }

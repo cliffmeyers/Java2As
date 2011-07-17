@@ -48,6 +48,10 @@
 							<typeMatchers>
 								<string>com.foo.java2as.MyDefaultTypeMatcher</string>
 							</typeMatchers>
+							<!--
+							<customClassTemplate>${project.basedir}/src/main/resources/ftl/transfer/to-custom.ftl</customClassTemplate>
+							<baseClassTemplate>${project.basedir}/src/main/resources/ftl/transfer/to-base.ftl</baseClassTemplate>
+							-->
 						</configuration>
 					</execution>
 				</executions>

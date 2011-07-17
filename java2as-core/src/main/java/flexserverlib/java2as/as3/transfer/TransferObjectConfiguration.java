@@ -27,8 +27,14 @@ public class TransferObjectConfiguration extends AbstractConfiguration {
 	// Fields
 	//
 
+	/**
+	 * TypeMapper to convert Java to AS3 types
+	 */
 	private TypeMapper<As3Type> typeMapper;
 
+	/**
+	 * PropertyMappers to convert Java properties to AS3 properties
+	 */
 	private List<PropertyMapper<As3Property>> propertyMappers;
 
 	/**
@@ -40,6 +46,16 @@ public class TransferObjectConfiguration extends AbstractConfiguration {
 	 * Directory in which to generate "base" classes (e.g. UserBase)
 	 */
 	private File baseClassDir;
+
+	/**
+	 * Freemarker template to use for generation of custom classes.
+	 */
+	private File customClassTemplate;
+
+	/**
+	 * Freemarker template to use for generation of base classes.
+	 */
+	private File baseClassTemplate;
 
 	/**
 	 * Include [ArrayElementType] metadata for Array and ArrayCollection types.
@@ -72,13 +88,22 @@ public class TransferObjectConfiguration extends AbstractConfiguration {
 	}
 
 	public String[] getConfigurationSummary() {
+
 		StringBuilder summary = new StringBuilder();
+
 		summary.append("typeMapper=" + typeMapper.getClass().getName() + N);
 		for (PropertyMapper propertyMapper : propertyMappers)
 			summary.append("propertyMapper=" + propertyMapper.getClass().getName() + N);
 		for (TypeMatcher matcher : matchers)
 			summary.append("matcher=" + matcher.getClass().getName() + N);
+
+		summary.append("customClassDir=" + customClassDir + N);
+		summary.append("baseClassDir=" + baseClassDir + N);
+		summary.append("customClassTemplate=" + (customClassTemplate != null ? customClassTemplate : "null; will use default") + N);
+		summary.append("baseClassTemplate=" + (baseClassTemplate != null ? baseClassTemplate : "null; will use default") + N);
+
 		return summary.toString().split(N);
+		
 	}
 
 	//
@@ -115,6 +140,22 @@ public class TransferObjectConfiguration extends AbstractConfiguration {
 
 	public void setCustomClassDir(File customClassDir) {
 		this.customClassDir = customClassDir;
+	}
+
+	public File getBaseClassTemplate() {
+		return baseClassTemplate;
+	}
+
+	public void setBaseClassTemplate(File baseClassTemplate) {
+		this.baseClassTemplate = baseClassTemplate;
+	}
+
+	public File getCustomClassTemplate() {
+		return customClassTemplate;
+	}
+
+	public void setCustomClassTemplate(File customClassTemplate) {
+		this.customClassTemplate = customClassTemplate;
 	}
 
 	public boolean getIncludeArrayElementType() {
