@@ -20,7 +20,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * Goal which touches a timestamp file.
+ * Generates transfer objects.
  *
  * @goal generate
  * @phase process-classes
@@ -31,7 +31,7 @@ public class TransferObjectMojo extends AbstractMojo {
 	// Fields
 	//
 
-	// internal infrastructure concerns
+	// internal infrastructure
 
 	/**
 	 * ClassLoader to use for loading 3rd-party classes for mappers, matchers, etc.
@@ -125,6 +125,10 @@ public class TransferObjectMojo extends AbstractMojo {
 		executeProduce();
 	}
 
+	//
+	// Protected Methods
+	//
+
 	protected void executeProduce() {
 
 		final String SLASH = File.separator;
@@ -173,10 +177,6 @@ public class TransferObjectMojo extends AbstractMojo {
 		producer.produce();
 
 	}
-
-	//
-	// Protected Methods
-	//
 
 	protected void loadConfiguratonClasses(TransferObjectConfiguration config) throws MojoExecutionException {
 
