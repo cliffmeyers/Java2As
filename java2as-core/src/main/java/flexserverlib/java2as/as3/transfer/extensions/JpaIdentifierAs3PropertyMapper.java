@@ -1,6 +1,7 @@
-package flexserverlib.java2as.as3.transfer;
+package flexserverlib.java2as.as3.transfer.extensions;
 
 import flexserverlib.java2as.as3.As3SimpleType;
+import flexserverlib.java2as.as3.transfer.As3Property;
 import flexserverlib.java2as.core.conf.PropertyMapper;
 import flexserverlib.java2as.core.conf.TypeMapper;
 import flexserverlib.java2as.core.meta.JavaProperty;
