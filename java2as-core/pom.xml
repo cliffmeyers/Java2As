@@ -33,26 +33,4 @@
 		</dependency>
 	</dependencies>
 
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>com.thoughtworks.paranamer</groupId>
-				<artifactId>paranamer-maven-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>run</id>
-						<phase>test-compile</phase>
-						<goals>
-							<goal>generate</goal>
-						</goals>
-						<configuration>
-							<sourceDirectory>${project.build.testSourceDirectory}</sourceDirectory>
-							<outputDirectory>${project.build.testOutputDirectory}</outputDirectory>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-		</plugins>
-	</build>
-
 </project>
