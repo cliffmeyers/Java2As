@@ -4,6 +4,7 @@ import net.histos.java2as.as3.As3Type;
 import net.histos.java2as.core.AbstractProducer;
 import net.histos.java2as.core.conf.CompositePropertyMapper;
 import net.histos.java2as.core.conf.PackageMapper;
+import net.histos.java2as.core.conf.PropertyMapper;
 import net.histos.java2as.core.conf.TypeMapper;
 import net.histos.java2as.core.meta.JavaTransferObject;
 import freemarker.template.Configuration;
@@ -65,16 +66,11 @@ public class TransferObjectProducer extends AbstractProducer {
 
 		// setup mappers
 		TypeMapper<As3Type> typeMapper = config.getTypeMapper();
-
-		CompositePropertyMapper<As3Property> compositePropertyMapper = new CompositePropertyMapper<As3Property>();
-		compositePropertyMapper.addAll(config.getPropertyMappers());
-		if (!compositePropertyMapper.hasMappers())
-			compositePropertyMapper.addPropertyMapper(new DefaultAs3PropertyMapper());
-
+		PropertyMapper<As3Property> propertyMapper = config.getPropertyMapper();
 		PackageMapper packageMapper = config.getPackageMapper();
 
 		// do conversion
-		TransferObjectMapper mapper = new TransferObjectMapper(compositePropertyMapper, typeMapper, packageMapper);
+		TransferObjectMapper mapper = new TransferObjectMapper(propertyMapper, typeMapper, packageMapper);
 		List<As3TransferObject> as3TransferObjects = mapper.performMappings(javaTOs);
 
 		try {

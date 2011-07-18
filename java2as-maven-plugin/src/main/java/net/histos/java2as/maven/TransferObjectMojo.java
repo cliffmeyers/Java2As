@@ -1,12 +1,10 @@
 package net.histos.java2as.maven;
 
 import net.histos.java2as.as3.As3Type;
+import net.histos.java2as.as3.transfer.As3Property;
 import net.histos.java2as.as3.transfer.TransferObjectConfiguration;
 import net.histos.java2as.as3.transfer.TransferObjectProducer;
-import net.histos.java2as.core.conf.PackageMapper;
-import net.histos.java2as.core.conf.PropertyMapper;
-import net.histos.java2as.core.conf.TypeMapper;
-import net.histos.java2as.core.conf.TypeMatcher;
+import net.histos.java2as.core.conf.*;
 import net.histos.java2as.core.conf.packages.PackageMapperRule;
 import net.histos.java2as.core.conf.packages.RuleBasedPackageMapper;
 import org.apache.commons.io.FileUtils;
@@ -222,9 +220,12 @@ public class TransferObjectMojo extends AbstractMojo {
 				config.setTypeMapper(typeMapperClass.newInstance());
 			}
 
-			for (String propertyMapper : propertyMappers) {
-				Class<PropertyMapper> propertyMapperClass = (Class<PropertyMapper>) loader.loadClass(propertyMapper);
-				config.addPropertyMapper(propertyMapperClass.newInstance());
+			if (propertyMappers.length > 0) {
+				config.removeAllPropertyMappers();
+				for (String propertyMapper : propertyMappers) {
+					Class<PropertyMapper> propertyMapperClass = (Class<PropertyMapper>) loader.loadClass(propertyMapper);
+					config.addPropertyMapper(propertyMapperClass.newInstance());
+				}
 			}
 
 			if (packageMapper != null) {

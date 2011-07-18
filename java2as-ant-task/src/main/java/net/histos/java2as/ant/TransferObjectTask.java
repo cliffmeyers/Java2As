@@ -175,9 +175,12 @@ public class TransferObjectTask extends Task {
 			Class<TypeMapper<As3Type>> typeMapperClass = (Class<TypeMapper<As3Type>>) Class.forName(typeMapper);
 			config.setTypeMapper(typeMapperClass.newInstance());
 
-			for (AntPropertyMapper propertyMapper : propertyMappers) {
-				Class<PropertyMapper> propertyMapperClass = (Class<PropertyMapper>) Class.forName(propertyMapper.getClassName());
-				config.addPropertyMapper(propertyMapperClass.newInstance());
+			if (propertyMappers.size() > 0) {
+				config.removeAllPropertyMappers();
+				for (AntPropertyMapper propertyMapper : propertyMappers) {
+					Class<PropertyMapper> propertyMapperClass = (Class<PropertyMapper>) Class.forName(propertyMapper.getClassName());
+					config.addPropertyMapper(propertyMapperClass.newInstance());
+				}
 			}
 
 			for (AntTypeMatcher matcher : typeMatchers) {

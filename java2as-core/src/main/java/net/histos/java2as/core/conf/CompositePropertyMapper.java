@@ -11,12 +11,31 @@ import java.util.List;
  */
 public class CompositePropertyMapper<OUT extends Property> implements PropertyMapper {
 
+	//
+	// Fields
+	//
+
+	/**
+	 * Internal list of PropertyMappers
+	 */
 	private List<PropertyMapper<OUT>> mappers;
+
+	/**
+	 * Property mapper
+	 */
 	private TypeMapper typeMapper;
+
+	//
+	// Constructors
+	//
 
 	public CompositePropertyMapper() {
 		mappers = new ArrayList<PropertyMapper<OUT>>();
 	}
+
+	//
+	// Public Methods
+	//
 
 	public boolean canMapProperty(JavaProperty prop) {
 		for (PropertyMapper mapper : mappers)
@@ -32,20 +51,30 @@ public class CompositePropertyMapper<OUT extends Property> implements PropertyMa
 		return null;
 	}
 
-	public void addPropertyMapper(PropertyMapper<OUT> mapper) {
-		this.mappers.add(mapper);
-	}
-
 	public void setTypeMapper(TypeMapper typeMapper) {
 		this.typeMapper = typeMapper;
-		// TODO: update children
+		for (PropertyMapper mapper : mappers)
+			mapper.setTypeMapper(typeMapper);
 	}
 
-	public void addAll(List<PropertyMapper<OUT>> propertyMappers) {
-		mappers.addAll(propertyMappers);
+	public void addPropertyMapper(PropertyMapper<OUT> mapper) {
+		mappers.add(mapper);
 	}
 
-	public boolean hasMappers() {
-		return mappers.size() > 0;
+	public void removeAllMappers() {
+		mappers.clear();
 	}
+
+	//
+	// Getters and Setters
+	//
+
+	public List<PropertyMapper<OUT>> getMappers() {
+		return mappers;
+	}
+
+	public void setMappers(List<PropertyMapper<OUT>> mappers) {
+		this.mappers = mappers;
+	}
+
 }

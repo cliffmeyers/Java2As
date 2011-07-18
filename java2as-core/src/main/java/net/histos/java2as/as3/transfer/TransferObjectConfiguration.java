@@ -1,6 +1,7 @@
 package net.histos.java2as.as3.transfer;
 
 import net.histos.java2as.as3.AbstractAs3Configuration;
+import net.histos.java2as.core.conf.CompositePropertyMapper;
 import net.histos.java2as.core.conf.PropertyMapper;
 import net.histos.java2as.core.conf.TypeMatcher;
 
@@ -26,9 +27,9 @@ public class TransferObjectConfiguration extends AbstractAs3Configuration {
 	//
 
 	/**
-	 * PropertyMappers to convert Java properties to AS3 properties
+	 * PropertyMapper that converts
 	 */
-	private List<PropertyMapper<As3Property>> propertyMappers;
+	private CompositePropertyMapper<As3Property> propertyMapper;
 
 	/**
 	 * Directory in which to generate "custom" classes (e.g. User)
@@ -68,8 +69,8 @@ public class TransferObjectConfiguration extends AbstractAs3Configuration {
 
 	public TransferObjectConfiguration() {
 		super();
-		propertyMappers = new ArrayList<PropertyMapper<As3Property>>();
-		propertyMappers.add(new DefaultAs3PropertyMapper());
+		propertyMapper = new CompositePropertyMapper<As3Property>();
+		propertyMapper.addPropertyMapper(new DefaultAs3PropertyMapper());
 	}
 
 	//
@@ -77,7 +78,11 @@ public class TransferObjectConfiguration extends AbstractAs3Configuration {
 	//
 
 	public void addPropertyMapper(PropertyMapper<As3Property> mapper) {
-		propertyMappers.add(mapper);
+		propertyMapper.addPropertyMapper(mapper);
+	}
+
+	public void removeAllPropertyMappers() {
+		propertyMapper.removeAllMappers();
 	}
 
 	public String[] getConfigurationSummary() {
@@ -85,8 +90,8 @@ public class TransferObjectConfiguration extends AbstractAs3Configuration {
 		StringBuilder summary = new StringBuilder();
 
 		summary.append("typeMapper=" + typeMapper.getClass().getName() + N);
-		for (PropertyMapper propertyMapper : propertyMappers)
-			summary.append("propertyMapper=" + propertyMapper.getClass().getName() + N);
+		for (PropertyMapper childPropertyMapper : propertyMapper.getMappers())
+			summary.append("propertyMapper=" + childPropertyMapper.getClass().getName() + N);
 		summary.append("packageMapper=" + packageMapper.getClass().getName() + N);
 		for (TypeMatcher matcher : typeMatchers)
 			summary.append("typeMatcher=" + matcher.getClass().getName() + N);
@@ -104,12 +109,12 @@ public class TransferObjectConfiguration extends AbstractAs3Configuration {
 	// Getters and Setters
 	//
 
-	public List<PropertyMapper<As3Property>> getPropertyMappers() {
-		return propertyMappers;
+	public CompositePropertyMapper<As3Property> getPropertyMapper() {
+		return propertyMapper;
 	}
 
-	public void setPropertyMappers(List<PropertyMapper<As3Property>> mappers) {
-		this.propertyMappers = mappers;
+	public void setPropertyMapper(CompositePropertyMapper<As3Property> propertyMapper) {
+		this.propertyMapper = propertyMapper;
 	}
 
 	public File getBaseClassDir() {
