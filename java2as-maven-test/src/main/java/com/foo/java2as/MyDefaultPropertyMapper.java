@@ -1,6 +1,6 @@
 package com.foo.java2as;
 
-import flexserverlib.java2as.as3.transfer.DefaultAs3PropertyMapper;
+import net.histos.java2as.as3.transfer.DefaultAs3PropertyMapper;
 
 /**
  * @author cliff.meyers

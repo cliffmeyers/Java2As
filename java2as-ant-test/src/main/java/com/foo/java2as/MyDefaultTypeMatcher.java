@@ -1,6 +1,6 @@
 package com.foo.java2as;
 
-import flexserverlib.java2as.core.conf.TypeMatcher;
+import net.histos.java2as.core.conf.TypeMatcher;
 
 /**
  * @author cliff.meyers

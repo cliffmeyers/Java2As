@@ -6,8 +6,8 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
+		<groupId>net.histos</groupId>
 		<artifactId>java2as</artifactId>
-		<groupId>flexserverlib</groupId>
 		<version>1.0-SNAPSHOT</version>
 	</parent>
 
@@ -15,7 +15,7 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>flexserverlib</groupId>
+			<groupId>net.histos</groupId>
 			<artifactId>java2as-core</artifactId>
 			<version>1.0-SNAPSHOT</version>
 		</dependency>
