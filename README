@@ -1,0 +1,9 @@
+MODULES
+java2as-core: core code generation functionality (depends only on freemarker and commons-lang)
+java2as-ant-task: wraps core functionality in Ant Task
+java2as-ant-maven: wraps core functionality in Maven Mojo
+java2as-ant-test: tests Ant integration
+java2as-maven-test: tests Maven integration
+
+NOTES
+Use script files to execute tests of Ant and Maven integration
