@@ -41,10 +41,22 @@ public class DefaultAs3TypeMapper implements TypeMapper<As3Type> {
 		defaultMappings.put(BigDecimal.class, As3SimpleType.String);
 	}
 
+	/**
+	 * Decides whether the mapper should even try to map the type.
+	 *
+	 * @param javaType Java type to map.
+	 * @return True if the mapper will map the property.
+	 */
 	public boolean canMapType(Class<?> javaType) {
 		return true;
 	}
 
+	/**
+	 * Converts a Java type into an ActionScript type.
+	 *
+	 * @param javaType The java type to map.
+	 * @return The converted ActionScript type.
+	 */
 	public As3Type mapType(Class<?> javaType) {
 		if (javaType == null) return null;
 		if (javaType.isEnum()) return As3SimpleType.String;

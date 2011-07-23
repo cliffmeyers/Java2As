@@ -9,10 +9,16 @@ import net.histos.java2as.core.conf.PackageMapper;
  */
 public class DefaultPackageMapper implements PackageMapper {
 
+	/**
+	 * @inheritDoc
+	 */
 	public boolean canMap(String packageName) {
 		return true;
 	}
 
+	/**
+	 * @inheritDoc
+	 */
 	public String performMap(String packageName) {
 		return packageName;
 	}

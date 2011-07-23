@@ -1,31 +1,44 @@
 package net.histos.java2as.as3;
 
 /**
+ * Represents a custom AS3 type that is not a built-in.
+ *
  * @author cliff.meyers
  */
 public class As3CustomType implements As3Type {
 
+	//
+	// Fields
+	//
+	
+	/**
+	 * Backing Java class for this custom type.
+	 */
 	private Class<?> clazz;
+
+	/**
+	 * Fully-qualified name for this type.
+	 */
 	private String qualifiedName;
+
+	/**
+	 * Short name for this type.
+	 */
 	private String simpleName;
 
+	//
+	// Constructors
+	//
+	
 	public As3CustomType(Class<?> clazz) {
 		this.clazz = clazz;
 		this.qualifiedName = clazz.getName();
 		this.simpleName = clazz.getSimpleName();
 	}
 
-	public boolean isCustomType() {
-		return true;
-	}
-
-	public String getQualifiedName() {
-		return qualifiedName;
-	}
-
-	public String getSimpleName() {
-		return simpleName;
-	}
+	//
+	// Public Methods
+	//
 
 	@Override
 	public boolean equals(Object o) {
@@ -39,6 +52,22 @@ public class As3CustomType implements As3Type {
 	@Override
 	public int hashCode() {
 		return clazz.hashCode();
+	}
+
+	//
+	// Getters and Setters
+	//
+
+	public boolean isCustomType() {
+		return true;
+	}
+
+	public String getQualifiedName() {
+		return qualifiedName;
+	}
+
+	public String getSimpleName() {
+		return simpleName;
 	}
 
 }

@@ -8,6 +8,9 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Wraps a java.lang.reflect.Method instance to provide additional metadata.
+ */
 public class JavaMethod {
 
 	private static boolean PARAMETER_NAMES_ALREADY_MISSING = false;

@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Description
+ * Models a Java service and its available methods.
  *
  * @author cliff.meyers
  */

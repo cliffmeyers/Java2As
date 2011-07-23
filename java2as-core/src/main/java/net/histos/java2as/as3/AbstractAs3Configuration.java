@@ -4,7 +4,7 @@ import net.histos.java2as.core.conf.AbstractConfiguration;
 import net.histos.java2as.core.conf.TypeMapper;
 
 /**
- * Description
+ * Convenience configuration class for ActionScript generation which includes a default AS3 TypeMapper.
  *
  * @author cliff.meyers
  */
@@ -15,7 +15,7 @@ public abstract class AbstractAs3Configuration extends AbstractConfiguration {
 	//
 
 	/**
-	 * TypeMapper
+	 * TypeMapper to use
 	 */
 	protected TypeMapper<As3Type> typeMapper;
 

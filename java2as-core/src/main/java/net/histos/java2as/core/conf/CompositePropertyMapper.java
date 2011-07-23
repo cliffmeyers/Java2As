@@ -7,6 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * PropertyMapper impl that allows multiple child PropertyMapper instances.
+ * Mappers are searched in the order they've been added: first match wins.
+ *
  * @author cliff.meyers
  */
 public class CompositePropertyMapper<OUT extends Property> implements PropertyMapper {

@@ -3,6 +3,9 @@ package net.histos.java2as.as3;
 import net.histos.java2as.as3.transfer.As3Dependency;
 
 /**
+ * Default implementation of dependency resolver.
+ * Delegates to the As3Dependency.requiresImport and also ignores dependencies in the same package or the "java" package.
+ *
  * @author cliff.meyers
  */
 public class DefaultDependencyResolver implements DependencyResolver {

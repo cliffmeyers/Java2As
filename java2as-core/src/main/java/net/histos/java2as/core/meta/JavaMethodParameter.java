@@ -3,7 +3,7 @@ package net.histos.java2as.core.meta;
 import java.lang.annotation.Annotation;
 
 /**
- * Description
+ * Contains metadata about a Java method parameter / argument.
  *
  * @author cliff.meyers
  */
@@ -13,8 +13,19 @@ public class JavaMethodParameter {
 	// Fields
 	//
 
+	/**
+	 * Name of the parameter, if available.
+	 */
 	private String name;
+
+	/**
+	 * Type of the Java parameter.
+	 */
 	private Class<?> type;
+
+	/**
+	 * Annotations on the parameter.
+	 */
 	private Annotation[] annotations;
 
 	//

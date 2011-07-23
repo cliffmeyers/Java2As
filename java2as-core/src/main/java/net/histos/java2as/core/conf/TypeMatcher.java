@@ -1,7 +1,7 @@
 package net.histos.java2as.core.conf;
 
 /**
- * Decides whether a type should be included
+ * Decides whether a type should be included for generation.
  *
  * @author cliff.meyers
  */

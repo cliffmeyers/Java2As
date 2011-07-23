@@ -7,7 +7,8 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Description
+ * PackageMapper impl that allows a collection of rules to be defined.
+ * Rules are applied hierarchically, so the most specific (deeply-nested) package name will match.
  *
  * @author cliff.meyers
  */

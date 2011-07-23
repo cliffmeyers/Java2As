@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Base class that provides support for
+ * Base class that provides support for type matching and package mapping.
  */
 public abstract class AbstractConfiguration {
 

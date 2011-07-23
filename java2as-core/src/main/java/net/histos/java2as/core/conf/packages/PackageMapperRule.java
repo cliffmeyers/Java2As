@@ -3,7 +3,7 @@ package net.histos.java2as.core.conf.packages;
 import net.histos.java2as.core.conf.PackageMapper;
 
 /**
- * Description
+ * Converts a package name starting with "originPackage" to one starting with "targetPackage"
  *
  * @author cliff.meyers
  */

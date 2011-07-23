@@ -1,7 +1,7 @@
 package net.histos.java2as.core.conf;
 
 /**
- * Description
+ * Maps one package name to another package name.
  *
  * @author cliff.meyers
  */

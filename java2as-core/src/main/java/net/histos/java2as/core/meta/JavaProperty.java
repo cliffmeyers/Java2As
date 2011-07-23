@@ -63,12 +63,17 @@ public class JavaProperty implements Property<Class<?>> {
 		return type;
 	}
 
+	/**
+	 * @return True if the type is an Array or a java.util.Collection
+	 */
 	public boolean isArrayType() {
 		Class<?> javaType = getType();
 		return javaType.isArray() || Collection.class.isAssignableFrom(javaType);
 	}
 
 	/**
+	 * a
+	 * 
 	 * @return The type contained in the array type, or Object.class if untyped.
 	 */
 	public Class<?> getArrayElementType() {

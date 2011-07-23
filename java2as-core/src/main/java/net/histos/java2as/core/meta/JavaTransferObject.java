@@ -14,6 +14,11 @@ public class JavaTransferObject {
 	private Class<?> clazz;
 	private List<JavaProperty> properties;
 
+	/**
+	 * Constructs a Java transfer object based off a Java class.
+	 *
+	 * @param clazz Java class
+	 */
 	public JavaTransferObject(Class<?> clazz) {
 		this.clazz = clazz;
 		this.properties = new ArrayList<JavaProperty>();
@@ -46,7 +51,6 @@ public class JavaTransferObject {
 	public String toString() {
 		return "JavaTransferObject{" + clazz + '}';
 	}
-
 
 	//
 	// Getters and Setters
