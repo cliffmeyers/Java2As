@@ -20,6 +20,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * Generates ActionScript transfer objects based off some Java transfer objects.
+ * 
  * @author cliff.meyers
  */
 public class TransferObjectProducer extends AbstractProducer {
@@ -110,6 +112,12 @@ public class TransferObjectProducer extends AbstractProducer {
 	// Protected Methods
 	//
 
+	/**
+	 * Builds transfer object metadata for supplied transfer object classes.
+	 *
+	 * @param classes Java classes
+	 * @return Java transfer objects
+	 */
 	protected List<JavaTransferObject> buildMetadata(List<Class<?>> classes) {
 		List<JavaTransferObject> transferObjects = new ArrayList<JavaTransferObject>();
 		for (Class<?> clazz : classes)

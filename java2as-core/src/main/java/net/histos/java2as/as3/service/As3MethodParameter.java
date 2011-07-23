@@ -3,7 +3,7 @@ package net.histos.java2as.as3.service;
 import net.histos.java2as.as3.As3Type;
 
 /**
- * Description
+ * Represents a method parameter for an ActionScript service delegate method
  *
  * @author cliff.meyers
  */

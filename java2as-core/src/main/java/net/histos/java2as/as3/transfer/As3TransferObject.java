@@ -9,7 +9,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Represents an ActionScript transfer object class.
+ */
 public class As3TransferObject {
+
+	//
+	// Fields
+	//
 
 	private JavaTransferObject transferObject;
 	private List<As3Property> properties;
@@ -21,6 +28,15 @@ public class As3TransferObject {
 	private String importsFragment = "";
 	private String polymorphicsFragment = "";
 
+	//
+	// Constructors
+	//
+
+	/**
+	 * Constructs an ActionScript transfer object based on the Java transfer object.
+	 *
+	 * @param transferObject Java transfer object.
+	 */
 	public As3TransferObject(JavaTransferObject transferObject) {
 		this.transferObject = transferObject;
 		this.properties = new ArrayList<As3Property>();
@@ -31,11 +47,21 @@ public class As3TransferObject {
 	// Public Methods
 	//
 
+	/**
+	 * Adds a property to this transfer object.
+	 *
+	 * @param property Property.
+	 */
 	public void addProperty(As3Property property) {
 		this.properties.add(property);
 		addDependency(property.getDependency());
 	}
 
+	/**
+	 * Adds a dependency to this transfer object
+	 *
+	 * @param dependency Dependency.
+	 */
 	public void addDependency(As3Dependency dependency) {
 		this.dependencies.add(dependency);
 	}
@@ -44,7 +70,7 @@ public class As3TransferObject {
 	 * Updates metadata based on the supplied DependencyResolver.
 	 *
 	 * @param packageMapper
-	 * @param dependencyResolver
+	 * @param dependencyResolver DependencyResolver to use for deciding if/how an item gets imported.
 	 */
 	public void buildMetadata(PackageMapper packageMapper, DependencyResolver dependencyResolver) {
 
@@ -71,7 +97,7 @@ public class As3TransferObject {
 	/**
 	 * Builds multi-line string fragment declaring all imported types.
 	 *
-	 * @param dependencyResolver
+	 * @param dependencyResolver DependencyResolver to use for deciding if/how an item gets imported.
 	 */
 	protected void buildImportsFragment(DependencyResolver dependencyResolver) {
 
@@ -92,6 +118,7 @@ public class As3TransferObject {
 		StringBuilder fragment = new StringBuilder();
 
 		// build a nicely formatted string with empty lines between new top-level packages
+		// this matches the Flex Builder "organize imports" feature
 		String prevTopLevelPackage = "";
 		for (String importLine : imports) {
 			String nextTopLevelPackage = importLine.substring(0, importLine.indexOf("."));
@@ -110,7 +137,7 @@ public class As3TransferObject {
 	/**
 	 * Builds the string used to declare superclass and implemented interfaces.
 	 *
-	 * @param dependencyResolver
+	 * @param dependencyResolver DependencyResolver to use for deciding if/how an item gets imported.
 	 */
 	protected void buildPolymorphicsFragment(DependencyResolver dependencyResolver) {
 

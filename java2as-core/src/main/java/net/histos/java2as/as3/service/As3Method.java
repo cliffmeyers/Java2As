@@ -9,10 +9,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Description
+ * Represents a method on an ActionScript service delegate
  *
  * @author cliff.meyers
  */
+// TODO: should this and JavaMethod impl a generic interface?
 public class As3Method {
 
 	//

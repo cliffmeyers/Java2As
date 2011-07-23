@@ -27,7 +27,7 @@ public class TransferObjectConfiguration extends AbstractAs3Configuration {
 	//
 
 	/**
-	 * PropertyMapper that converts
+	 * Default PropertyMapper that can hold other user-defined PropertyMappers.
 	 */
 	private CompositePropertyMapper<As3Property> propertyMapper;
 
@@ -77,14 +77,27 @@ public class TransferObjectConfiguration extends AbstractAs3Configuration {
 	// Public Methods
 	//
 
+	/**
+	 * Adds a new PropertyMapper to the end of the list (lowest priority)
+	 *
+	 * @param mapper PropertyMapper to add
+	 */
 	public void addPropertyMapper(PropertyMapper<As3Property> mapper) {
 		propertyMapper.addPropertyMapper(mapper);
 	}
 
+	/**
+	 * Remove all registered PropertyMappers.
+	 */
 	public void removeAllPropertyMappers() {
 		propertyMapper.removeAllMappers();
 	}
 
+	/**
+	 * Returns String-based representation of the configuration
+	 *
+	 * @return Config information
+	 */
 	public String[] getConfigurationSummary() {
 
 		StringBuilder summary = new StringBuilder();

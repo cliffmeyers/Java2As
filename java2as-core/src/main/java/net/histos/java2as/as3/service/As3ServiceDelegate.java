@@ -11,7 +11,9 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Description
+ * ActionScript Service Delegate that communicates with a Java service
+ *
+ * @see net.histos.java2as.core.meta.JavaService
  *
  * @author cliff.meyers
  */
@@ -63,6 +65,12 @@ public class As3ServiceDelegate {
 		this.dependencies.addAll(method.getDependencies());
 	}
 
+	/**
+	 * Updates metadata based on the supplied DependencyResolver.
+	 *
+	 * @param packageMapper Maps the package for the service.
+	 * @param dependencyResolver DependencyResolver to use for deciding if/how an item gets imported.
+	 */
 	public void buildMetadata(PackageMapper packageMapper, DependencyResolver dependencyResolver) {
 
 		simpleName = service.getSimpleName();
@@ -85,6 +93,11 @@ public class As3ServiceDelegate {
 	// Protected Methods
 	//
 
+	/**
+	 * Builds multi-line string fragment declaring all imported types.
+	 *
+	 * @param dependencyResolver DependencyResolver to use for deciding if/how an item gets imported.
+	 */
 	protected void buildImportsFragment(DependencyResolver dependencyResolver) {
 
 		List<String> imports = new ArrayList<String>();
@@ -121,6 +134,11 @@ public class As3ServiceDelegate {
 
 	}
 
+	/**
+	 * Builds the string used to declare superclass and implemented interfaces.
+	 *
+	 * @param dependencyResolver DependencyResolver to use for deciding if/how an item gets imported.
+	 */
 	protected void buildPolymorphicsFragment(DependencyResolver dependencyResolver) {
 
 		String fragment = "";

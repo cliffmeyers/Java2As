@@ -8,6 +8,9 @@ import net.histos.java2as.core.meta.JavaProperty;
 
 import java.lang.annotation.Annotation;
 
+/**
+ * Provides a nullable type for properties annotated as JPA Identifiers (@Id)
+ */
 public class JpaIdentifierAs3PropertyMapper implements PropertyMapper<As3Property> {
 
 	/**

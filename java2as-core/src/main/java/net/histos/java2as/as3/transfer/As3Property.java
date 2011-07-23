@@ -5,6 +5,9 @@ import net.histos.java2as.core.meta.DependencyKind;
 import net.histos.java2as.core.meta.JavaProperty;
 import net.histos.java2as.core.meta.Property;
 
+/**
+ * Represents an ActionScript property
+ */
 public class As3Property implements Property<As3Type> {
 
 	//
@@ -23,10 +26,24 @@ public class As3Property implements Property<As3Type> {
 	// Constructors
 	//
 
+	/**
+	 * Constructs a simple property based off the backing Java property and the mapped ActionScript type.
+	 *
+	 * @param property Backing Java property
+	 * @param type Mapped ActionScript type
+	 */
 	public As3Property(JavaProperty property, As3Type type) {
 		this(property, type, false, null);
 	}
 
+	/**
+	 * Constructs a simple or array-type property based off backing Java property and type information.
+	 *
+	 * @param property Backing Java property.
+	 * @param type Mapped ActionScript type.
+	 * @param arrayType True if the property is an Array or ArrayCollection
+	 * @param arrayElementType If an array type, the type of element it holds.
+	 */
 	public As3Property(JavaProperty property, As3Type type, boolean arrayType, As3Type arrayElementType) {
 		this.property = property;
 		this.name = property.getName();

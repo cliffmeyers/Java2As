@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Description
+ * Default implementation of MethodMapper that maps all available methods.
  *
  * @author cliff.meyers
  */

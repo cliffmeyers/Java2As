@@ -6,6 +6,8 @@ import net.histos.java2as.core.meta.DependencyKind;
 import org.apache.commons.lang.ArrayUtils;
 
 /**
+ * Represents a dependency that the host ActionScript class has to a collaborator.
+ *
  * @author cliff.meyers
  */
 public class As3Dependency {
@@ -36,6 +38,12 @@ public class As3Dependency {
 	// Constructors
 	//
 
+	/**
+	 * Constructs an ActionScript dependency based on its kind and underlying type.
+	 *
+	 * @param dependencyKind Kind of dependency.
+	 * @param dependencyType Backing ActionScript type.
+	 */
 	public As3Dependency(DependencyKind dependencyKind, As3Type dependencyType) {
 		this.dependencyType = dependencyType;
 		this.dependencyKind = dependencyKind;

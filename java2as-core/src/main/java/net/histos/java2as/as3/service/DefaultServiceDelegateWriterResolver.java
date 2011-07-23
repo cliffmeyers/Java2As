@@ -8,7 +8,8 @@ import java.io.IOException;
 import java.io.Writer;
 
 /**
- * Description
+ * Default implementation of ServiceDelegateWriterResolver.
+ * Writes classes to the file system based on their package name.
  *
  * @author cliff.meyers
  */
@@ -33,9 +34,9 @@ public class DefaultServiceDelegateWriterResolver implements ServiceDelegateWrit
 	// Constructor
 	//
 
-	public DefaultServiceDelegateWriterResolver(File serviceImplDirectory, File serviceInterfaceDirectory) {
+	public DefaultServiceDelegateWriterResolver(File serviceImplDirectory /*, File serviceInterfaceDirectory*/) {
 		this.serviceImplDirectory = serviceImplDirectory;
-		this.serviceInterfaceDirectory = serviceInterfaceDirectory;
+		//this.serviceInterfaceDirectory = serviceInterfaceDirectory;
 	}
 
 	//
@@ -56,6 +57,7 @@ public class DefaultServiceDelegateWriterResolver implements ServiceDelegateWrit
 
 	}
 
+	/*
 	public Writer resolveServiceInterface(As3ServiceDelegate service) {
 
 		File directory = resolveDirectoryForClass(serviceInterfaceDirectory, service);
@@ -69,11 +71,19 @@ public class DefaultServiceDelegateWriterResolver implements ServiceDelegateWrit
 		}
 
 	}
+	*/
 
 	//
 	// Protected Methods
 	//
 
+	/**
+	 * Determines to which directory the file should be written.
+	 *
+	 * @param rootDirectory Root directory for all classes
+	 * @param service ActionScript service delegate to generate
+	 * @return File representing the directory where file contents should be written
+	 */
 	protected File resolveDirectoryForClass(File rootDirectory, As3ServiceDelegate service) {
 		String rootDir = rootDirectory.getAbsolutePath();
 		String relativePath = StringUtils.replace(service.getPackageName(), ".", File.separator);
@@ -81,6 +91,13 @@ public class DefaultServiceDelegateWriterResolver implements ServiceDelegateWrit
 		return new File(pathToDirectory);
 	}
 
+	/**
+	 * Determines to which file the file should be written.
+	 *
+	 * @param rootDirectory Root directory for all classes
+	 * @param service ActionScript service delegate to generate
+	 * @return File where file contents should be written
+	 */
 	protected File resolveFileForClass(File rootDirectory, As3ServiceDelegate service) {
 		String pathToDirectory = resolveDirectoryForClass(rootDirectory, service).getAbsolutePath();
 		String filename = service.getSimpleName() + FILENAME_SUFFIX;

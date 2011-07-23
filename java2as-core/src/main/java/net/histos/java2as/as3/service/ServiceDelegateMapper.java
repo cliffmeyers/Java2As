@@ -16,9 +16,15 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * Maps a list of Java services into ActionScript service delegates.
+ *
  * @author cliff.meyers
  */
 public class ServiceDelegateMapper {
+
+	//
+	// Fields
+	//
 
 	private MethodMapper methodMapper;
 	private TypeMapper<As3Type> typeMapper;
@@ -44,6 +50,12 @@ public class ServiceDelegateMapper {
 	// Public Methods
 	//
 
+	/**
+	 * Maps a list of Java services into ActionScript service delegates.
+	 *
+	 * @param javaServices List of Java services to map.
+	 * @return List of ActionScript service delegates.
+	 */
 	public List<As3ServiceDelegate> performMappings(List<JavaService> javaServices) {
 
 		this.as3Delegates = new ArrayList<As3ServiceDelegate>();
@@ -62,6 +74,12 @@ public class ServiceDelegateMapper {
 	// Protected Methods
 	//
 
+	/**
+	 * Performs mapping of a single object.
+	 *
+	 * @param javaService Java service to map.
+	 * @return ActionScript service delegate
+	 */
 	protected As3ServiceDelegate performMap(JavaService javaService) {
 
 		As3ServiceDelegate as3Delegate = new As3ServiceDelegate(javaService);

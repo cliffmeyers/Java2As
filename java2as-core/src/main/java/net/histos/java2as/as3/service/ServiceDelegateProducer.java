@@ -16,6 +16,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Generates ActionScript service delegates based off some Java services.
+ *
+ * @author cliff.meyers
+ */
 public class ServiceDelegateProducer extends AbstractProducer {
 
 	//
@@ -23,7 +28,7 @@ public class ServiceDelegateProducer extends AbstractProducer {
 	//
 
 	private static final String SERVICE_IMPL_FTL = "service-impl.ftl";
-	private static final String SERVICE_INTERFACE_FTL = "service-interface.ftl";
+	// private static final String SERVICE_INTERFACE_FTL = "service-interface.ftl";
 
 	//
 	// Fields
@@ -40,7 +45,7 @@ public class ServiceDelegateProducer extends AbstractProducer {
 	public ServiceDelegateProducer(ServiceDelegateConfiguration config, List<Class<?>> classes) {
 		this.config = config;
 		this.classes = classes;
-		this.writerResolver = new DefaultServiceDelegateWriterResolver(config.getServiceImplDir(), config.getServiceInterfaceDir());
+		this.writerResolver = new DefaultServiceDelegateWriterResolver(config.getServiceImplDir() /*, config.getServiceInterfaceDir()*/);
 	}
 
 	//
@@ -71,7 +76,7 @@ public class ServiceDelegateProducer extends AbstractProducer {
 		try {
 
 			Template serviceImplTemplate = fmConfig.getTemplate(SERVICE_IMPL_FTL);
-			Template serviceInterfaceTemplate = fmConfig.getTemplate(SERVICE_INTERFACE_FTL);
+			//Template serviceInterfaceTemplate = fmConfig.getTemplate(SERVICE_INTERFACE_FTL);
 			Map<String, Object> model = new HashMap<String, Object>();
 
 			// generate files
@@ -83,11 +88,12 @@ public class ServiceDelegateProducer extends AbstractProducer {
 				serviceImplTemplate.process(model, writer1);
 
 				/*
-								if (config.isGenerateInterfaces()) {
-									Writer writer2 = writerResolver.resolveServiceInterface(service);
-									serviceInterfaceTemplate.process(model, writer2);
-								}
-								*/
+				TODO: should we even bother with interfaces?
+				if (config.isGenerateInterfaces()) {
+					Writer writer2 = writerResolver.resolveServiceInterface(service);
+					serviceInterfaceTemplate.process(model, writer2);
+				}
+				*/
 
 			}
 

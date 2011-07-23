@@ -6,6 +6,10 @@ import net.histos.java2as.core.conf.PropertyMapper;
 import net.histos.java2as.core.conf.TypeMapper;
 import net.histos.java2as.core.meta.JavaProperty;
 
+/**
+ * Default implement of PropertyMapper for ActionScript properties.
+ * Uses default ActionScript type conversion and maps all available properties.
+ */
 public class DefaultAs3PropertyMapper implements PropertyMapper<As3Property> {
 
 	//

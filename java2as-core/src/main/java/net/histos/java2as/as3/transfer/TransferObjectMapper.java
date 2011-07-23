@@ -16,9 +16,15 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * Maps a list of Java transfer objects into ActionScript trnansfer objects.
+ *
  * @author cliff.meyers
  */
 public class TransferObjectMapper {
+
+	//
+	// Fields
+	//
 
 	private PropertyMapper<As3Property> propertyMapper;
 	private TypeMapper<As3Type> typeMapper;
@@ -45,6 +51,12 @@ public class TransferObjectMapper {
 	// Public Methods
 	//
 
+	/**
+	 * Maps a list of Java transfer objects into ActionScript trnansfer objects.
+	 *
+	 * @param javaTransferObjects List of Java transfer objects to map.
+	 * @return List of VActionScript transfer objects.
+	 */
 	public List<As3TransferObject> performMappings(List<JavaTransferObject> javaTransferObjects) {
 
 		this.javaTransferObjects = javaTransferObjects;
@@ -66,6 +78,12 @@ public class TransferObjectMapper {
 	// Protected Methods
 	//
 
+	/**
+	 * Performs mapping of a single object.
+	 *
+	 * @param javaTransferObject Java transfer object to map.
+	 * @return ActionScript transfer object
+	 */
 	protected As3TransferObject performMap(JavaTransferObject javaTransferObject) {
 
 		As3TransferObject as3TransferObject = new As3TransferObject(javaTransferObject);
