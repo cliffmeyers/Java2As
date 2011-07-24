@@ -101,13 +101,26 @@ public class TransferObjectMapper {
 
 		// map each property
 		for (JavaProperty javaProperty : javaTransferObject.getProperties()) {
-			As3Property as3Property = propertyMapper.mapProperty(javaProperty);
-			as3TransferObject.addProperty(as3Property);
+			mapProperty(as3TransferObject, javaProperty);
 		}
 
 		as3TransferObject.buildMetadata(packageMapper, dependencyResolver);
 		return as3TransferObject;
 
+	}
+
+	// TODO: may want to move this logic into TransferObject.addProperty
+	/**
+	 * Maps the Java property to the AS3 transfer object.
+	 * If property mapper returns null then the property is ignored.
+	 *
+	 * @param transferObject Transfer object that will receive the property.
+	 * @param javaProperty   Java property to map.
+	 */
+	protected void mapProperty(As3TransferObject transferObject, JavaProperty javaProperty) {
+		As3Property as3Property = propertyMapper.mapProperty(javaProperty);
+		if (as3Property != null)
+			transferObject.addProperty(as3Property);
 	}
 
 }
