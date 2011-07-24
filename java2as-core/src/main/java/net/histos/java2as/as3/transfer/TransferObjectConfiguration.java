@@ -4,10 +4,10 @@ import net.histos.java2as.as3.AbstractAs3Configuration;
 import net.histos.java2as.core.conf.CompositePropertyMapper;
 import net.histos.java2as.core.conf.PropertyMapper;
 import net.histos.java2as.core.conf.TypeMatcher;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Encapsulates the different configuration properties available when generating Transfer Objects.
@@ -15,6 +15,8 @@ import java.util.List;
  * @author cliff.meyers
  */
 public class TransferObjectConfiguration extends AbstractAs3Configuration {
+
+	private Logger _log = LoggerFactory.getLogger(getClass());
 
 	//
 	// Statics
@@ -94,27 +96,21 @@ public class TransferObjectConfiguration extends AbstractAs3Configuration {
 	}
 
 	/**
-	 * Returns String-based representation of the configuration
-	 *
-	 * @return Config information
+	 * Prints configuration summary to INFO
 	 */
-	public String[] getConfigurationSummary() {
+	public void logConfiguration() {
 
-		StringBuilder summary = new StringBuilder();
-
-		summary.append("typeMapper=" + typeMapper.getClass().getName() + N);
+		_log.info("typeMapper=" + typeMapper.getClass().getName());
 		for (PropertyMapper childPropertyMapper : propertyMapper.getMappers())
-			summary.append("propertyMapper=" + childPropertyMapper.getClass().getName() + N);
-		summary.append("packageMapper=" + packageMapper.getClass().getName() + N);
+			_log.info("propertyMapper=" + childPropertyMapper.getClass().getName());
+		_log.info("packageMapper=" + packageMapper.getClass().getName());
 		for (TypeMatcher matcher : typeMatchers)
-			summary.append("typeMatcher=" + matcher.getClass().getName() + N);
+			_log.info("typeMatcher=" + matcher.getClass().getName());
 
-		summary.append("customClassDir=" + customClassDir + N);
-		summary.append("baseClassDir=" + baseClassDir + N);
-		summary.append("customClassTemplate=" + (customClassTemplate != null ? customClassTemplate : "null; will use default") + N);
-		summary.append("baseClassTemplate=" + (baseClassTemplate != null ? baseClassTemplate : "null; will use default") + N);
-
-		return summary.toString().split(N);
+		_log.info("customClassDir=" + customClassDir);
+		_log.info("baseClassDir=" + baseClassDir);
+		_log.info("customClassTemplate=" + (customClassTemplate != null ? customClassTemplate : "null; will use default"));
+		_log.info("baseClassTemplate=" + (baseClassTemplate != null ? baseClassTemplate : "null; will use default"));
 
 	}
 

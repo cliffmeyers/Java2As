@@ -1,5 +1,8 @@
 package net.histos.java2as.as3.transfer;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.PrintWriter;
 import java.io.Writer;
 
@@ -10,6 +13,8 @@ import java.io.Writer;
  * @author cliff.meyers
  */
 public class PrintWriterResolver implements TransferObjectWriterResolver {
+
+	private Logger _log = LoggerFactory.getLogger(getClass());
 
 	/**
 	 * @inheritDoc

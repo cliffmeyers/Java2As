@@ -2,6 +2,8 @@ package net.histos.java2as.core.meta;
 
 import com.thoughtworks.paranamer.CachingParanamer;
 import com.thoughtworks.paranamer.Paranamer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -13,6 +15,7 @@ import java.util.List;
  */
 public class JavaMethod {
 
+	private Logger _log = LoggerFactory.getLogger(getClass());
 	private static boolean PARAMETER_NAMES_ALREADY_MISSING = false;
 
 	//
@@ -44,9 +47,8 @@ public class JavaMethod {
 				// only display this warning once
 				if (!PARAMETER_NAMES_ALREADY_MISSING) {
 					PARAMETER_NAMES_ALREADY_MISSING = true;
-					System.out.println("WARNING!");
-					System.out.println("Parameter name information could not be found.");
-					System.out.println("Use Paranamer to post-process your classes to enable this feature.");
+					_log.warn("Parameter name information could not be found.");
+					_log.warn("Use Paranamer to post-process your classes to enable this feature.");
 				}
 				// recover gracefully by using "arg0", "arg1" instead
 				names = new String[types.length];

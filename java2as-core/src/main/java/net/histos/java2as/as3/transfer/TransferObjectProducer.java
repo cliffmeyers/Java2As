@@ -10,6 +10,8 @@ import net.histos.java2as.core.meta.JavaTransferObject;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
@@ -25,6 +27,8 @@ import java.util.Map;
  * @author cliff.meyers
  */
 public class TransferObjectProducer extends AbstractProducer {
+
+	private Logger _log = LoggerFactory.getLogger(getClass());
 
 	//
 	// Statics
@@ -61,7 +65,7 @@ public class TransferObjectProducer extends AbstractProducer {
 		// filter
 		List<Class<?>> matchingClasses = findMatchingClasses(config.getTypeMatchers(), classes);
 
-		System.out.println("java2as found classes to generate: " + matchingClasses.size() + " total");
+		_log.info("java2as found classes to generate: " + matchingClasses.size() + " total");
 
 		// build metadata
 		List<JavaTransferObject> javaTOs = buildMetadata(matchingClasses);
