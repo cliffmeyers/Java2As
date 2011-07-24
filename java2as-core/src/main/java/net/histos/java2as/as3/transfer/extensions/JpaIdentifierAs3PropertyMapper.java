@@ -10,6 +10,8 @@ import java.lang.annotation.Annotation;
 
 /**
  * Provides a nullable type for properties annotated as JPA Identifiers (@Id)
+ *
+ * @author cliff.meyers
  */
 public class JpaIdentifierAs3PropertyMapper implements PropertyMapper<As3Property> {
 
@@ -17,6 +19,7 @@ public class JpaIdentifierAs3PropertyMapper implements PropertyMapper<As3Propert
 	 * Checks or javax.persistence.Id and returns true is available
 	 */
 	public boolean canMapProperty(JavaProperty type) {
+		// TODO: add support for @Id on a field even if there are get/set pairs
 		for (Annotation annotation : type.getAnnotations())
 			if ("javax.persistence.Id".equals(annotation.annotationType().getName()))
 				return true;

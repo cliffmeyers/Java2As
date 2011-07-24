@@ -30,6 +30,31 @@
 			<version>2.3</version>
 			<optional>true</optional>
 		</dependency>
+		<!-- test dependencies -->
+		<dependency>
+			<groupId>org.jmock</groupId>
+			<artifactId>jmock</artifactId>
+			<version>2.5.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jmock</groupId>
+			<artifactId>jmock-legacy</artifactId>
+			<version>2.5.1</version>
+		</dependency>
+		<!-- only for AmfIgnoreAs3PropertyMapper -->
+		<dependency>
+			<groupId>org.springframework.flex</groupId>
+			<artifactId>spring-flex-core</artifactId>
+			<version>1.5.0.RELEASE</version>
+			<scope>test</scope>
+		</dependency>
+		<!-- only for JpaIdentifierAs3PropertyMapper -->
+		<dependency>
+			<groupId>org.hibernate.javax.persistence</groupId>
+			<artifactId>hibernate-jpa-2.0-api</artifactId>
+			<version>1.0.0.Final</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 
 </project>
