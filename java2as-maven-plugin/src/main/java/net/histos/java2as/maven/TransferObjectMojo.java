@@ -1,7 +1,6 @@
 package net.histos.java2as.maven;
 
 import net.histos.java2as.as3.As3Type;
-import net.histos.java2as.as3.transfer.As3Property;
 import net.histos.java2as.as3.transfer.TransferObjectConfiguration;
 import net.histos.java2as.as3.transfer.TransferObjectProducer;
 import net.histos.java2as.core.conf.*;
@@ -12,6 +11,9 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.impl.StaticLoggerBinder;
 
 import java.io.File;
 import java.net.URL;
@@ -27,6 +29,8 @@ import java.util.List;
  * @phase process-classes
  */
 public class TransferObjectMojo extends AbstractMojo {
+
+	private Logger _log = LoggerFactory.getLogger(getClass());
 
 	//
 	// Fields
@@ -138,6 +142,8 @@ public class TransferObjectMojo extends AbstractMojo {
 
 	public void execute() throws MojoExecutionException {
 
+		StaticLoggerBinder.getSingleton().setMavenLog(this.getLog());
+
 		config = new TransferObjectConfiguration();
 		config.setBaseClassDir(baseClassDir);
 		config.setCustomClassDir(customClassDir);
@@ -145,9 +151,8 @@ public class TransferObjectMojo extends AbstractMojo {
 		config.setCustomClassTemplate(customClassTemplate);
 		loadConfiguratonClasses(config);
 
-		getLog().info("Configuration classes loaded successfully!");
-		for (String line : config.getConfigurationSummary())
-			getLog().info(line);
+		_log.info("Configuration classes loaded successfully!");
+		config.logConfiguration();
 
 		executeProduce();
 	}
@@ -193,17 +198,17 @@ public class TransferObjectMojo extends AbstractMojo {
 				Class<?> clazz = loader.loadClass(name);
 				candidateClasses.add(clazz);
 			} catch (ClassNotFoundException e) {
-				getLog().warn("Could not load candidate class: " + name + "; will be ignored");
+				_log.warn("Could not load candidate class: " + name + "; will be ignored");
 			}
 		}
 
 		if (candidateClasses.size() == 0) {
-			getLog().warn("No candidate classes were found; produce will be skipped.");
-			getLog().warn("This is probably due to a configuration error in compiledClassesLocations");
+			_log.warn("No candidate classes were found; produce will be skipped.");
+			_log.warn("This is probably due to a configuration error in compiledClassesLocations");
 			return;
 		}
 
-		getLog().info("Candidate classes were found for generation: " + candidateClasses.size() + " total");
+		_log.info("Candidate classes were found for generation: " + candidateClasses.size() + " total");
 		producer = new TransferObjectProducer(config, candidateClasses);
 		producer.produce();
 
@@ -239,7 +244,7 @@ public class TransferObjectMojo extends AbstractMojo {
 					for (PackageMapperRule packageMapperRule : packageMapperRules)
 						ruleBasedPackageMapper.addMapperRule(packageMapperRule);
 				} else {
-					getLog().warn("PackageMapper is not an instance of RuleBasedPackageMapper; packageMapperRules have been ignored");
+					_log.warn("PackageMapper is not an instance of RuleBasedPackageMapper; packageMapperRules have been ignored");
 				}
 			}
 
