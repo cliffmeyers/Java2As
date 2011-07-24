@@ -10,6 +10,8 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
 import org.apache.tools.ant.types.FileSet;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -20,6 +22,8 @@ import java.util.List;
  * Generates transfer objects
  */
 public class TransferObjectTask extends Task {
+
+	private Logger _log = LoggerFactory.getLogger(getClass());
 
 	//
 	// Fields
@@ -90,20 +94,20 @@ public class TransferObjectTask extends Task {
 	@Override
 	public void init() throws BuildException {
 		super.init();
-		System.out.println("init");
 		config = new TransferObjectConfiguration();
 	}
 
 	@Override
 	public void execute() throws BuildException {
 
-		System.out.println("execute");
-
 		config.setCustomClassDir(customClassDir);
 		config.setBaseClassDir(baseClassDir);
 		config.setCustomClassTemplate(customClassTemplate);
 		config.setBaseClassTemplate(baseClassTemplate);
 		loadConfiguratonClasses(config);
+
+		_log.info("Configuration classes loaded successfully!");
+		config.logConfiguration();
 
 		executeProduce();
 
@@ -162,7 +166,7 @@ public class TransferObjectTask extends Task {
 			return;
 		}
 
-		System.out.println("Candidate classes were found for generation: " + candidateClasses.size() + " total");
+		_log.info("Candidate classes were found for generation: " + candidateClasses.size() + " total");
 		producer = new TransferObjectProducer(config, candidateClasses);
 		producer.produce();
 
@@ -187,10 +191,6 @@ public class TransferObjectTask extends Task {
 				Class<TypeMatcher> typeMatcherClass = (Class<TypeMatcher>) Class.forName(matcher.getClassName());
 				config.addTypeMatcher(typeMatcherClass.newInstance());
 			}
-
-			System.out.println("Configuration classes loaded successfully!");
-			for (String line : config.getConfigurationSummary())
-				System.out.println(line);
 
 		} catch (Exception e) {
 			e.printStackTrace();
