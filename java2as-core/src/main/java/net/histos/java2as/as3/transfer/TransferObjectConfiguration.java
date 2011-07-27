@@ -54,6 +54,12 @@ public class TransferObjectConfiguration extends AbstractAs3Configuration {
 	private File baseClassTemplate;
 
 	/**
+	 * Generate the "manifest" files which links to all transfer objects.
+	 * Useful if you want to include the manifest in your main application to force compile all transfer objects.
+	 */
+	private boolean generateManifest;
+
+	/**
 	 * Include [ArrayElementType] metadata for Array and ArrayCollection types.
 	 */
 	// TODO: needs impl
@@ -158,6 +164,14 @@ public class TransferObjectConfiguration extends AbstractAs3Configuration {
 		this.customClassTemplate = customClassTemplate;
 	}
 
+	public boolean isGenerateManifest() {
+		return generateManifest;
+	}
+
+	public void setGenerateManifest(boolean generateManifest) {
+		this.generateManifest = generateManifest;
+	}
+
 	public boolean getIncludeArrayElementType() {
 		return includeArrayElementType;
 	}
@@ -173,4 +187,5 @@ public class TransferObjectConfiguration extends AbstractAs3Configuration {
 	public void setTransferObjectBaseClass(String transferObjectBaseClass) {
 		this.transferObjectBaseClass = transferObjectBaseClass;
 	}
+	
 }

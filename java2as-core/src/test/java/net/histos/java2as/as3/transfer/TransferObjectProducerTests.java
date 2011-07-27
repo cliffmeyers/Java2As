@@ -40,6 +40,9 @@ public class TransferObjectProducerTests {
 	public void testProduceSystemOut() {
 
 		TransferObjectConfiguration config = new TransferObjectConfiguration();
+		config.setIncludeArrayElementType(true);
+		config.setGenerateManifest(true);
+
 		List<Class<?>> classes = Arrays.asList(
 				new Class<?>[]{
 						ArrayProperties.class,
@@ -47,8 +50,10 @@ public class TransferObjectProducerTests {
 						User2.class
 				}
 		);
+
 		TransferObjectProducer producer = new TransferObjectProducer(config, classes);
 		producer.setWriterResolver(new PrintWriterResolver());
+		producer.setManifestWriterResolver(new PrintManifestWriterResolver());
 		producer.produce();
 
 	}

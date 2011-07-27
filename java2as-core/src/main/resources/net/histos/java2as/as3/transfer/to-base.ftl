@@ -1,11 +1,11 @@
-package ${model.getPackageName()} {
+package ${model.packageName} {
 
     <#if model.importsFragment?length gt 0>
-	${model.getImportsFragment()}
+	${model.importsFragment}
     
     </#if>
 	[Bindable]
-	public class ${model.getSimpleName()}Base ${model.getPolymorphicsFragment()} {
+	public class ${model.simpleName}Base ${model.polymorphicsFragment} {
 
 		<#if model.getProperties()?size gt 0>
 		// Fields
@@ -18,6 +18,7 @@ package ${model.getPackageName()} {
 		// Getters / Setters
 
 		<#list model.getProperties() as prop>
+		<#if prop.hasMetadata>${prop.metadata}</#if>
 		public function get ${prop.getName()}():${prop.getTypeName()} {
 			return _${prop.getName()};
 		}

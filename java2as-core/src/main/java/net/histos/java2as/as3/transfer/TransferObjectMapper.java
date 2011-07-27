@@ -26,24 +26,21 @@ public class TransferObjectMapper {
 	// Fields
 	//
 
+	private TransferObjectConfiguration config;
 	private PropertyMapper<As3Property> propertyMapper;
 	private TypeMapper<As3Type> typeMapper;
 	private PackageMapper packageMapper;
 	private DependencyResolver dependencyResolver;
 
-	private Map<JavaTransferObject, As3TransferObject> transferObjectMap;
-	private List<JavaTransferObject> javaTransferObjects;
-	private List<As3TransferObject> as3TransferObjects;
-
 	//
 	// Constructors
 	//
 
-	public TransferObjectMapper(PropertyMapper<As3Property> propertyMapper, TypeMapper<As3Type> typeMapper, PackageMapper packageMapper) {
-		this.propertyMapper = propertyMapper;
-		this.typeMapper = typeMapper;
-		this.packageMapper = packageMapper;
-		this.transferObjectMap = new HashMap<JavaTransferObject, As3TransferObject>();
+	public TransferObjectMapper(TransferObjectConfiguration config) {
+		this.config = config;
+		this.propertyMapper = config.getPropertyMapper();
+		this.typeMapper = config.getTypeMapper();
+		this.packageMapper = config.getPackageMapper();
 		this.dependencyResolver = new DefaultDependencyResolver();
 	}
 
@@ -59,15 +56,11 @@ public class TransferObjectMapper {
 	 */
 	public List<As3TransferObject> performMappings(List<JavaTransferObject> javaTransferObjects) {
 
-		this.javaTransferObjects = javaTransferObjects;
-		this.as3TransferObjects = new ArrayList<As3TransferObject>();
-
 		List<As3TransferObject> as3TransferObjects = new ArrayList<As3TransferObject>();
 
 		for (JavaTransferObject javaTransferObject : javaTransferObjects) {
 			As3TransferObject as3TransferObject = performMap(javaTransferObject);
 			as3TransferObjects.add(as3TransferObject);
-			transferObjectMap.put(javaTransferObject, as3TransferObject);
 		}
 
 		return as3TransferObjects;
@@ -101,26 +94,14 @@ public class TransferObjectMapper {
 
 		// map each property
 		for (JavaProperty javaProperty : javaTransferObject.getProperties()) {
-			mapProperty(as3TransferObject, javaProperty);
+			As3Property as3Property = propertyMapper.mapProperty(javaProperty);
+			as3TransferObject.addProperty(as3Property);
+			as3Property.enableMetadata(config.getIncludeArrayElementType());
 		}
 
 		as3TransferObject.buildMetadata(packageMapper, dependencyResolver);
 		return as3TransferObject;
 
-	}
-
-	// TODO: may want to move this logic into TransferObject.addProperty
-	/**
-	 * Maps the Java property to the AS3 transfer object.
-	 * If property mapper returns null then the property is ignored.
-	 *
-	 * @param transferObject Transfer object that will receive the property.
-	 * @param javaProperty   Java property to map.
-	 */
-	protected void mapProperty(As3TransferObject transferObject, JavaProperty javaProperty) {
-		As3Property as3Property = propertyMapper.mapProperty(javaProperty);
-		if (as3Property != null)
-			transferObject.addProperty(as3Property);
 	}
 
 }

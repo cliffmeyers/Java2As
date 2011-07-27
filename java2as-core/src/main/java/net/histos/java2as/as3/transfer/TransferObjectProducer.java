@@ -1,11 +1,6 @@
 package net.histos.java2as.as3.transfer;
 
-import net.histos.java2as.as3.As3Type;
 import net.histos.java2as.core.AbstractProducer;
-import net.histos.java2as.core.conf.CompositePropertyMapper;
-import net.histos.java2as.core.conf.PackageMapper;
-import net.histos.java2as.core.conf.PropertyMapper;
-import net.histos.java2as.core.conf.TypeMapper;
 import net.histos.java2as.core.meta.JavaTransferObject;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
@@ -36,6 +31,7 @@ public class TransferObjectProducer extends AbstractProducer {
 
 	private static final String TO_BASE_FTL = "to-base.ftl";
 	private static final String TO_CUSTOM_FTL = "to-custom.ftl";
+	private static final String TO_MANIFEST_FTL = "to-manifest.ftl";
 
 	//
 	// Fields
@@ -44,6 +40,7 @@ public class TransferObjectProducer extends AbstractProducer {
 	private TransferObjectConfiguration config;
 	private List<Class<?>> classes;
 	private TransferObjectWriterResolver writerResolver;
+	private TransferObjectManifestWriterResolver manifestWriterResolver;
 
 	//
 	// Constructors
@@ -53,6 +50,7 @@ public class TransferObjectProducer extends AbstractProducer {
 		this.config = config;
 		this.classes = classes;
 		this.writerResolver = new DefaultTransferObjectWriterResolver(config.getCustomClassDir(), config.getBaseClassDir());
+		this.manifestWriterResolver = new DefaultTransferObjectManifestWriterResolver(config.getBaseClassDir());
 	}
 
 	//
@@ -70,13 +68,8 @@ public class TransferObjectProducer extends AbstractProducer {
 		// build metadata
 		List<JavaTransferObject> javaTOs = buildMetadata(matchingClasses);
 
-		// setup mappers
-		TypeMapper<As3Type> typeMapper = config.getTypeMapper();
-		PropertyMapper<As3Property> propertyMapper = config.getPropertyMapper();
-		PackageMapper packageMapper = config.getPackageMapper();
-
 		// do conversion
-		TransferObjectMapper mapper = new TransferObjectMapper(propertyMapper, typeMapper, packageMapper);
+		TransferObjectMapper mapper = new TransferObjectMapper(config);
 		List<As3TransferObject> as3TransferObjects = mapper.performMappings(javaTOs);
 
 		try {
@@ -90,7 +83,7 @@ public class TransferObjectProducer extends AbstractProducer {
 			Configuration baseClassConfig = new Configuration();
 			Template baseTemplate = configureTemplate(baseClassConfig, TO_BASE_FTL, config.getBaseClassTemplate());
 
-			// generate files
+			// generate files for to's
 			for (As3TransferObject transferObject : as3TransferObjects) {
 
 				model.put("model", transferObject);
@@ -103,6 +96,18 @@ public class TransferObjectProducer extends AbstractProducer {
 				Writer baseWriter = writerResolver.resolveBaseClass(transferObject);
 				baseTemplate.process(model, baseWriter);
 
+			}
+
+			if (config.isGenerateManifest())
+			{
+				Configuration manifestConfig = new Configuration();
+				manifestConfig.setClassForTemplateLoading(TransferObjectProducer.class, "");
+				Template manifestTemplate = manifestConfig.getTemplate(TO_MANIFEST_FTL);
+
+				model.clear();
+				model.put("transferObjects", as3TransferObjects);
+				Writer manifestWriter = manifestWriterResolver.resolveWriter();
+				manifestTemplate.process(model, manifestWriter);
 			}
 
 		} catch (IOException e) {
@@ -169,4 +174,7 @@ public class TransferObjectProducer extends AbstractProducer {
 		this.writerResolver = writerResolver;
 	}
 
+	public void setManifestWriterResolver(TransferObjectManifestWriterResolver manifestWriterResolver) {
+		this.manifestWriterResolver = manifestWriterResolver;
+	}
 }

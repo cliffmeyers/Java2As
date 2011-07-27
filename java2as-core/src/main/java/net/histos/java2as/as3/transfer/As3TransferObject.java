@@ -53,8 +53,10 @@ public class As3TransferObject {
 	 * @param property Property.
 	 */
 	public void addProperty(As3Property property) {
-		this.properties.add(property);
-		addDependency(property.getDependency());
+		if (property != null) {
+			this.properties.add(property);
+			addDependency(property.getDependency());
+		}
 	}
 
 	/**
