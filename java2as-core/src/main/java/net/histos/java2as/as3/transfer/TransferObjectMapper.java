@@ -80,6 +80,7 @@ public class TransferObjectMapper {
 	protected As3TransferObject performMap(JavaTransferObject javaTransferObject) {
 
 		As3TransferObject as3TransferObject = new As3TransferObject(javaTransferObject);
+		as3TransferObject.applyConfiguration(config.getTransferObjectBaseClass());
 
 		// create dependencies for polymorphics
 		As3Type superClassType = typeMapper.mapType(javaTransferObject.getSuperclass());

@@ -1,5 +1,7 @@
 package net.histos.java2as.as3.transfer;
 
+import net.histos.java2as.as3.As3CustomType;
+import net.histos.java2as.as3.As3SimpleType;
 import net.histos.java2as.as3.DependencyResolver;
 import net.histos.java2as.core.conf.PackageMapper;
 import net.histos.java2as.core.meta.DependencyKind;
@@ -18,15 +20,15 @@ public class As3TransferObject {
 	// Fields
 	//
 
-	private JavaTransferObject transferObject;
-	private List<As3Property> properties;
-	private List<As3Dependency> dependencies;
+	protected JavaTransferObject transferObject;
+	protected List<As3Property> properties;
+	protected List<As3Dependency> dependencies;
 
-	private String qualifiedName = "";
-	private String packageName = "";
-	private String simpleName = "";
-	private String importsFragment = "";
-	private String polymorphicsFragment = "";
+	protected String qualifiedName = "";
+	protected String packageName = "";
+	protected String simpleName = "";
+	protected String importsFragment = "";
+	protected String polymorphicsFragment = "";
 
 	//
 	// Constructors
@@ -65,6 +67,23 @@ public class As3TransferObject {
 	 * @param dependency Dependency.
 	 */
 	public void addDependency(As3Dependency dependency) {
+		// ensure there is only ever one superclass type registered
+		if (dependency.getDependencyKind() == DependencyKind.SUPERCLASS) {
+			As3Dependency existingSuperclass = null;
+			// a new superclass type will replace the old one
+			for (As3Dependency dep : dependencies) {
+				if (dep.getDependencyKind() == DependencyKind.SUPERCLASS) {
+					existingSuperclass = dep;
+					break;
+				}
+			}
+			if (existingSuperclass == null) {
+				dependencies.add(dependency);
+			} else if (dependency.getDependencyType() != As3SimpleType.Object) {
+				dependencies.remove(existingSuperclass);
+				dependencies.add(dependency);
+			}
+		}
 		this.dependencies.add(dependency);
 	}
 
@@ -90,6 +109,18 @@ public class As3TransferObject {
 		buildImportsFragment(dependencyResolver);
 		buildPolymorphicsFragment(dependencyResolver);
 
+	}
+
+	/**
+	 * Specify configuration parameters to customize the output.
+	 *
+	 * @param superclassName Name of the superclass to use if no other is specified.
+	 */
+	public void applyConfiguration(String superclassName) {
+		if (superclassName != null && superclassName.length() > 0) {
+			// add a new default dependency on the specified superclass name
+			addDependency(new As3Dependency(DependencyKind.SUPERCLASS, new As3CustomType(superclassName)));
+		}
 	}
 
 	//

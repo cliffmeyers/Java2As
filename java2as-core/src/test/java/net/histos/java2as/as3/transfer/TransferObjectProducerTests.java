@@ -25,11 +25,9 @@ public class TransferObjectProducerTests {
 		config.setCustomClassDir(customDir);
 
 		List<Class<?>> classes = Arrays.asList(
-				new Class<?>[]{
-						ArrayProperties.class,
-						User.class,
-						User2.class
-				}
+				ArrayProperties.class,
+				User.class,
+				User2.class
 		);
 
 		TransferObjectProducer producer = new TransferObjectProducer(config, classes);
@@ -41,14 +39,13 @@ public class TransferObjectProducerTests {
 
 		TransferObjectConfiguration config = new TransferObjectConfiguration();
 		config.setIncludeArrayElementType(true);
+		config.setTransferObjectBaseClass("com.foo.TestClass");
 		config.setGenerateManifest(true);
 
 		List<Class<?>> classes = Arrays.asList(
-				new Class<?>[]{
-						ArrayProperties.class,
-						User.class,
-						User2.class
-				}
+				ArrayProperties.class,
+				User.class,
+				User2.class
 		);
 
 		TransferObjectProducer producer = new TransferObjectProducer(config, classes);
