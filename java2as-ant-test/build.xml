@@ -26,7 +26,7 @@
 	</path>
 
 	<!-- TARGETS -->
-
+	
 	<target name="copy-lib">
 		<copy todir="${lib.dir}">
 			<fileset dir="../java2as-core/target">
@@ -63,6 +63,15 @@
 				<include name="**/*.class"/>
 			</fileset>
 		</dto>
+
+		<taskdef name="service" classname="net.histos.java2as.ant.ServiceDelegateTask" classpathref="classpath.all" loaderref="classes.all"/>
+
+		<service serviceImplDir="${output.dir}">
+			<typeMatcher className="com.foo.java2as.ServiceTypeMatcher"/>
+			<fileset dir="${build.classes}">
+				<include name="**/*.class"/>
+			</fileset>
+		</service>
 
 	</target>
 
