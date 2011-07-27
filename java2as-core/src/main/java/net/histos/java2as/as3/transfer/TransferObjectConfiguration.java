@@ -62,7 +62,6 @@ public class TransferObjectConfiguration extends AbstractAs3Configuration {
 	/**
 	 * Include [ArrayElementType] metadata for Array and ArrayCollection types.
 	 */
-	// TODO: needs impl
 	private boolean includeArrayElementType;
 
 	/**

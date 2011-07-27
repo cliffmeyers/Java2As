@@ -92,6 +92,11 @@ public class TransferObjectTask extends Task {
 	 */
 	private boolean generateManifest;
 
+	/**
+	 * Include [ArrayElementType] metadata for Array and ArrayCollection types.
+	 */
+	private boolean includeArrayElementType;
+
 	//
 	// Public Methods
 	//
@@ -110,6 +115,7 @@ public class TransferObjectTask extends Task {
 		config.setCustomClassTemplate(customClassTemplate);
 		config.setBaseClassTemplate(baseClassTemplate);
 		config.setGenerateManifest(generateManifest);
+		config.setIncludeArrayElementType(includeArrayElementType);
 		loadConfiguratonClasses(config);
 
 		_log.info("Configuration classes loaded successfully!");
@@ -231,6 +237,10 @@ public class TransferObjectTask extends Task {
 
 	public void setGenerateManifest(boolean generateManifest) {
 		this.generateManifest = generateManifest;
+	}
+
+	public void setIncludeArrayElementType(boolean includeArrayElementType) {
+		this.includeArrayElementType = includeArrayElementType;
 	}
 	
 }

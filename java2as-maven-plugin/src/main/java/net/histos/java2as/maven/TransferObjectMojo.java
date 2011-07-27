@@ -115,6 +115,13 @@ public class TransferObjectMojo extends net.histos.java2as.maven.AbstractMojo {
 	 */
 	private boolean generateManifest;
 
+	/**
+	 * Include [ArrayElementType] metadata for Array and ArrayCollection types.
+	 *
+	 * @parameter
+	 */
+	private boolean includeArrayElementType;
+
 	//
 	// Public Methods
 	//
@@ -129,6 +136,7 @@ public class TransferObjectMojo extends net.histos.java2as.maven.AbstractMojo {
 		config.setBaseClassTemplate(baseClassTemplate);
 		config.setCustomClassTemplate(customClassTemplate);
 		config.setGenerateManifest(generateManifest);
+		config.setIncludeArrayElementType(includeArrayElementType);
 		loadConfiguratonClasses(config);
 
 		_log.info("Configuration classes loaded successfully!");
