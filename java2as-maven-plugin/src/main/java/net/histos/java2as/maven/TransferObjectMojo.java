@@ -122,6 +122,13 @@ public class TransferObjectMojo extends net.histos.java2as.maven.AbstractMojo {
 	 */
 	private boolean includeArrayElementType;
 
+	/**
+	 * Provide a base class which all Transfer Objects will extend.
+	 *
+	 * @parameter
+	 */
+	private String transferObjectBaseClass;
+
 	//
 	// Public Methods
 	//
@@ -137,6 +144,7 @@ public class TransferObjectMojo extends net.histos.java2as.maven.AbstractMojo {
 		config.setCustomClassTemplate(customClassTemplate);
 		config.setGenerateManifest(generateManifest);
 		config.setIncludeArrayElementType(includeArrayElementType);
+		config.setTransferObjectBaseClass(transferObjectBaseClass);
 		loadConfiguratonClasses(config);
 
 		_log.info("Configuration classes loaded successfully!");

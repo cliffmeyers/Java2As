@@ -67,7 +67,6 @@ public class TransferObjectConfiguration extends AbstractAs3Configuration {
 	/**
 	 * Provide a base class which all Transfer Objects will extend.
 	 */
-	// TODO: needs impl
 	private String transferObjectBaseClass;
 
 	//

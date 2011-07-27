@@ -97,6 +97,11 @@ public class TransferObjectTask extends Task {
 	 */
 	private boolean includeArrayElementType;
 
+	/**
+	 * Provide a base class which all Transfer Objects will extend.
+	 */
+	private String transferObjectBaseClass;
+
 	//
 	// Public Methods
 	//
@@ -116,6 +121,7 @@ public class TransferObjectTask extends Task {
 		config.setBaseClassTemplate(baseClassTemplate);
 		config.setGenerateManifest(generateManifest);
 		config.setIncludeArrayElementType(includeArrayElementType);
+		config.setTransferObjectBaseClass(transferObjectBaseClass);
 		loadConfiguratonClasses(config);
 
 		_log.info("Configuration classes loaded successfully!");
@@ -241,6 +247,10 @@ public class TransferObjectTask extends Task {
 
 	public void setIncludeArrayElementType(boolean includeArrayElementType) {
 		this.includeArrayElementType = includeArrayElementType;
+	}
+
+	public void setTransferObjectBaseClass(String transferObjectBaseClass) {
+		this.transferObjectBaseClass = transferObjectBaseClass;
 	}
 	
 }
