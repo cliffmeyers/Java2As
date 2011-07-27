@@ -1,37 +1,34 @@
 package net.histos.java2as.maven;
 
 import net.histos.java2as.as3.As3Type;
-import net.histos.java2as.as3.transfer.TransferObjectConfiguration;
+import net.histos.java2as.as3.service.MethodMapper;
+import net.histos.java2as.as3.service.ServiceDelegateConfiguration;
+import net.histos.java2as.as3.service.ServiceDelegateProducer;
 import net.histos.java2as.as3.transfer.TransferObjectProducer;
-import net.histos.java2as.core.conf.*;
-import net.histos.java2as.core.conf.packages.PackageMapperRule;
-import net.histos.java2as.core.conf.packages.RuleBasedPackageMapper;
+import net.histos.java2as.core.conf.TypeMapper;
+import net.histos.java2as.core.conf.TypeMatcher;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.project.MavenProject;
+import org.apache.maven.plugin.MojoFailureException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.impl.StaticLoggerBinder;
 
 import java.io.File;
-import java.net.URL;
-import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
 /**
- * Generates transfer objects.
+ * Description
  *
- * @goal generate
- * @phase process-classes
+ * @author cliff.meyers
  */
-public class TransferObjectMojo extends net.histos.java2as.maven.AbstractMojo {
+public class ServiceDelegateMojo extends AbstractMojo {
 
 	private Logger _log = LoggerFactory.getLogger(getClass());
-
+	
 	//
 	// Fields
 	//
@@ -41,35 +38,21 @@ public class TransferObjectMojo extends net.histos.java2as.maven.AbstractMojo {
 	/**
 	 * The configuration object to supply to the producer.
 	 */
-	protected TransferObjectConfiguration config;
+	protected ServiceDelegateConfiguration config;
 
 	/**
 	 * The producer that creates the files.
 	 */
-	protected TransferObjectProducer producer;
+	protected ServiceDelegateProducer producer;
 
-	// parameters supplied by plugin end-users
+	// user-supplied config params
 
 	/**
-	 * List of PropertyMapper class names to be used by java2as.
+	 * Custom MethodMapper class name to be used by java2as.
 	 *
 	 * @parameter
 	 */
-	private String[] propertyMappers = new String[]{};
-
-	/**
-	 * Custom PackageMapper class name to be used by java2as.
-	 *
-	 * @parameter
-	 */
-	private String packageMapper;
-
-	/**
-	 * List of PackageMapperRule class names to be used by java2as.
-	 *
-	 * @parameter
-	 */
-	private PackageMapperRule[] packageMapperRules = new PackageMapperRule[]{};
+	private String methodMapper;
 
 	/**
 	 * List of TypeMatcher class names to be used by java2as.
@@ -79,54 +62,38 @@ public class TransferObjectMojo extends net.histos.java2as.maven.AbstractMojo {
 	private String[] typeMatchers = new String[]{};
 
 	/**
-	 * Location to write custom classes.
+	 * Location to write generated service classes
 	 *
 	 * @parameter default-value="${project.build.directory}/java2as"
 	 * @required
 	 */
-	private File customClassDir;
+	private File serviceImplDir;
 
 	/**
-	 * Location to write base classes.
-	 *
-	 * @parameter default-value="${project.build.directory}/java2as"
-	 * @required
-	 */
-	private File baseClassDir;
-
-	/**
-	 * Freemarker template to use for generation of custom classes.
+	 * Custom Freemarker template to use for generation services.
 	 *
 	 * @parameter
 	 */
-	private File customClassTemplate;
-
-	/**
-	 * Freemarker template to use for generation of base classes.
-	 *
-	 * @parameter
-	 */
-	private File baseClassTemplate;
+	private File serviceImplTemplate;
 
 	//
 	// Public Methods
 	//
 
-	public void execute() throws MojoExecutionException {
+	public void execute() throws MojoExecutionException, MojoFailureException {
 
 		StaticLoggerBinder.getSingleton().setMavenLog(this.getLog());
 
-		config = new TransferObjectConfiguration();
-		config.setBaseClassDir(baseClassDir);
-		config.setCustomClassDir(customClassDir);
-		config.setBaseClassTemplate(baseClassTemplate);
-		config.setCustomClassTemplate(customClassTemplate);
+		config = new ServiceDelegateConfiguration();
+		config.setServiceImplDir(serviceImplDir);
+		config.setServiceImplTemplate(serviceImplTemplate);
 		loadConfiguratonClasses(config);
 
 		_log.info("Configuration classes loaded successfully!");
 		config.logConfiguration();
 
 		executeProduce();
+
 	}
 
 	//
@@ -181,12 +148,12 @@ public class TransferObjectMojo extends net.histos.java2as.maven.AbstractMojo {
 		}
 
 		_log.info("Candidate classes were found for generation: " + candidateClasses.size() + " total");
-		producer = new TransferObjectProducer(config, candidateClasses);
+		producer = new ServiceDelegateProducer(config, candidateClasses);
 		producer.produce();
 
 	}
 
-	protected void loadConfiguratonClasses(TransferObjectConfiguration config) throws MojoExecutionException {
+	protected void loadConfiguratonClasses(ServiceDelegateConfiguration config) throws MojoExecutionException {
 
 		try {
 
@@ -197,27 +164,9 @@ public class TransferObjectMojo extends net.histos.java2as.maven.AbstractMojo {
 				config.setTypeMapper(typeMapperClass.newInstance());
 			}
 
-			if (propertyMappers.length > 0) {
-				config.removeAllPropertyMappers();
-				for (String propertyMapper : propertyMappers) {
-					Class<PropertyMapper> propertyMapperClass = (Class<PropertyMapper>) loader.loadClass(propertyMapper);
-					config.addPropertyMapper(propertyMapperClass.newInstance());
-				}
-			}
-
-			if (packageMapper != null) {
-				Class<PackageMapper> packageMapperClass = (Class<PackageMapper>) loader.loadClass(packageMapper);
-				config.setPackageMapper(packageMapperClass.newInstance());
-			}
-
-			if (packageMapperRules.length > 0) {
-				if (config.getPackageMapper() instanceof RuleBasedPackageMapper) {
-					RuleBasedPackageMapper ruleBasedPackageMapper = (RuleBasedPackageMapper) config.getPackageMapper();
-					for (PackageMapperRule packageMapperRule : packageMapperRules)
-						ruleBasedPackageMapper.addMapperRule(packageMapperRule);
-				} else {
-					_log.warn("PackageMapper is not an instance of RuleBasedPackageMapper; packageMapperRules have been ignored");
-				}
+			if (methodMapper != null) {
+				Class<MethodMapper> methodMapperClass = (Class<MethodMapper>) loader.loadClass(methodMapper);
+				config.setMethodMapper(methodMapperClass.newInstance());
 			}
 
 			for (String matcher : typeMatchers) {
@@ -231,7 +180,6 @@ public class TransferObjectMojo extends net.histos.java2as.maven.AbstractMojo {
 		}
 
 	}
-
 
 
 }

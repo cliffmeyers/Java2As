@@ -2,6 +2,10 @@ package net.histos.java2as.as3.service;
 
 import net.histos.java2as.as3.AbstractAs3Configuration;
 import net.histos.java2as.as3.DefaultAs3TypeMapper;
+import net.histos.java2as.core.conf.PropertyMapper;
+import net.histos.java2as.core.conf.TypeMatcher;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 
@@ -11,6 +15,8 @@ import java.io.File;
  * @author cliff.meyers
  */
 public class ServiceDelegateConfiguration extends AbstractAs3Configuration {
+
+	private Logger _log = LoggerFactory.getLogger(getClass());
 
 	//
 	// Fields
@@ -30,6 +36,11 @@ public class ServiceDelegateConfiguration extends AbstractAs3Configuration {
 	 * Directory in which to generate service implementations (e.g. UserService implements IUserService)
 	 */
 	private File serviceImplDir;
+
+	/**
+	 * Custom Freemarker template to use for generation of service impl classes.
+	 */
+	private File serviceImplTemplate;
 
 	/**
 	 * Provide a base class which all Service Delegates will extend.
@@ -53,6 +64,25 @@ public class ServiceDelegateConfiguration extends AbstractAs3Configuration {
 	}
 
 	//
+	// Public Methods
+	//
+
+	/**
+	 * Prints configuration summary to INFO
+	 */
+	public void logConfiguration() {
+
+		_log.info("typeMapper=" + typeMapper.getClass().getName());
+		_log.info("methodMapper=" + methodMapper.getClass().getName());
+		for (TypeMatcher matcher : typeMatchers)
+			_log.info("typeMatcher=" + matcher.getClass().getName());
+
+		_log.info("serviceImplDir=" + serviceImplDir);
+		_log.info("serviceImplTemplate=" + serviceImplTemplate);
+
+	}
+
+	//
 	// Getters and Setters
 	//
 
@@ -64,6 +94,14 @@ public class ServiceDelegateConfiguration extends AbstractAs3Configuration {
 		this.methodMapper = methodMapper;
 	}
 
+	public File getServiceInterfaceDir() {
+		return serviceInterfaceDir;
+	}
+
+	public void setServiceInterfaceDir(File serviceInterfaceDir) {
+		this.serviceInterfaceDir = serviceInterfaceDir;
+	}
+
 	public File getServiceImplDir() {
 		return serviceImplDir;
 	}
@@ -72,12 +110,12 @@ public class ServiceDelegateConfiguration extends AbstractAs3Configuration {
 		this.serviceImplDir = serviceImplDir;
 	}
 
-	public File getServiceInterfaceDir() {
-		return serviceInterfaceDir;
+	public File getServiceImplTemplate() {
+		return serviceImplTemplate;
 	}
 
-	public void setServiceInterfaceDir(File serviceInterfaceDir) {
-		this.serviceInterfaceDir = serviceInterfaceDir;
+	public void setServiceImplTemplate(File serviceImplTemplate) {
+		this.serviceImplTemplate = serviceImplTemplate;
 	}
 
 	public String getServiceDelegateBaseClass() {
