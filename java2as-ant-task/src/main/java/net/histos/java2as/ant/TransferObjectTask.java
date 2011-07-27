@@ -194,8 +194,10 @@ public class TransferObjectTask extends Task {
 
 		try {
 
-			Class<TypeMapper<As3Type>> typeMapperClass = (Class<TypeMapper<As3Type>>) Class.forName(typeMapper);
-			config.setTypeMapper(typeMapperClass.newInstance());
+			if (typeMapper != null) {
+				Class<TypeMapper<As3Type>> typeMapperClass = (Class<TypeMapper<As3Type>>) Class.forName(typeMapper);
+				config.setTypeMapper(typeMapperClass.newInstance());
+			}
 
 			if (propertyMappers.size() > 0) {
 				config.removeAllPropertyMappers();
@@ -252,5 +254,5 @@ public class TransferObjectTask extends Task {
 	public void setTransferObjectBaseClass(String transferObjectBaseClass) {
 		this.transferObjectBaseClass = transferObjectBaseClass;
 	}
-	
+
 }
