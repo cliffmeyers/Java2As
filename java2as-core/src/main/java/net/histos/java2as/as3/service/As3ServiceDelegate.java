@@ -1,5 +1,7 @@
 package net.histos.java2as.as3.service;
 
+import net.histos.java2as.as3.As3CustomType;
+import net.histos.java2as.as3.As3SimpleType;
 import net.histos.java2as.as3.DependencyResolver;
 import net.histos.java2as.as3.transfer.As3Dependency;
 import net.histos.java2as.core.conf.PackageMapper;
@@ -13,9 +15,8 @@ import java.util.List;
 /**
  * ActionScript Service Delegate that communicates with a Java service
  *
- * @see net.histos.java2as.core.meta.JavaService
- *
  * @author cliff.meyers
+ * @see net.histos.java2as.core.meta.JavaService
  */
 public class As3ServiceDelegate {
 
@@ -56,8 +57,31 @@ public class As3ServiceDelegate {
 	// Public Methods
 	//
 
+	/**
+	 * Adds a dependency to this transfer object
+	 *
+	 * @param dependency Dependency.
+	 */
 	public void addDependency(As3Dependency dependency) {
-		this.dependencies.add(dependency);
+		// ensure there is only ever one superclass type registered
+		if (dependency.getDependencyKind() == DependencyKind.SUPERCLASS) {
+			As3Dependency existingSuperclass = null;
+			// a new superclass type will replace the old one
+			for (As3Dependency dep : dependencies) {
+				if (dep.getDependencyKind() == DependencyKind.SUPERCLASS) {
+					existingSuperclass = dep;
+					break;
+				}
+			}
+			if (existingSuperclass == null) {
+				dependencies.add(dependency);
+			} else if (dependency.getDependencyType() != As3SimpleType.Object) {
+				dependencies.remove(existingSuperclass);
+				dependencies.add(dependency);
+			}
+		} else {
+			this.dependencies.add(dependency);
+		}
 	}
 
 	public void addMethod(As3Method method) {
@@ -68,7 +92,7 @@ public class As3ServiceDelegate {
 	/**
 	 * Updates metadata based on the supplied DependencyResolver.
 	 *
-	 * @param packageMapper Maps the package for the service.
+	 * @param packageMapper      Maps the package for the service.
 	 * @param dependencyResolver DependencyResolver to use for deciding if/how an item gets imported.
 	 */
 	public void buildMetadata(PackageMapper packageMapper, DependencyResolver dependencyResolver) {
@@ -87,6 +111,18 @@ public class As3ServiceDelegate {
 		buildImportsFragment(dependencyResolver);
 		buildPolymorphicsFragment(dependencyResolver);
 
+	}
+
+	/**
+	 * Specify configuration parameters to customize the output.
+	 *
+	 * @param superclassName Name of the superclass to use if no other is specified.
+	 */
+	public void applyConfiguration(String superclassName) {
+		if (superclassName != null && superclassName.length() > 0) {
+			// add a new default dependency on the specified superclass name
+			addDependency(new As3Dependency(DependencyKind.SUPERCLASS, new As3CustomType(superclassName)));
+		}
 	}
 
 	//

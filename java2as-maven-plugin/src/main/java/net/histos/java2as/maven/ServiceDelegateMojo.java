@@ -4,7 +4,6 @@ import net.histos.java2as.as3.As3Type;
 import net.histos.java2as.as3.service.MethodMapper;
 import net.histos.java2as.as3.service.ServiceDelegateConfiguration;
 import net.histos.java2as.as3.service.ServiceDelegateProducer;
-import net.histos.java2as.as3.transfer.TransferObjectProducer;
 import net.histos.java2as.core.conf.TypeMapper;
 import net.histos.java2as.core.conf.TypeMatcher;
 import org.apache.commons.io.FileUtils;
@@ -21,14 +20,17 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * Description
+ * Generates service delegates.
+ *
+ * @goal generate-services
+ * @phase process-classes
  *
  * @author cliff.meyers
  */
 public class ServiceDelegateMojo extends AbstractMojo {
 
 	private Logger _log = LoggerFactory.getLogger(getClass());
-	
+
 	//
 	// Fields
 	//
@@ -76,6 +78,13 @@ public class ServiceDelegateMojo extends AbstractMojo {
 	 */
 	private File serviceImplTemplate;
 
+	/**
+	 * Provide a base class which all Service Delegates will extend.
+	 *
+	 * @parameter
+	 */
+	private String serviceDelegateBaseClass;
+
 	//
 	// Public Methods
 	//
@@ -87,6 +96,7 @@ public class ServiceDelegateMojo extends AbstractMojo {
 		config = new ServiceDelegateConfiguration();
 		config.setServiceImplDir(serviceImplDir);
 		config.setServiceImplTemplate(serviceImplTemplate);
+		config.setServiceDelegateBaseClass(serviceDelegateBaseClass);
 		loadConfiguratonClasses(config);
 
 		_log.info("Configuration classes loaded successfully!");

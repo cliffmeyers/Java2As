@@ -36,6 +36,8 @@ public class JavaMethod {
 		this.parameters = new ArrayList<JavaMethodParameter>();
 
 		if (method.getParameterTypes().length > 0) {
+
+			// TODO: externalize all Paranamer code to another class and only load / execute if Paranamer is on classpath
 			// attempt to extract method parameter names using Paranamer
 			// "names" will be empty unless the compiled code was post-processed using the tool
 			Paranamer paranamer = new CachingParanamer();

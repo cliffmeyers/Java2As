@@ -26,6 +26,7 @@ public class ServiceDelegateMapper {
 	// Fields
 	//
 
+	private ServiceDelegateConfiguration config;
 	private MethodMapper methodMapper;
 	private TypeMapper<As3Type> typeMapper;
 	private PackageMapper packageMapper;
@@ -38,10 +39,12 @@ public class ServiceDelegateMapper {
 	// Constructors
 	//
 
-	public ServiceDelegateMapper(MethodMapper methodMapper, TypeMapper<As3Type> typeMapper, PackageMapper packageMapper) {
-		this.methodMapper = methodMapper;
-		this.typeMapper = typeMapper;
-		this.packageMapper = packageMapper;
+	public ServiceDelegateMapper(ServiceDelegateConfiguration config)
+	{
+		this.config = config;
+		this.methodMapper = config.getMethodMapper();
+		this.typeMapper = config.getTypeMapper();
+		this.packageMapper = config.getPackageMapper();
 		this.serviceMap = new HashMap<JavaService, As3ServiceDelegate>();
 		this.dependencyResolver = new DefaultDependencyResolver();
 	}
@@ -83,6 +86,7 @@ public class ServiceDelegateMapper {
 	protected As3ServiceDelegate performMap(JavaService javaService) {
 
 		As3ServiceDelegate as3Delegate = new As3ServiceDelegate(javaService);
+		as3Delegate.applyConfiguration(config.getServiceDelegateBaseClass());
 
 		if (as3Delegate.isImplementation()) {
 			// create dependencies for polymorphics

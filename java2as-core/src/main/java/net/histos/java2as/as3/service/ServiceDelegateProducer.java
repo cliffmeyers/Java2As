@@ -1,13 +1,12 @@
 package net.histos.java2as.as3.service;
 
-import net.histos.java2as.as3.As3Type;
-import net.histos.java2as.core.AbstractProducer;
-import net.histos.java2as.core.conf.PackageMapper;
-import net.histos.java2as.core.conf.TypeMapper;
-import net.histos.java2as.core.meta.JavaService;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
+import net.histos.java2as.core.AbstractProducer;
+import net.histos.java2as.core.meta.JavaService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.Writer;
@@ -23,12 +22,13 @@ import java.util.Map;
  */
 public class ServiceDelegateProducer extends AbstractProducer {
 
+	private Logger _log = LoggerFactory.getLogger(getClass());
+
 	//
 	// Statics
 	//
 
 	private static final String SERVICE_IMPL_FTL = "service-impl.ftl";
-	// private static final String SERVICE_INTERFACE_FTL = "service-interface.ftl";
 
 	//
 	// Fields
@@ -45,7 +45,7 @@ public class ServiceDelegateProducer extends AbstractProducer {
 	public ServiceDelegateProducer(ServiceDelegateConfiguration config, List<Class<?>> classes) {
 		this.config = config;
 		this.classes = classes;
-		this.writerResolver = new DefaultServiceDelegateWriterResolver(config.getServiceImplDir() /*, config.getServiceInterfaceDir()*/);
+		this.writerResolver = new DefaultServiceDelegateWriterResolver(config.getServiceImplDir());
 	}
 
 	//
@@ -57,16 +57,13 @@ public class ServiceDelegateProducer extends AbstractProducer {
 		// filter
 		List<Class<?>> matchingClasses = findMatchingClasses(config.getTypeMatchers(), classes);
 
+		_log.info("java2as found classes to generate: " + matchingClasses.size() + " total");
+
 		// build metadata
 		List<JavaService> javaServices = buildMetadata(matchingClasses);
 
-		// get mappers
-		TypeMapper<As3Type> typeMapper = config.getTypeMapper();
-		MethodMapper methodMapper = config.getMethodMapper();
-		PackageMapper packageMapper = config.getPackageMapper();
-
 		// do conversion
-		ServiceDelegateMapper mapper = new ServiceDelegateMapper(methodMapper, typeMapper, packageMapper);
+		ServiceDelegateMapper mapper = new ServiceDelegateMapper(config);
 		List<As3ServiceDelegate> as3Services = mapper.performMappings(javaServices);
 
 		// build template configuration
@@ -76,7 +73,6 @@ public class ServiceDelegateProducer extends AbstractProducer {
 		try {
 
 			Template serviceImplTemplate = fmConfig.getTemplate(SERVICE_IMPL_FTL);
-			//Template serviceInterfaceTemplate = fmConfig.getTemplate(SERVICE_INTERFACE_FTL);
 			Map<String, Object> model = new HashMap<String, Object>();
 
 			// generate files
@@ -86,14 +82,6 @@ public class ServiceDelegateProducer extends AbstractProducer {
 
 				Writer writer1 = writerResolver.resolveServiceImpl(service);
 				serviceImplTemplate.process(model, writer1);
-
-				/*
-				TODO: should we even bother with interfaces?
-				if (config.isGenerateInterfaces()) {
-					Writer writer2 = writerResolver.resolveServiceInterface(service);
-					serviceInterfaceTemplate.process(model, writer2);
-				}
-				*/
 
 			}
 

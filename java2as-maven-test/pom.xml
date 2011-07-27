@@ -33,12 +33,10 @@
 						<goals>
 							<goal>generate</goal>
 						</goals>
-						<!--
 						<configuration>
 							<sourceDirectory>${project.build.testSourceDirectory}</sourceDirectory>
 							<outputDirectory>${project.build.testOutputDirectory}</outputDirectory>
 						</configuration>
-						-->
 					</execution>
 				</executions>
 			</plugin>
@@ -46,15 +44,16 @@
 				<groupId>net.histos</groupId>
 				<artifactId>java2as-maven-plugin</artifactId>
 				<version>1.0-SNAPSHOT</version>
+				<!--
 				<configuration>
-
 				</configuration>
+				-->
 				<executions>
 					<execution>
-						<id>generate</id>
+						<id>generate-dtos</id>
 						<phase>process-classes</phase>
 						<goals>
-							<goal>generate</goal>
+							<goal>generate-dtos</goal>
 						</goals>
 						<configuration>
 							<compiledClassesLocations>
@@ -78,6 +77,22 @@
 							<customClassTemplate>${project.basedir}/src/main/resources/ftl/transfer/to-custom.ftl</customClassTemplate>
 							<baseClassTemplate>${project.basedir}/src/main/resources/ftl/transfer/to-base.ftl</baseClassTemplate>
 							-->
+						</configuration>
+					</execution>
+					<execution>
+						<id>generate-services</id>
+						<phase>process-classes</phase>
+						<goals>
+							<goal>generate-services</goal>
+						</goals>
+						<configuration>
+							<compiledClassesLocations>
+								<string>${project.build.outputDirectory}</string>
+							</compiledClassesLocations>
+							<typeMatchers>
+								<string>com.foo.java2as.ServiceTypeMatcher</string>
+							</typeMatchers>
+							<serviceDelegateBaseClass>com.foo.BaseService;</serviceDelegateBaseClass>
 						</configuration>
 					</execution>
 				</executions>

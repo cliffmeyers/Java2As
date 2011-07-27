@@ -28,11 +28,6 @@ public class ServiceDelegateConfiguration extends AbstractAs3Configuration {
 	private MethodMapper methodMapper;
 
 	/**
-	 * Directory in which to generate service interfaces (e.g. IUserService)
-	 */
-	private File serviceInterfaceDir;
-
-	/**
 	 * Directory in which to generate service implementations (e.g. UserService implements IUserService)
 	 */
 	private File serviceImplDir;
@@ -45,14 +40,7 @@ public class ServiceDelegateConfiguration extends AbstractAs3Configuration {
 	/**
 	 * Provide a base class which all Service Delegates will extend.
 	 */
-	// TODO: needs impl
 	private String serviceDelegateBaseClass;
-
-	/**
-	 * True if interfaces should be generated.
-	 */
-	// TODO: needs impl
-	private boolean generateInterfaces;
 
 	//
 	// Constructors
@@ -79,6 +67,7 @@ public class ServiceDelegateConfiguration extends AbstractAs3Configuration {
 
 		_log.info("serviceImplDir=" + serviceImplDir);
 		_log.info("serviceImplTemplate=" + serviceImplTemplate);
+		_log.info("serviceDelegateBaseClass=" + serviceDelegateBaseClass);
 
 	}
 
@@ -92,14 +81,6 @@ public class ServiceDelegateConfiguration extends AbstractAs3Configuration {
 
 	public void setMethodMapper(MethodMapper methodMapper) {
 		this.methodMapper = methodMapper;
-	}
-
-	public File getServiceInterfaceDir() {
-		return serviceInterfaceDir;
-	}
-
-	public void setServiceInterfaceDir(File serviceInterfaceDir) {
-		this.serviceInterfaceDir = serviceInterfaceDir;
 	}
 
 	public File getServiceImplDir() {
@@ -124,14 +105,6 @@ public class ServiceDelegateConfiguration extends AbstractAs3Configuration {
 
 	public void setServiceDelegateBaseClass(String serviceDelegateBaseClass) {
 		this.serviceDelegateBaseClass = serviceDelegateBaseClass;
-	}
-
-	public boolean isGenerateInterfaces() {
-		return generateInterfaces;
-	}
-
-	public void setGenerateInterfaces(boolean generateInterfaces) {
-		this.generateInterfaces = generateInterfaces;
 	}
 
 }

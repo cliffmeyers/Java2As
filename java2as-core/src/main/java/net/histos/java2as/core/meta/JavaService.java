@@ -27,7 +27,7 @@ public class JavaService {
 		this.clazz = clazz;
 		this.methods = new ArrayList<JavaMethod>();
 
-		for (Method method : clazz.getMethods()) {
+		for (Method method : clazz.getDeclaredMethods()) {
 			JavaMethod javaMethod = new JavaMethod(method);
 			methods.add(javaMethod);
 		}

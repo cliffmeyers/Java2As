@@ -25,9 +25,10 @@ public class ServiceDelegateProducerTests {
 		config.setServiceImplDir(baseDir);
 
 		List<Class<?>> classes = Arrays.asList(
-				new Class<?>[]{
-						IUserService.class,
-				}
+				new Class<?>[]
+						{
+								IUserService.class
+						}
 		);
 
 		ServiceDelegateProducer producer = new ServiceDelegateProducer(config, classes);
@@ -39,11 +40,13 @@ public class ServiceDelegateProducerTests {
 	public void testProduceSystemOut() {
 
 		ServiceDelegateConfiguration config = new ServiceDelegateConfiguration();
+		config.setServiceDelegateBaseClass("com.foo.ServiceBase");
 
 		List<Class<?>> classes = Arrays.asList(
-				new Class<?>[]{
-						IUserService.class,
-				}
+				new Class<?>[]
+						{
+								IUserService.class
+						}
 		);
 
 		ServiceDelegateProducer producer = new ServiceDelegateProducer(config, classes);

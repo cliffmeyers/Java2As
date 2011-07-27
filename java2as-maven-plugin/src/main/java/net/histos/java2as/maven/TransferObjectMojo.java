@@ -25,7 +25,7 @@ import java.util.List;
 /**
  * Generates transfer objects.
  *
- * @goal generate
+ * @goal generate-dtos
  * @phase process-classes
  */
 public class TransferObjectMojo extends net.histos.java2as.maven.AbstractMojo {
