@@ -10,7 +10,7 @@ public class As3CustomType implements As3Type {
 	//
 	// Fields
 	//
-	
+
 	/**
 	 * Backing Java class for this custom type.
 	 */
@@ -29,11 +29,16 @@ public class As3CustomType implements As3Type {
 	//
 	// Constructors
 	//
-	
+
 	public As3CustomType(Class<?> clazz) {
 		this.clazz = clazz;
 		this.qualifiedName = clazz.getName();
 		this.simpleName = clazz.getSimpleName();
+	}
+
+	public As3CustomType(String qualifiedName) {
+		this.qualifiedName = qualifiedName;
+		this.simpleName = qualifiedName.substring(qualifiedName.indexOf(".") + 1);
 	}
 
 	//
@@ -43,15 +48,15 @@ public class As3CustomType implements As3Type {
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
+		if (o == null) return false;
+		if (!(o instanceof As3CustomType)) return false;
 		As3CustomType that = (As3CustomType) o;
-		if (!clazz.equals(that.clazz)) return false;
-		return true;
+		return qualifiedName.equals(that.getQualifiedName().equals(o));
 	}
 
 	@Override
 	public int hashCode() {
-		return clazz.hashCode();
+		return qualifiedName.hashCode();
 	}
 
 	//
