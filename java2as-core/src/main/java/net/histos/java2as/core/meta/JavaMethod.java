@@ -1,7 +1,6 @@
 package net.histos.java2as.core.meta;
 
-import com.thoughtworks.paranamer.CachingParanamer;
-import com.thoughtworks.paranamer.Paranamer;
+import net.histos.java2as.core.meta.parameters.ParameterNameExtractor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,7 +15,6 @@ import java.util.List;
 public class JavaMethod {
 
 	private Logger _log = LoggerFactory.getLogger(getClass());
-	private static boolean PARAMETER_NAMES_ALREADY_MISSING = false;
 
 	//
 	// Fields
@@ -37,31 +35,15 @@ public class JavaMethod {
 
 		if (method.getParameterTypes().length > 0) {
 
-			// TODO: externalize all Paranamer code to another class and only load / execute if Paranamer is on classpath
-			// attempt to extract method parameter names using Paranamer
-			// "names" will be empty unless the compiled code was post-processed using the tool
-			Paranamer paranamer = new CachingParanamer();
-			String[] names = paranamer.lookupParameterNames(method);
 			Class<?>[] types = method.getParameterTypes();
+			String[] names = ParameterNameExtractor.extractParameterNames(method);
 			Annotation[][] annotations = method.getParameterAnnotations();
 
-			if (names.length == 0) {
-				// only display this warning once
-				if (!PARAMETER_NAMES_ALREADY_MISSING) {
-					PARAMETER_NAMES_ALREADY_MISSING = true;
-					_log.warn("Parameter name information could not be found.");
-					_log.warn("Use Paranamer to post-process your classes to enable this feature.");
-				}
-				// recover gracefully by using "arg0", "arg1" instead
-				names = new String[types.length];
-				for (int i = 0; i < types.length; i++)
-					names[i] = "arg" + i;
-			}
-
-			for (int i = 0; i < method.getParameterTypes().length; i++) {
+			for (int i = 0; i < types.length; i++) {
 				JavaMethodParameter parameter = new JavaMethodParameter(names[i], types[i], annotations[i]);
 				parameters.add(parameter);
 			}
+
 		}
 
 		this.returnType = method.getReturnType();
