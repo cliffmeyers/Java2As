@@ -87,6 +87,11 @@ public class TransferObjectTask extends Task {
 	 */
 	private File baseClassTemplate;
 
+	/**
+	 * Enable generation of the transfer object "manifest" file.
+	 */
+	private boolean generateManifest;
+
 	//
 	// Public Methods
 	//
@@ -104,6 +109,7 @@ public class TransferObjectTask extends Task {
 		config.setBaseClassDir(baseClassDir);
 		config.setCustomClassTemplate(customClassTemplate);
 		config.setBaseClassTemplate(baseClassTemplate);
+		config.setGenerateManifest(generateManifest);
 		loadConfiguratonClasses(config);
 
 		_log.info("Configuration classes loaded successfully!");
@@ -223,4 +229,8 @@ public class TransferObjectTask extends Task {
 		this.baseClassTemplate = baseClassTemplate;
 	}
 
+	public void setGenerateManifest(boolean generateManifest) {
+		this.generateManifest = generateManifest;
+	}
+	
 }

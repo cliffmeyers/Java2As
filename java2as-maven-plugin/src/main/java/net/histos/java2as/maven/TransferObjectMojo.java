@@ -108,6 +108,13 @@ public class TransferObjectMojo extends net.histos.java2as.maven.AbstractMojo {
 	 */
 	private File baseClassTemplate;
 
+	/**
+	 * Enable generation of the transfer object "manifest" file.
+	 *
+	 * @parameter
+	 */
+	private boolean generateManifest;
+
 	//
 	// Public Methods
 	//
@@ -121,6 +128,7 @@ public class TransferObjectMojo extends net.histos.java2as.maven.AbstractMojo {
 		config.setCustomClassDir(customClassDir);
 		config.setBaseClassTemplate(baseClassTemplate);
 		config.setCustomClassTemplate(customClassTemplate);
+		config.setGenerateManifest(generateManifest);
 		loadConfiguratonClasses(config);
 
 		_log.info("Configuration classes loaded successfully!");
@@ -231,7 +239,6 @@ public class TransferObjectMojo extends net.histos.java2as.maven.AbstractMojo {
 		}
 
 	}
-
 
 
 }
