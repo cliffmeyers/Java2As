@@ -2,10 +2,7 @@ package net.histos.java2as.as3.transfer;
 
 import org.apache.commons.lang.StringUtils;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.Writer;
+import java.io.*;
 
 /**
  * Default implementation of TransferObjectWriterResolver.
@@ -57,7 +54,7 @@ public class DefaultTransferObjectWriterResolver implements TransferObjectWriter
 		File file = resolveFileForClass(baseClassDirectory, transferObject, true);
 
 		try {
-			return new FileWriter(file);
+			return new BufferedWriter(new FileWriter(file));
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
@@ -71,7 +68,7 @@ public class DefaultTransferObjectWriterResolver implements TransferObjectWriter
 		File file = resolveFileForClass(customClassDirectory, transferObject, false);
 
 		try {
-			return new FileWriter(file);
+			return new BufferedWriter(new FileWriter(file));
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}

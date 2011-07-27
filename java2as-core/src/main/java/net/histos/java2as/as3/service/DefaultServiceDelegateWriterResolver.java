@@ -2,10 +2,7 @@ package net.histos.java2as.as3.service;
 
 import org.apache.commons.lang.StringUtils;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.Writer;
+import java.io.*;
 
 /**
  * Default implementation of ServiceDelegateWriterResolver.
@@ -50,7 +47,7 @@ public class DefaultServiceDelegateWriterResolver implements ServiceDelegateWrit
 		File file = resolveFileForClass(serviceImplDirectory, service);
 
 		try {
-			return new FileWriter(file);
+			return new BufferedWriter(new FileWriter(file));
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
