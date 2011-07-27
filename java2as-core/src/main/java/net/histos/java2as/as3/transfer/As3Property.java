@@ -1,6 +1,5 @@
 package net.histos.java2as.as3.transfer;
 
-import com.sun.xml.internal.bind.v2.schemagen.xmlschema.TypeHost;
 import net.histos.java2as.as3.As3Type;
 import net.histos.java2as.core.meta.DependencyKind;
 import net.histos.java2as.core.meta.JavaProperty;

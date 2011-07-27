@@ -83,8 +83,9 @@ public class As3TransferObject {
 				dependencies.remove(existingSuperclass);
 				dependencies.add(dependency);
 			}
+		} else {
+			this.dependencies.add(dependency);
 		}
-		this.dependencies.add(dependency);
 	}
 
 	/**
