@@ -1,7 +1,5 @@
-package net.histos.java2as.core;
+package net.histos.java2as.core.conf.packages;
 
-import net.histos.java2as.core.conf.packages.PackageMapperRule;
-import net.histos.java2as.core.conf.packages.RuleBasedPackageMapper;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -11,7 +9,7 @@ import org.junit.Test;
  *
  * @author cliff.meyers
  */
-public class PackageMapperTests {
+public class PackageMapperRuleTests {
 
 
 	@Before
