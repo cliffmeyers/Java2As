@@ -19,12 +19,6 @@ public class TransferObjectConfiguration extends AbstractAs3Configuration {
 	private Logger _log = LoggerFactory.getLogger(getClass());
 
 	//
-	// Statics
-	//
-
-	private static final String N = System.getProperty("line.separator");
-
-	//
 	// Fields
 	//
 
