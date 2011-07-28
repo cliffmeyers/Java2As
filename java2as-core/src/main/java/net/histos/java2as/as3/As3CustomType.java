@@ -51,7 +51,7 @@ public class As3CustomType implements As3Type {
 		if (o == null) return false;
 		if (!(o instanceof As3CustomType)) return false;
 		As3CustomType that = (As3CustomType) o;
-		return qualifiedName.equals(that.getQualifiedName().equals(o));
+		return qualifiedName.equals(that.getQualifiedName());
 	}
 
 	@Override
