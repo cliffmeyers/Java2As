@@ -13,6 +13,9 @@
 	<packaging>jar</packaging>
 	<version>1.0-SNAPSHOT</version>
 
+	<name>java2as-core</name>
+	<description>Java2As ActionScript->Java code generator</description>
+
 	<dependencies>
 		<dependency>
 			<groupId>commons-lang</groupId>
