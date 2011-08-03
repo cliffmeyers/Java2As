@@ -3,21 +3,20 @@ package net.histos.java2as.maven;
 import net.histos.java2as.as3.As3Type;
 import net.histos.java2as.as3.transfer.TransferObjectConfiguration;
 import net.histos.java2as.as3.transfer.TransferObjectProducer;
-import net.histos.java2as.core.conf.*;
+import net.histos.java2as.core.conf.PackageMapper;
+import net.histos.java2as.core.conf.PropertyMapper;
+import net.histos.java2as.core.conf.TypeMapper;
 import net.histos.java2as.core.conf.packages.PackageMapperRule;
 import net.histos.java2as.core.conf.packages.RuleBasedPackageMapper;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.project.MavenProject;
+import org.apache.maven.plugin.MojoFailureException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.impl.StaticLoggerBinder;
 
 import java.io.File;
-import java.net.URL;
-import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -28,7 +27,7 @@ import java.util.List;
  * @goal generate-dtos
  * @phase process-classes
  */
-public class TransferObjectMojo extends net.histos.java2as.maven.AbstractMojo {
+public class TransferObjectMojo extends AbstractMojo<TransferObjectConfiguration> {
 
 	private Logger _log = LoggerFactory.getLogger(getClass());
 
@@ -37,11 +36,6 @@ public class TransferObjectMojo extends net.histos.java2as.maven.AbstractMojo {
 	//
 
 	// internal infrastructure
-
-	/**
-	 * The configuration object to supply to the producer.
-	 */
-	protected TransferObjectConfiguration config;
 
 	/**
 	 * The producer that creates the files.
@@ -70,13 +64,6 @@ public class TransferObjectMojo extends net.histos.java2as.maven.AbstractMojo {
 	 * @parameter
 	 */
 	private PackageMapperRule[] packageMapperRules = new PackageMapperRule[]{};
-
-	/**
-	 * List of TypeMatcher class names to be used by java2as.
-	 *
-	 * @parameter
-	 */
-	private String[] typeMatchers = new String[]{};
 
 	/**
 	 * Location to write custom classes.
@@ -133,9 +120,9 @@ public class TransferObjectMojo extends net.histos.java2as.maven.AbstractMojo {
 	// Public Methods
 	//
 
-	public void execute() throws MojoExecutionException {
+	public void execute() throws MojoExecutionException, MojoFailureException {
 
-		StaticLoggerBinder.getSingleton().setMavenLog(this.getLog());
+		super.execute();
 
 		config = new TransferObjectConfiguration();
 		config.setBaseClassDir(baseClassDir);
@@ -145,7 +132,7 @@ public class TransferObjectMojo extends net.histos.java2as.maven.AbstractMojo {
 		config.setGenerateManifest(generateManifest);
 		config.setIncludeArrayElementType(includeArrayElementType);
 		config.setTransferObjectBaseClass(transferObjectBaseClass);
-		loadConfiguratonClasses(config);
+		loadConfiguratonClasses();
 
 		_log.info("Configuration classes loaded successfully!");
 		config.logConfiguration();
@@ -210,16 +197,13 @@ public class TransferObjectMojo extends net.histos.java2as.maven.AbstractMojo {
 
 	}
 
-	protected void loadConfiguratonClasses(TransferObjectConfiguration config) throws MojoExecutionException {
+	protected void loadConfiguratonClasses() throws MojoExecutionException {
+
+		super.loadConfigurationClasses();
 
 		try {
 
 			ClassLoader loader = getClassLoader();
-
-			if (typeMapper != null) {
-				Class<TypeMapper<As3Type>> typeMapperClass = (Class<TypeMapper<As3Type>>) loader.loadClass(typeMapper);
-				config.setTypeMapper(typeMapperClass.newInstance());
-			}
 
 			if (propertyMappers.length > 0) {
 				config.removeAllPropertyMappers();
@@ -242,11 +226,6 @@ public class TransferObjectMojo extends net.histos.java2as.maven.AbstractMojo {
 				} else {
 					_log.warn("PackageMapper is not an instance of RuleBasedPackageMapper; packageMapperRules have been ignored");
 				}
-			}
-
-			for (String matcher : typeMatchers) {
-				Class<TypeMatcher> typeMatcherClass = (Class<TypeMatcher>) loader.loadClass(matcher);
-				config.addTypeMatcher(typeMatcherClass.newInstance());
 			}
 
 		} catch (Exception e) {

@@ -24,8 +24,6 @@ public abstract class AbstractProducer {
 	 */
 	protected List<Class<?>> findMatchingClasses(List<TypeMatcher> matchers, List<Class<?>> classes) {
 
-		if (matchers.size() == 0) return classes;
-
 		List<Class<?>> matchingClasses = new ArrayList<Class<?>>();
 
 		for (Class<?> clazz : classes) {

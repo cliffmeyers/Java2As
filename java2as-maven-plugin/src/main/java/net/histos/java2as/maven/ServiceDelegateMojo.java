@@ -57,13 +57,6 @@ public class ServiceDelegateMojo extends AbstractMojo {
 	private String methodMapper;
 
 	/**
-	 * List of TypeMatcher class names to be used by java2as.
-	 *
-	 * @parameter
-	 */
-	private String[] typeMatchers = new String[]{};
-
-	/**
 	 * Location to write generated service classes
 	 *
 	 * @parameter default-value="${project.build.directory}/java2as"
@@ -91,13 +84,13 @@ public class ServiceDelegateMojo extends AbstractMojo {
 
 	public void execute() throws MojoExecutionException, MojoFailureException {
 
-		StaticLoggerBinder.getSingleton().setMavenLog(this.getLog());
+		super.execute();
 
 		config = new ServiceDelegateConfiguration();
 		config.setServiceImplDir(serviceImplDir);
 		config.setServiceImplTemplate(serviceImplTemplate);
 		config.setServiceDelegateBaseClass(serviceDelegateBaseClass);
-		loadConfiguratonClasses(config);
+		loadConfiguratonClasses();
 
 		_log.info("Configuration classes loaded successfully!");
 		config.logConfiguration();
@@ -163,25 +156,17 @@ public class ServiceDelegateMojo extends AbstractMojo {
 
 	}
 
-	protected void loadConfiguratonClasses(ServiceDelegateConfiguration config) throws MojoExecutionException {
+	protected void loadConfiguratonClasses() throws MojoExecutionException {
 
+		super.loadConfigurationClasses();
+		
 		try {
 
 			ClassLoader loader = getClassLoader();
 
-			if (typeMapper != null) {
-				Class<TypeMapper<As3Type>> typeMapperClass = (Class<TypeMapper<As3Type>>) loader.loadClass(typeMapper);
-				config.setTypeMapper(typeMapperClass.newInstance());
-			}
-
 			if (methodMapper != null) {
 				Class<MethodMapper> methodMapperClass = (Class<MethodMapper>) loader.loadClass(methodMapper);
 				config.setMethodMapper(methodMapperClass.newInstance());
-			}
-
-			for (String matcher : typeMatchers) {
-				Class<TypeMatcher> typeMatcherClass = (Class<TypeMatcher>) loader.loadClass(matcher);
-				config.addTypeMatcher(typeMatcherClass.newInstance());
 			}
 
 		} catch (Exception e) {
