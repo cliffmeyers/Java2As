@@ -65,6 +65,11 @@ public class TransferObjectProducer extends AbstractProducer {
 
 		_log.info("Matching transfer object classes: " + matchingClasses.size() + " total");
 
+		if (matchingClasses.size() == 0) {
+			_log.warn("No matching transfer objects were found. Aborting!");
+			return;
+		}
+
 		// build metadata
 		List<JavaTransferObject> javaTOs = buildMetadata(matchingClasses);
 
