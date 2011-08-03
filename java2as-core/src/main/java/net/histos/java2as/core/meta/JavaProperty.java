@@ -1,5 +1,6 @@
 package net.histos.java2as.core.meta;
 
+import java.beans.PropertyDescriptor;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.*;
 import java.util.Collection;
@@ -17,6 +18,7 @@ public class JavaProperty implements Property<Class<?>> {
 
 	private String name;
 	private Class<?> type;
+	private PropertyDescriptor property;
 	private Method getter;
 	private Field field;
 
@@ -24,10 +26,11 @@ public class JavaProperty implements Property<Class<?>> {
 	// Constructors
 	//
 
-	public JavaProperty(Method getter) {
-		this.getter = getter;
-		this.name = getter.getName().substring(3, 4).toLowerCase() + getter.getName().substring(4);
-		this.type = getter.getReturnType();
+	public JavaProperty(PropertyDescriptor property) {
+		this.property = property;
+		this.getter = property.getReadMethod();
+		this.name = property.getName();
+		this.type = property.getPropertyType();
 	}
 
 	public JavaProperty(Field field) {

@@ -32,7 +32,7 @@ public class JavaTransferObject {
 					// only add the property if its getter is defined in the class
 					// this prevents properties in superclasses from being duplicated
 					if (clazz.equals(prop.getReadMethod().getDeclaringClass()))
-						properties.add(new JavaProperty(prop.getReadMethod()));
+						properties.add(new JavaProperty(prop));
 				}
 		} catch (IntrospectionException e) {
 			throw new RuntimeException(e);
