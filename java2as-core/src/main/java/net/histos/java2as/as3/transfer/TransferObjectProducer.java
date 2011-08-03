@@ -63,7 +63,7 @@ public class TransferObjectProducer extends AbstractProducer {
 		// filter
 		List<Class<?>> matchingClasses = findMatchingClasses(config.getTypeMatchers(), classes);
 
-		_log.info("java2as found classes to generate: " + matchingClasses.size() + " total");
+		_log.info("Matching transfer object classes: " + matchingClasses.size() + " total");
 
 		// build metadata
 		List<JavaTransferObject> javaTOs = buildMetadata(matchingClasses);
@@ -98,6 +98,8 @@ public class TransferObjectProducer extends AbstractProducer {
 
 			}
 
+			_log.info("Successfully generated transfer objects: " + matchingClasses.size() + " total");
+
 			if (config.isGenerateManifest())
 			{
 				Configuration manifestConfig = new Configuration();
@@ -108,6 +110,8 @@ public class TransferObjectProducer extends AbstractProducer {
 				model.put("transferObjects", as3TransferObjects);
 				Writer manifestWriter = manifestWriterResolver.resolveWriter();
 				manifestTemplate.process(model, manifestWriter);
+
+				_log.info("Successfully generated transfer object manifest");
 			}
 
 		} catch (IOException e) {
