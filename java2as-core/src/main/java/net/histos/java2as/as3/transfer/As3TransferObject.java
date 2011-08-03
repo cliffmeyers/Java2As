@@ -16,6 +16,8 @@ import java.util.List;
  */
 public class As3TransferObject {
 
+	private static final String IMPORT = "import";
+
 	//
 	// Fields
 	//
@@ -154,14 +156,14 @@ public class As3TransferObject {
 		// build a nicely formatted string with empty lines between new top-level packages
 		// this matches the Flex Builder "organize imports" feature
 		String prevTopLevelPackage = "";
-		for (String importLine : imports) {
-			String nextTopLevelPackage = importLine.substring(0, importLine.indexOf("."));
+		for (String importClassName : imports) {
+			String nextTopLevelPackage = importClassName.substring(0, importClassName.indexOf("."));
 			if (!prevTopLevelPackage.equals(nextTopLevelPackage)) {
 				fragment.append("\n");
 				prevTopLevelPackage = nextTopLevelPackage;
 			}
 			fragment.append("\t");
-			fragment.append(importLine);
+			fragment.append(IMPORT + " " + importClassName);
 			fragment.append(";\n");
 		}
 
