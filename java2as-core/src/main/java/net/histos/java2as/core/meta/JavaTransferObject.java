@@ -28,8 +28,12 @@ public class JavaTransferObject {
 			BeanInfo beanInfo = Introspector.getBeanInfo(clazz);
 			PropertyDescriptor[] props = beanInfo.getPropertyDescriptors();
 			for (PropertyDescriptor prop : props)
-				if (!"class".equals(prop.getName()))
-					properties.add(new JavaProperty(prop.getReadMethod()));
+				if (!"class".equals(prop.getName())) {
+					// only add the property if its getter is defined in the class
+					// this prevents properties in superclasses from being duplicated
+					if (clazz.equals(prop.getReadMethod().getDeclaringClass()))
+						properties.add(new JavaProperty(prop.getReadMethod()));
+				}
 		} catch (IntrospectionException e) {
 			throw new RuntimeException(e);
 		}
