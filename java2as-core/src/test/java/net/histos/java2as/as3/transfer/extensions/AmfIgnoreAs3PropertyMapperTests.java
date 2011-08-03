@@ -5,6 +5,7 @@ import net.histos.java2as.as3.transfer.extensions.test.Person;
 import net.histos.java2as.as3.transfer.extensions.test.Thing;
 import net.histos.java2as.core.conf.PropertyMapper;
 import net.histos.java2as.core.meta.JavaProperty;
+import net.histos.java2as.test.ReflectUtils;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -23,7 +24,7 @@ public class AmfIgnoreAs3PropertyMapperTests {
 
 	@Test
 	public void testMapperAmfIgnoreGetter() throws NoSuchMethodException {
-		JavaProperty personPhotoProp = new JavaProperty(Person.class.getMethod("getPhoto"));
+		JavaProperty personPhotoProp = new JavaProperty(ReflectUtils.getProperty(Person.class, "photo"));
 		Assert.assertTrue(mapper.canMapProperty(personPhotoProp));
 		Assert.assertNull(mapper.mapProperty(personPhotoProp));
 	}
@@ -40,7 +41,7 @@ public class AmfIgnoreAs3PropertyMapperTests {
 
 	@Test
 	public void testMapperAmfIgnoreFalse() throws NoSuchMethodException {
-		JavaProperty thingPhotoProp = new JavaProperty(Thing.class.getMethod("getPhoto"));
+		JavaProperty thingPhotoProp = new JavaProperty(ReflectUtils.getProperty(Thing.class, "photo"));
 		Assert.assertFalse(mapper.canMapProperty(thingPhotoProp));
 	}
 

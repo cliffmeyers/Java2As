@@ -5,6 +5,7 @@ import net.histos.java2as.as3.transfer.As3Property;
 import net.histos.java2as.as3.transfer.extensions.test.Person;
 import net.histos.java2as.core.conf.PropertyMapper;
 import net.histos.java2as.core.meta.JavaProperty;
+import net.histos.java2as.test.ReflectUtils;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -23,7 +24,7 @@ public class JpaIdentifierAs3PropertyMapperTests {
 
 	@Test
 	public void testMapperJpaIdentifierGetter() throws NoSuchMethodException {
-		JavaProperty personIdProp = new JavaProperty(Person.class.getMethod("getId"));
+		JavaProperty personIdProp = new JavaProperty(ReflectUtils.getProperty(Person.class, "id"));
 		Assert.assertTrue(mapper.canMapProperty(personIdProp));
 		Assert.assertEquals(As3SimpleType.Object, mapper.mapProperty(personIdProp).getType());
 	}
@@ -40,7 +41,7 @@ public class JpaIdentifierAs3PropertyMapperTests {
 
 	@Test
 	public void testMapperJpaIdentifierFalse() throws NoSuchMethodException {
-		JavaProperty personFirstNameProp = new JavaProperty(Person.class.getMethod("getFirstName"));
+		JavaProperty personFirstNameProp = new JavaProperty(ReflectUtils.getProperty(Person.class, "firstName"));
 		Assert.assertFalse(mapper.canMapProperty(personFirstNameProp));
 	}
 
