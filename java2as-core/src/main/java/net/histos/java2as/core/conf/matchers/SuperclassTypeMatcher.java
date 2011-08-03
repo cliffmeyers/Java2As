@@ -11,7 +11,7 @@ import java.util.List;
  *
  * @author cliff.meyers
  */
-public class SuperclassTypeMatcher implements TypeMatcher {
+public class SuperclassTypeMatcher extends DefaultTypeMatcher {
 
 	//
 	// Fields
@@ -39,7 +39,7 @@ public class SuperclassTypeMatcher implements TypeMatcher {
 	 */
 	public boolean match(Class<?> clazz) {
 
-		if (clazz.isInterface())
+		if (!super.match(clazz))
 			return false;
 
 		List<Class> superclasses = ClassUtils.getAllSuperclasses(clazz);

@@ -1,6 +1,5 @@
 package net.histos.java2as.core.conf.matchers;
 
-import net.histos.java2as.core.conf.TypeMatcher;
 import org.apache.commons.lang.ClassUtils;
 
 import java.lang.annotation.Annotation;
@@ -11,7 +10,7 @@ import java.util.List;
  *
  * @author cliff.meyers
  */
-public class AnnotationTypeMatcher implements TypeMatcher {
+public class AnnotationTypeMatcher extends DefaultTypeMatcher {
 
 	//
 	// Fields
@@ -35,7 +34,7 @@ public class AnnotationTypeMatcher implements TypeMatcher {
 	 */
 	public boolean match(Class<?> clazz) {
 
-		if (clazz.isInterface())
+		if (!super.match(clazz))
 			return false;
 
 		List<Class> superclasses = ClassUtils.getAllSuperclasses(clazz);

@@ -10,7 +10,7 @@ import java.util.List;
  *
  * @author cliff.meyers
  */
-public class InterfaceTypeMatcher implements TypeMatcher {
+public class InterfaceTypeMatcher extends DefaultTypeMatcher {
 
 	//
 	// Fields
@@ -33,6 +33,9 @@ public class InterfaceTypeMatcher implements TypeMatcher {
 	 * @inheritDoc
 	 */
 	public boolean match(Class<?> clazz) {
+
+		if (!super.match(clazz))
+			return false;
 
 		List<Class> interfaces = ClassUtils.getAllInterfaces(clazz);
 
