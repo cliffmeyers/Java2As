@@ -26,7 +26,7 @@ public class JavaProperty implements Property<Class<?>> {
 
 	public JavaProperty(Method getter) {
 		this.getter = getter;
-		this.name = getter.getName().substring(3, 3).toLowerCase() + getter.getName().substring(4);
+		this.name = getter.getName().substring(3, 4).toLowerCase() + getter.getName().substring(4);
 		this.type = getter.getReturnType();
 	}
 
