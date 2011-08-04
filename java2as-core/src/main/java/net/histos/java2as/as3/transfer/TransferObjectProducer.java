@@ -1,10 +1,10 @@
 package net.histos.java2as.as3.transfer;
 
-import net.histos.java2as.core.AbstractProducer;
-import net.histos.java2as.core.meta.JavaTransferObject;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
+import net.histos.java2as.core.AbstractProducer;
+import net.histos.java2as.core.meta.JavaTransferObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,7 +18,7 @@ import java.util.Map;
 
 /**
  * Generates ActionScript transfer objects based off some Java transfer objects.
- * 
+ *
  * @author cliff.meyers
  */
 public class TransferObjectProducer extends AbstractProducer {
@@ -105,8 +105,7 @@ public class TransferObjectProducer extends AbstractProducer {
 
 			_log.info("Successfully generated transfer objects: " + matchingClasses.size() + " total");
 
-			if (config.isGenerateManifest())
-			{
+			if (config.isGenerateManifest()) {
 				Configuration manifestConfig = new Configuration();
 				manifestConfig.setClassForTemplateLoading(TransferObjectProducer.class, "");
 				Template manifestTemplate = manifestConfig.getTemplate(TO_MANIFEST_FTL);
@@ -139,7 +138,13 @@ public class TransferObjectProducer extends AbstractProducer {
 	protected List<JavaTransferObject> buildMetadata(List<Class<?>> classes) {
 		List<JavaTransferObject> transferObjects = new ArrayList<JavaTransferObject>();
 		for (Class<?> clazz : classes)
-			transferObjects.add(new JavaTransferObject(clazz));
+			try {
+				transferObjects.add(new JavaTransferObject(clazz));
+			} catch (Exception e) {
+				String message = "Error occurred while building metadata for: " + clazz.getName() + ": " + e.getMessage();
+				_log.error(message);
+				throw new RuntimeException(message, e);
+			}
 		return transferObjects;
 	}
 

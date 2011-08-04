@@ -21,7 +21,7 @@ import java.util.List;
 /**
  * @author cliff.meyers
  */
-public class ServiceDelegateTask extends Task {
+public class ServiceDelegateTask extends GeneratorTask<ServiceDelegateConfiguration> {
 
 	private Logger _log = LoggerFactory.getLogger(getClass());
 
@@ -32,11 +32,6 @@ public class ServiceDelegateTask extends Task {
 	// internal infrastructure
 
 	/**
-	 * The configuration object to supply to the producer.
-	 */
-	private ServiceDelegateConfiguration config;
-
-	/**
 	 * The producer that creates the files.
 	 */
 	protected ServiceDelegateProducer producer;
@@ -44,24 +39,9 @@ public class ServiceDelegateTask extends Task {
 	// parameters supplied by task end-users
 
 	/**
-	 * Locations of classes that are candidates for generation.
-	 */
-	private List<FileSet> fileSets = new ArrayList<FileSet>();
-
-	/**
-	 * Custom TypeMapper class name to be used by java2as.
-	 */
-	private String typeMapper;
-
-	/**
 	 * Custom MethodMapper class name to be used by java2as.
 	 */
 	private String methodMapper;
-
-	/**
-	 * List of TypeMatcher class names to be used by java2as.
-	 */
-	private List<AntTypeMatcher> typeMatchers = new ArrayList<AntTypeMatcher>();
 
 	/**
 	 * Directory in which to generate service implementations (e.g. UserService implements IUserService)
@@ -94,7 +74,7 @@ public class ServiceDelegateTask extends Task {
 		config.setServiceImplDir(serviceImplDir);
 		config.setServiceImplTemplate(serviceImplTemplate);
 		config.setServiceDelegateBaseClass(serviceDelegatetBaseClass);
-		loadConfiguratonClasses(config);
+		loadConfiguratonClasses();
 
 		_log.info("Configuration classes loaded successfully!");
 		config.logConfiguration();
@@ -158,28 +138,20 @@ public class ServiceDelegateTask extends Task {
 
 	}
 
-	protected void loadConfiguratonClasses(ServiceDelegateConfiguration config) {
+	protected void loadConfiguratonClasses() {
+
+		super.loadConfigurationClasses();
 
 		try {
-
-			if (typeMapper != null) {
-				Class<TypeMapper<As3Type>> typeMapperClass = (Class<TypeMapper<As3Type>>) Class.forName(typeMapper);
-				config.setTypeMapper(typeMapperClass.newInstance());
-			}
 
 			if (methodMapper != null) {
 				Class<MethodMapper> methodMapperClass = (Class<MethodMapper>) Class.forName(methodMapper);
 				config.setMethodMapper(methodMapperClass.newInstance());
 			}
 
-			for (AntTypeMatcher matcher : typeMatchers) {
-				Class<TypeMatcher> typeMatcherClass = (Class<TypeMatcher>) Class.forName(matcher.getClassName());
-				config.addTypeMatcher(typeMatcherClass.newInstance());
-			}
-
 		} catch (Exception e) {
-			e.printStackTrace();
-			throw new BuildException(e.getMessage());
+			_log.error("Error during loading config classes: " + e.getMessage());
+			throw new BuildException(e.getMessage(), e);
 		}
 
 	}
@@ -188,16 +160,8 @@ public class ServiceDelegateTask extends Task {
 	// Getters and Setters
 	//
 
-	public void setTypeMapper(String value) {
-		typeMapper = value;
-	}
-
 	public void setMethodMapper(String methodMapper) {
 		this.methodMapper = methodMapper;
-	}
-
-	public void setTypeMatchers(List<AntTypeMatcher> typeMatchers) {
-		this.typeMatchers = typeMatchers;
 	}
 
 	public void setServiceImplDir(File serviceImplDir) {
