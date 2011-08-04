@@ -1,18 +1,14 @@
 package net.histos.java2as.maven;
 
-import net.histos.java2as.as3.As3Type;
 import net.histos.java2as.as3.service.MethodMapper;
 import net.histos.java2as.as3.service.ServiceDelegateConfiguration;
 import net.histos.java2as.as3.service.ServiceDelegateProducer;
-import net.histos.java2as.core.conf.TypeMapper;
-import net.histos.java2as.core.conf.TypeMatcher;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.slf4j.impl.StaticLoggerBinder;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -27,7 +23,7 @@ import java.util.List;
  *
  * @author cliff.meyers
  */
-public class ServiceDelegateMojo extends AbstractMojo {
+public class ServiceDelegateMojo extends GeneratorMojo {
 
 	private Logger _log = LoggerFactory.getLogger(getClass());
 

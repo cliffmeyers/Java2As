@@ -1,11 +1,9 @@
 package net.histos.java2as.maven;
 
-import net.histos.java2as.as3.As3Type;
 import net.histos.java2as.as3.transfer.TransferObjectConfiguration;
 import net.histos.java2as.as3.transfer.TransferObjectProducer;
 import net.histos.java2as.core.conf.PackageMapper;
 import net.histos.java2as.core.conf.PropertyMapper;
-import net.histos.java2as.core.conf.TypeMapper;
 import net.histos.java2as.core.conf.packages.PackageMapperRule;
 import net.histos.java2as.core.conf.packages.RuleBasedPackageMapper;
 import org.apache.commons.io.FileUtils;
@@ -14,7 +12,6 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.slf4j.impl.StaticLoggerBinder;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -27,7 +24,7 @@ import java.util.List;
  * @goal generate-dtos
  * @phase process-classes
  */
-public class TransferObjectMojo extends AbstractMojo<TransferObjectConfiguration> {
+public class TransferObjectMojo extends GeneratorMojo<TransferObjectConfiguration> {
 
 	private Logger _log = LoggerFactory.getLogger(getClass());
 

@@ -10,6 +10,7 @@ import net.histos.java2as.core.conf.matchers.InterfaceTypeMatcher;
 import net.histos.java2as.core.conf.matchers.SuperclassTypeMatcher;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
@@ -28,7 +29,7 @@ import java.util.List;
  *
  * @author cliff.meyers
  */
-public abstract class AbstractMojo<C extends AbstractAs3Configuration> extends org.apache.maven.plugin.AbstractMojo {
+public abstract class GeneratorMojo<C extends AbstractAs3Configuration> extends AbstractMojo {
 
 	private Logger _log = LoggerFactory.getLogger(getClass());
 
@@ -104,8 +105,7 @@ public abstract class AbstractMojo<C extends AbstractAs3Configuration> extends o
 	// Public Methods
 	//
 
-	public void execute() throws MojoExecutionException, MojoFailureException
-	{
+	public void execute() throws MojoExecutionException, MojoFailureException {
 		StaticLoggerBinder.getSingleton().setMavenLog(this.getLog());
 	}
 
