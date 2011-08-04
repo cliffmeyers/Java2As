@@ -210,6 +210,10 @@ public class As3TransferObject {
 	// Getters and Setters
 	//
 
+	public List<As3Dependency> getDependencies() {
+		return dependencies;
+	}
+
 	public String getPackageName() {
 		return packageName;
 	}
