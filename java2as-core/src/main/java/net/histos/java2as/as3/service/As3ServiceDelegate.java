@@ -2,6 +2,7 @@ package net.histos.java2as.as3.service;
 
 import net.histos.java2as.as3.As3CustomType;
 import net.histos.java2as.as3.As3SimpleType;
+import net.histos.java2as.as3.As3Stereotype;
 import net.histos.java2as.as3.DependencyResolver;
 import net.histos.java2as.as3.transfer.As3Dependency;
 import net.histos.java2as.core.conf.PackageMapper;
@@ -18,7 +19,7 @@ import java.util.List;
  * @author cliff.meyers
  * @see net.histos.java2as.core.meta.JavaService
  */
-public class As3ServiceDelegate {
+public class As3ServiceDelegate implements As3Stereotype {
 
 	//
 	// Statics
@@ -210,8 +211,16 @@ public class As3ServiceDelegate {
 	// Getters and Setters
 	//
 
+	public List<As3Dependency> getDependencies() {
+		return dependencies;
+	}
+
 	public String getPackageName() {
 		return service.getPackageName();
+	}
+
+	public String getQualifiedName() {
+		return service.getName();
 	}
 
 	public String getSimpleName() {

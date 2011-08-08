@@ -2,6 +2,7 @@ package net.histos.java2as.as3.transfer;
 
 import net.histos.java2as.as3.As3CustomType;
 import net.histos.java2as.as3.As3SimpleType;
+import net.histos.java2as.as3.As3Stereotype;
 import net.histos.java2as.as3.DependencyResolver;
 import net.histos.java2as.core.conf.PackageMapper;
 import net.histos.java2as.core.meta.DependencyKind;
@@ -14,7 +15,7 @@ import java.util.List;
 /**
  * Represents an ActionScript transfer object class.
  */
-public class As3TransferObject {
+public class As3TransferObject implements As3Stereotype {
 
 	private static final String IMPORT = "import";
 

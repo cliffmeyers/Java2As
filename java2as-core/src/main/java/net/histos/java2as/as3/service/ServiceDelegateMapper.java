@@ -1,11 +1,8 @@
 package net.histos.java2as.as3.service;
 
+import net.histos.java2as.as3.AbstractAs3Mapper;
 import net.histos.java2as.as3.As3Type;
-import net.histos.java2as.as3.DefaultDependencyResolver;
-import net.histos.java2as.as3.DependencyResolver;
 import net.histos.java2as.as3.transfer.As3Dependency;
-import net.histos.java2as.core.conf.PackageMapper;
-import net.histos.java2as.core.conf.TypeMapper;
 import net.histos.java2as.core.meta.DependencyKind;
 import net.histos.java2as.core.meta.JavaMethod;
 import net.histos.java2as.core.meta.JavaService;
@@ -20,18 +17,13 @@ import java.util.Map;
  *
  * @author cliff.meyers
  */
-public class ServiceDelegateMapper {
+public class ServiceDelegateMapper extends AbstractAs3Mapper<ServiceDelegateConfiguration> {
 
 	//
 	// Fields
 	//
 
-	private ServiceDelegateConfiguration config;
 	private MethodMapper methodMapper;
-	private TypeMapper<As3Type> typeMapper;
-	private PackageMapper packageMapper;
-	private DependencyResolver dependencyResolver;
-
 	private Map<JavaService, As3ServiceDelegate> serviceMap;
 	private List<As3ServiceDelegate> as3Delegates;
 
@@ -39,14 +31,10 @@ public class ServiceDelegateMapper {
 	// Constructors
 	//
 
-	public ServiceDelegateMapper(ServiceDelegateConfiguration config)
-	{
-		this.config = config;
+	public ServiceDelegateMapper(ServiceDelegateConfiguration config) {
+		super(config);
 		this.methodMapper = config.getMethodMapper();
-		this.typeMapper = config.getTypeMapper();
-		this.packageMapper = config.getPackageMapper();
 		this.serviceMap = new HashMap<JavaService, As3ServiceDelegate>();
-		this.dependencyResolver = new DefaultDependencyResolver();
 	}
 
 	//

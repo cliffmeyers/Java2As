@@ -1,12 +1,9 @@
 package net.histos.java2as.as3.transfer;
 
-import net.histos.java2as.as3.As3CustomType;
+import net.histos.java2as.as3.AbstractAs3Mapper;
+import net.histos.java2as.as3.As3Stereotype;
 import net.histos.java2as.as3.As3Type;
-import net.histos.java2as.as3.DefaultDependencyResolver;
-import net.histos.java2as.as3.DependencyResolver;
-import net.histos.java2as.core.conf.PackageMapper;
 import net.histos.java2as.core.conf.PropertyMapper;
-import net.histos.java2as.core.conf.TypeMapper;
 import net.histos.java2as.core.meta.DependencyKind;
 import net.histos.java2as.core.meta.JavaProperty;
 import net.histos.java2as.core.meta.JavaTransferObject;
@@ -14,7 +11,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -22,7 +18,7 @@ import java.util.List;
  *
  * @author cliff.meyers
  */
-public class TransferObjectMapper {
+public class TransferObjectMapper extends AbstractAs3Mapper<TransferObjectConfiguration> {
 
 	private Logger _log = LoggerFactory.getLogger(getClass());
 
@@ -30,22 +26,15 @@ public class TransferObjectMapper {
 	// Fields
 	//
 
-	private TransferObjectConfiguration config;
 	private PropertyMapper<As3Property> propertyMapper;
-	private TypeMapper<As3Type> typeMapper;
-	private PackageMapper packageMapper;
-	private DependencyResolver dependencyResolver;
 
 	//
 	// Constructors
 	//
 
 	public TransferObjectMapper(TransferObjectConfiguration config) {
-		this.config = config;
+		super(config);
 		this.propertyMapper = config.getPropertyMapper();
-		this.typeMapper = config.getTypeMapper();
-		this.packageMapper = config.getPackageMapper();
-		this.dependencyResolver = new DefaultDependencyResolver();
 	}
 
 	//
@@ -67,7 +56,9 @@ public class TransferObjectMapper {
 			as3TransferObjects.add(as3TransferObject);
 		}
 
-		validateMetadata(as3TransferObjects);
+		List<As3Stereotype> stereotypes = new ArrayList<As3Stereotype>();
+		stereotypes.addAll(as3TransferObjects);
+		validateMetadata(stereotypes);
 
 		return as3TransferObjects;
 
@@ -109,39 +100,6 @@ public class TransferObjectMapper {
 		as3TransferObject.buildMetadata(packageMapper, dependencyResolver);
 		return as3TransferObject;
 
-	}
-
-	/**
-	 * Inspects transfer objects and dependencies to warn about missing dependencies.
-	 *
-	 * @param transferObjects
-	 */
-	protected void validateMetadata(List<As3TransferObject> transferObjects) {
-
-		List<String> recognizedTypeNames = new ArrayList<String>();
-		List<String> unrecognizedTypeNames = new ArrayList<String>();
-		List<As3Dependency> dependencies = new ArrayList<As3Dependency>();
-
-		for (As3TransferObject transferObject : transferObjects) {
-			recognizedTypeNames.add(transferObject.getQualifiedName());
-			for (As3Dependency dependency : transferObject.getDependencies()) {
-				if (dependencyResolver.shouldResolve(transferObject.getPackageName(), dependency) && dependency.getDependencyType() instanceof As3CustomType) {
-					if (!dependencies.contains(dependency))
-						dependencies.add(dependency);
-				}
-			}
-		}
-
-		for (As3Dependency dependency : dependencies) {
-			String typeName = dependency.getQualifiedName();
-			if (!recognizedTypeNames.contains(typeName) && !unrecognizedTypeNames.contains(typeName))
-				unrecognizedTypeNames.add(typeName);
-		}
-
-		Collections.sort(unrecognizedTypeNames);
-
-		for (String typeName : unrecognizedTypeNames)
-			_log.warn("Could not resolve dependency for " + typeName);
 	}
 
 }
