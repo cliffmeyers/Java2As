@@ -241,7 +241,7 @@ public abstract class GeneratorMojo<C extends AbstractAs3Configuration> extends 
 				Class<?> clazz = loader.loadClass(name);
 				candidateClasses.add(clazz);
 			} catch (ClassNotFoundException e) {
-				_log.warn("Could not load candidate class: " + name + "; will be ignored");
+				_log.warn("Ignorning " + name + "; could not load class");
 			}
 		}
 
