@@ -181,12 +181,12 @@ public abstract class GeneratorMojo<C extends AbstractAs3Configuration> extends 
 
 		// from: http://www.amateurinmotion.com/articles/2009/11/04/creating-classpath-from-compile-scope-elements-in-maven-mojo.html
 
-		synchronized (TransferObjectMojo.class) {
+		synchronized (GeneratorMojo.class) {
 			if (classLoader != null)
 				return classLoader;
 		}
 
-		synchronized (TransferObjectMojo.class) {
+		synchronized (GeneratorMojo.class) {
 			List<URL> urls = new ArrayList<URL>();
 			try {
 				for (Object object : project.getCompileClasspathElements()) {
