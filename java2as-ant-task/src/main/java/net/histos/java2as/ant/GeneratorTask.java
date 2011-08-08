@@ -45,6 +45,11 @@ public class GeneratorTask<C extends AbstractAs3Configuration> extends Task {
 	protected String typeMapper;
 
 	/**
+	 * List of package names to be used in class matching.
+	 */
+	protected List<AntPackageMatcher> packageMatchers = new ArrayList<AntPackageMatcher>();
+
+	/**
 	 * List of TypeMatcher class names to be used by java2as.
 	 */
 	protected List<AntTypeMatcher> typeMatchers = new ArrayList<AntTypeMatcher>();
@@ -74,6 +79,10 @@ public class GeneratorTask<C extends AbstractAs3Configuration> extends Task {
 	//
 	// Public Methods
 	//
+
+	public void addConfigured(AntPackageMatcher matcher) {
+		packageMatchers.add(matcher);
+	}
 
 	public void addConfigured(AntTypeMatcher matcher) {
 		typeMatchers.add(matcher);
