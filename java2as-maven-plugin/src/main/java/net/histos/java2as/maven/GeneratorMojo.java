@@ -4,10 +4,8 @@ import net.histos.java2as.as3.AbstractAs3Configuration;
 import net.histos.java2as.as3.As3Type;
 import net.histos.java2as.core.conf.TypeMapper;
 import net.histos.java2as.core.conf.TypeMatcher;
-import net.histos.java2as.core.conf.matchers.AnnotationTypeMatcher;
-import net.histos.java2as.core.conf.matchers.DefaultTypeMatcher;
-import net.histos.java2as.core.conf.matchers.InterfaceTypeMatcher;
-import net.histos.java2as.core.conf.matchers.SuperclassTypeMatcher;
+import net.histos.java2as.core.conf.matchers.*;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.maven.plugin.AbstractMojo;
@@ -22,6 +20,7 @@ import java.io.File;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -78,7 +77,15 @@ public abstract class GeneratorMojo<C extends AbstractAs3Configuration> extends 
 	protected String[] typeMatchers = new String[]{};
 
 	/**
-	 * Name of the superclass to match on using a default TypeMatcher.
+	 * List of package names to match on for inclusion in generation.
+	 *
+	 * @parameter
+	 * @see net.histos.java2as.core.conf.matchers.PackageTypeMatcher
+	 */
+	protected String[] packageNames = new String[]{};
+
+	/**
+	 * Name of the superclass to match on for inclusion in generation.
 	 *
 	 * @parameter
 	 * @see net.histos.java2as.core.conf.matchers.SuperclassTypeMatcher
@@ -86,7 +93,7 @@ public abstract class GeneratorMojo<C extends AbstractAs3Configuration> extends 
 	protected String superclassName;
 
 	/**
-	 * Name of the interface to match on using a default TypeMatcher.
+	 * Name of the interface to match on for inclusion in generation.
 	 *
 	 * @parameter
 	 * @see net.histos.java2as.core.conf.matchers.InterfaceTypeMatcher
@@ -94,7 +101,7 @@ public abstract class GeneratorMojo<C extends AbstractAs3Configuration> extends 
 	protected String interfaceName;
 
 	/**
-	 * Name of the annotation to match on using a default TypeMatcher.
+	 * Name of the annotation to match on for inclusion in generation.
 	 *
 	 * @parameter
 	 * @see net.histos.java2as.core.conf.matchers.AnnotationTypeMatcher
@@ -149,6 +156,11 @@ public abstract class GeneratorMojo<C extends AbstractAs3Configuration> extends 
 			// otherwise fall back to the simple properties and default type matchers
 
 			// support multiple default type matchers, even though this is an unlikely use case
+			if (!ArrayUtils.isEmpty(packageNames)) {
+				for (String packageName : packageNames)
+					config.addTypeMatcher(new PackageTypeMatcher(packageName));
+			}
+
 			if (!StringUtils.isEmpty(superclassName))
 				config.addTypeMatcher(new SuperclassTypeMatcher(superclassName));
 
@@ -190,5 +202,49 @@ public abstract class GeneratorMojo<C extends AbstractAs3Configuration> extends 
 			return classLoader;
 		}
 
+	}
+
+	protected List<Class<?>> loadCandidateClasses() {
+
+		final String SLASH = File.separator;
+		final String EXT = "class";
+		final String DOT_EXT = "." + EXT;
+		final String PACKAGE_DELIM = ".";
+
+		List<String> candidateClassNames = new LinkedList<String>();
+
+		for (File location : compiledClassesLocations) {
+
+			if (!location.isDirectory())
+				throw new IllegalArgumentException("Only directories can be supplied as a compiledClassLocation; error for " + location.getAbsolutePath());
+
+			String sourceRootPath = location.getAbsolutePath();
+
+			// convert full path to class file to fully-qualified Java class name
+			for (File file : FileUtils.listFiles(location, new String[]{EXT}, true)) {
+				String filePath = file.getAbsolutePath();
+				String packageFragment = filePath.substring(sourceRootPath.length(), filePath.length() - DOT_EXT.length());
+				String className = StringUtils.replace(packageFragment, SLASH, PACKAGE_DELIM);
+				if (className.startsWith(PACKAGE_DELIM))
+					className = className.substring(PACKAGE_DELIM.length());
+				candidateClassNames.add(className);
+			}
+
+		}
+
+		// now let's load some classes!
+		List<Class<?>> candidateClasses = new ArrayList<Class<?>>(500);
+
+		ClassLoader loader = getClassLoader();
+		for (String name : candidateClassNames) {
+			try {
+				Class<?> clazz = loader.loadClass(name);
+				candidateClasses.add(clazz);
+			} catch (ClassNotFoundException e) {
+				_log.warn("Could not load candidate class: " + name + "; will be ignored");
+			}
+		}
+
+		return candidateClasses;
 	}
 }

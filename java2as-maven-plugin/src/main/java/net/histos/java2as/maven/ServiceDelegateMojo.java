@@ -23,7 +23,7 @@ import java.util.List;
  *
  * @author cliff.meyers
  */
-public class ServiceDelegateMojo extends GeneratorMojo {
+public class ServiceDelegateMojo extends GeneratorMojo<ServiceDelegateConfiguration> {
 
 	private Logger _log = LoggerFactory.getLogger(getClass());
 
@@ -32,11 +32,6 @@ public class ServiceDelegateMojo extends GeneratorMojo {
 	//
 
 	// internal infrastructure
-
-	/**
-	 * The configuration object to supply to the producer.
-	 */
-	protected ServiceDelegateConfiguration config;
 
 	/**
 	 * The producer that creates the files.
@@ -91,54 +86,7 @@ public class ServiceDelegateMojo extends GeneratorMojo {
 		_log.info("Configuration classes loaded successfully!");
 		config.logConfiguration();
 
-		executeProduce();
-
-	}
-
-	//
-	// Protected Methods
-	//
-
-	protected void executeProduce() {
-
-		final String SLASH = File.separator;
-		final String EXT = "class";
-		final String DOT_EXT = "." + EXT;
-		final String PACKAGE_DELIM = ".";
-
-		List<String> candidateClassNames = new LinkedList<String>();
-
-		for (File location : compiledClassesLocations) {
-
-			if (!location.isDirectory())
-				throw new IllegalArgumentException("Only directories can be supplied as a compiledClassLocation; error for " + location.getAbsolutePath());
-
-			String sourceRootPath = location.getAbsolutePath();
-
-			// convert full path to class file to fully-qualified Java class name
-			for (File file : FileUtils.listFiles(location, new String[]{EXT}, true)) {
-				String filePath = file.getAbsolutePath();
-				String packageFragment = filePath.substring(sourceRootPath.length(), filePath.length() - DOT_EXT.length());
-				String className = StringUtils.replace(packageFragment, SLASH, PACKAGE_DELIM);
-				if (className.startsWith(PACKAGE_DELIM))
-					className = className.substring(PACKAGE_DELIM.length());
-				candidateClassNames.add(className);
-			}
-
-		}
-
-		// now let's load some classes!
-		List<Class<?>> candidateClasses = new ArrayList<Class<?>>(500);
-
-		ClassLoader loader = getClassLoader();
-		for (String name : candidateClassNames) {
-			try {
-				Class<?> clazz = loader.loadClass(name);
-				candidateClasses.add(clazz);
-			} catch (ClassNotFoundException e) {
-				_log.warn("Could not load candidate class: " + name + "; will be ignored");
-			}
-		}
+		List<Class<?>> candidateClasses = loadCandidateClasses();
 
 		if (candidateClasses.size() == 0) {
 			_log.warn("No candidate classes were found; produce will be skipped.");
@@ -147,10 +95,12 @@ public class ServiceDelegateMojo extends GeneratorMojo {
 		}
 
 		_log.info("Candidate classes were found for generation: " + candidateClasses.size() + " total");
-		producer = new ServiceDelegateProducer(config, candidateClasses);
-		producer.produce();
 
 	}
+
+	//
+	// Protected Methods
+	//
 
 	protected void loadConfiguratonClasses() throws MojoExecutionException {
 
