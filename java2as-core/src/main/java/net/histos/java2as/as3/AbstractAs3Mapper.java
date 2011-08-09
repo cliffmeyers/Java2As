@@ -1,6 +1,5 @@
 package net.histos.java2as.as3;
 
-import net.histos.java2as.as3.transfer.As3Dependency;
 import net.histos.java2as.core.conf.PackageMapper;
 import net.histos.java2as.core.conf.TypeMapper;
 import org.slf4j.Logger;

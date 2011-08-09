@@ -1,7 +1,5 @@
 package net.histos.java2as.core.meta;
 
-import net.histos.java2as.as3.transfer.As3Dependency;
-
 /**
  * Determines whether a dependency is required in the context of another class.
  * Also makes the qualified and simple names for the dependency type available.

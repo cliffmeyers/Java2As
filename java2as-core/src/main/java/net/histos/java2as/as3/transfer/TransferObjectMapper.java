@@ -1,6 +1,7 @@
 package net.histos.java2as.as3.transfer;
 
 import net.histos.java2as.as3.AbstractAs3Mapper;
+import net.histos.java2as.as3.As3Dependency;
 import net.histos.java2as.as3.As3Stereotype;
 import net.histos.java2as.as3.As3Type;
 import net.histos.java2as.core.conf.PropertyMapper;

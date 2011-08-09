@@ -1,5 +1,6 @@
 package net.histos.java2as.as3.transfer;
 
+import net.histos.java2as.as3.As3Dependency;
 import net.histos.java2as.as3.As3Type;
 import net.histos.java2as.core.meta.DependencyKind;
 import net.histos.java2as.core.meta.JavaProperty;

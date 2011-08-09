@@ -1,4 +1,4 @@
-package net.histos.java2as.as3.transfer;
+package net.histos.java2as.as3;
 
 import net.histos.java2as.as3.As3SimpleType;
 import net.histos.java2as.as3.As3Type;

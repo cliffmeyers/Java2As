@@ -1,7 +1,7 @@
 package net.histos.java2as.as3.service;
 
+import net.histos.java2as.as3.As3Dependency;
 import net.histos.java2as.as3.As3Type;
-import net.histos.java2as.as3.transfer.As3Dependency;
 import net.histos.java2as.core.meta.DependencyKind;
 import org.apache.commons.lang.StringUtils;
 

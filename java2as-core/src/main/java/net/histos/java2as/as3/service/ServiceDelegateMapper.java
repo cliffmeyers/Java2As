@@ -1,8 +1,8 @@
 package net.histos.java2as.as3.service;
 
 import net.histos.java2as.as3.AbstractAs3Mapper;
+import net.histos.java2as.as3.As3Dependency;
 import net.histos.java2as.as3.As3Type;
-import net.histos.java2as.as3.transfer.As3Dependency;
 import net.histos.java2as.core.meta.DependencyKind;
 import net.histos.java2as.core.meta.JavaMethod;
 import net.histos.java2as.core.meta.JavaService;

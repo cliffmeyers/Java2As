@@ -1,10 +1,6 @@
 package net.histos.java2as.as3.service;
 
-import net.histos.java2as.as3.As3CustomType;
-import net.histos.java2as.as3.As3SimpleType;
-import net.histos.java2as.as3.As3Stereotype;
-import net.histos.java2as.as3.As3DependencyResolver;
-import net.histos.java2as.as3.transfer.As3Dependency;
+import net.histos.java2as.as3.*;
 import net.histos.java2as.core.conf.PackageMapper;
 import net.histos.java2as.core.meta.DependencyKind;
 import net.histos.java2as.core.meta.JavaService;
