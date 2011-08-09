@@ -52,13 +52,13 @@
 		<property name="output.dir" value="${build.dir}/java2as"/>
 
 		<taskdef name="dto" classname="net.histos.java2as.ant.TransferObjectTask" classpathref="classpath.all" loaderref="classes.all"/>
+		
 		<typedef name="propertyMapper" classname="net.histos.java2as.ant.AntPropertyMapper" classpathref="classpath.all" loaderref="classes.all"/>
 		<typedef name="typeMatcher" classname="net.histos.java2as.ant.AntTypeMatcher" classpathref="classpath.all" loaderref="classes.all"/>
+		<typedef name="packageMatcher" classname="net.histos.java2as.ant.AntPackageMatcher" classpathref="classpath.all" loaderref="classes.all"/>
 
-		<dto baseClassDir="${output.dir}" customClassDir="${output.dir}" typemapper="com.foo.java2as.MyDefaultTypeMapper"
-		     baseClassTemplate="${src.resources}/ftl/transfer/to-base.ftl" customClassTemplate="${src.resources}/ftl/transfer/to-custom.ftl">
-			<propertyMapper classname="com.foo.java2as.MyDefaultPropertyMapper"/>
-			<typeMatcher className="com.foo.java2as.MyDefaultTypeMatcher"/>
+		<dto baseClassDir="${output.dir}" customClassDir="${output.dir}">
+			<packageMatcher packageName="com.foo.dto"/>
 			<fileset dir="${build.classes}">
 				<include name="**/*.class"/>
 			</fileset>
