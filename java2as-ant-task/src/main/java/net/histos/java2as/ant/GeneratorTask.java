@@ -4,10 +4,7 @@ import net.histos.java2as.as3.AbstractAs3Configuration;
 import net.histos.java2as.as3.As3Type;
 import net.histos.java2as.core.conf.TypeMapper;
 import net.histos.java2as.core.conf.TypeMatcher;
-import net.histos.java2as.core.conf.matchers.AnnotationTypeMatcher;
-import net.histos.java2as.core.conf.matchers.DefaultTypeMatcher;
-import net.histos.java2as.core.conf.matchers.InterfaceTypeMatcher;
-import net.histos.java2as.core.conf.matchers.SuperclassTypeMatcher;
+import net.histos.java2as.core.conf.matchers.*;
 import org.apache.commons.lang.StringUtils;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
@@ -128,6 +125,11 @@ public class GeneratorTask<C extends AbstractAs3Configuration> extends Task {
 			}
 		} else {
 			// support multiple default type matchers, even though this is an unlikely use case
+			if (packageMatchers != null && packageMatchers.size() > 0) {
+				for (AntPackageMatcher matcher : packageMatchers)
+					config.addTypeMatcher(new PackageTypeMatcher(matcher.getPackageName()));
+			}
+
 			if (!StringUtils.isEmpty(superclassName))
 				config.addTypeMatcher(new SuperclassTypeMatcher(superclassName));
 

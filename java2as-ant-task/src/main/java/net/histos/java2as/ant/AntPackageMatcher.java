@@ -10,14 +10,14 @@ package net.histos.java2as.ant;
  */
 public class AntPackageMatcher {
 
-	private String className;
+	private String packageName;
 
-	public String getClassName() {
-		return className;
+	public String getPackageName() {
+		return packageName;
 	}
 
-	public void setClassName(String className) {
-		this.className = className;
+	public void setPackageName(String packageName) {
+		this.packageName = packageName;
 	}
 
 }
