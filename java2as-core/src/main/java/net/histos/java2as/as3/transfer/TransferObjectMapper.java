@@ -98,7 +98,7 @@ public class TransferObjectMapper extends AbstractAs3Mapper<TransferObjectConfig
 			as3Property.enableMetadata(config.getIncludeArrayElementType());
 		}
 
-		as3TransferObject.buildMetadata(packageMapper, dependencyResolver);
+		as3TransferObject.buildMetadata(packageMapper, dependencyImporter);
 		return as3TransferObject;
 
 	}

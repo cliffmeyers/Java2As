@@ -1,12 +1,12 @@
 package net.histos.java2as.as3;
 
 /**
- * Default implementation of dependency resolver.
+ * Default implementation of dependency importer.
  * Delegates to the As3Dependency.requiresImport and also ignores dependencies in the same package or the "java" package.
  *
  * @author cliff.meyers
  */
-public class DefaultAs3DependencyResolver implements As3DependencyResolver {
+public class DefaultAs3DependencyImporter implements As3DependencyImporter {
 
 	public boolean shouldResolve(String packageName, As3Dependency dependency) {
 

@@ -1,6 +1,6 @@
 package net.histos.java2as.as3;
 
-import net.histos.java2as.core.meta.DependencyResolver;
+import net.histos.java2as.core.meta.DependencyImporter;
 
 /**
  * Determines whether an ActionScript dependency is required in the context of an ActionScript class.
@@ -8,6 +8,6 @@ import net.histos.java2as.core.meta.DependencyResolver;
  *
  * @author cliff.meyers
  */
-public interface As3DependencyResolver extends DependencyResolver<As3Dependency> {
+public interface As3DependencyImporter extends DependencyImporter<As3Dependency> {
 	
 }

@@ -87,12 +87,12 @@ public class As3ServiceDelegate implements As3Stereotype {
 	}
 
 	/**
-	 * Updates metadata based on the supplied DependencyResolver.
+	 * Updates metadata based on the supplied DependencyImporter.
 	 *
 	 * @param packageMapper      Maps the package for the service.
-	 * @param dependencyResolver DependencyResolver to use for deciding if/how an item gets imported.
+	 * @param dependencyImporter DependencyImporter to use for deciding if/how an item gets imported.
 	 */
-	public void buildMetadata(PackageMapper packageMapper, As3DependencyResolver dependencyResolver) {
+	public void buildMetadata(PackageMapper packageMapper, As3DependencyImporter dependencyImporter) {
 
 		simpleName = service.getSimpleName();
 
@@ -105,8 +105,8 @@ public class As3ServiceDelegate implements As3Stereotype {
 			qualifiedName = service.getName();
 		}
 
-		buildImportsFragment(dependencyResolver);
-		buildPolymorphicsFragment(dependencyResolver);
+		buildImportsFragment(dependencyImporter);
+		buildPolymorphicsFragment(dependencyImporter);
 
 	}
 
@@ -129,17 +129,17 @@ public class As3ServiceDelegate implements As3Stereotype {
 	/**
 	 * Builds multi-line string fragment declaring all imported types.
 	 *
-	 * @param dependencyResolver DependencyResolver to use for deciding if/how an item gets imported.
+	 * @param dependencyImporter DependencyImporter to use for deciding if/how an item gets imported.
 	 */
-	protected void buildImportsFragment(As3DependencyResolver dependencyResolver) {
+	protected void buildImportsFragment(As3DependencyImporter dependencyImporter) {
 
 		List<String> imports = new ArrayList<String>();
 		imports.add(ASYNC_TOKEN);
 
 		// loop over all deps and determine which to add
 		for (As3Dependency dependency : dependencies) {
-			if (dependencyResolver.shouldResolve(packageName, dependency)) {
-				String resolvedName = dependencyResolver.resolveQualifiedName(dependency);
+			if (dependencyImporter.shouldResolve(packageName, dependency)) {
+				String resolvedName = dependencyImporter.resolveQualifiedName(dependency);
 				// check for dups
 				if (!imports.contains(resolvedName))
 					imports.add(resolvedName);
@@ -170,21 +170,21 @@ public class As3ServiceDelegate implements As3Stereotype {
 	/**
 	 * Builds the string used to declare superclass and implemented interfaces.
 	 *
-	 * @param dependencyResolver DependencyResolver to use for deciding if/how an item gets imported.
+	 * @param dependencyImporter DependencyImporter to use for deciding if/how an item gets imported.
 	 */
-	protected void buildPolymorphicsFragment(As3DependencyResolver dependencyResolver) {
+	protected void buildPolymorphicsFragment(As3DependencyImporter dependencyImporter) {
 
 		String fragment = "";
 
 		for (As3Dependency dependency : dependencies)
-			if (dependency.getDependencyKind() == DependencyKind.SUPERCLASS && dependencyResolver.shouldResolve(packageName, dependency)) {
+			if (dependency.getDependencyKind() == DependencyKind.SUPERCLASS && dependencyImporter.shouldResolve(packageName, dependency)) {
 				fragment += " extends " + dependency.getSimpleName() + "";
 				break;
 			}
 
 		for (As3Dependency dependency : dependencies) {
 			int count = 0;
-			if (dependency.getDependencyKind() == DependencyKind.INTERFACE && dependencyResolver.shouldResolve(packageName, dependency)) {
+			if (dependency.getDependencyKind() == DependencyKind.INTERFACE && dependencyImporter.shouldResolve(packageName, dependency)) {
 				count++;
 				if (count == 1)
 					fragment += " implements ";

@@ -6,7 +6,7 @@ package net.histos.java2as.core.meta;
  *
  * @author cliff.meyers
  */
-public interface DependencyResolver<TYPE> {
+public interface DependencyImporter<TYPE> {
 
 	/**
 	 * Determines whether the dependency should be included or excluded.

@@ -23,7 +23,7 @@ public class AbstractAs3Mapper<C extends AbstractAs3Configuration> {
 	//
 
 	protected C config;
-	protected As3DependencyResolver dependencyResolver;
+	protected As3DependencyImporter dependencyImporter;
 	protected PackageMapper packageMapper;
 	protected TypeMapper<As3Type> typeMapper;
 
@@ -33,7 +33,7 @@ public class AbstractAs3Mapper<C extends AbstractAs3Configuration> {
 
 	protected AbstractAs3Mapper(C config) {
 		this.config = config;
-		this.dependencyResolver = new DefaultAs3DependencyResolver();
+		this.dependencyImporter = new DefaultAs3DependencyImporter();
 		this.packageMapper = config.getPackageMapper();
 		this.typeMapper = config.getTypeMapper();
 	}
@@ -52,7 +52,7 @@ public class AbstractAs3Mapper<C extends AbstractAs3Configuration> {
 		for (As3Stereotype stereotype : stereotypeList) {
 			recognizedTypeNames.add(stereotype.getQualifiedName());
 			for (As3Dependency dependency : stereotype.getDependencies()) {
-				if (dependencyResolver.shouldResolve(stereotype.getPackageName(), dependency) && dependency.getDependencyType() instanceof As3CustomType) {
+				if (dependencyImporter.shouldResolve(stereotype.getPackageName(), dependency) && dependency.getDependencyType() instanceof As3CustomType) {
 					if (!dependencies.contains(dependency))
 						dependencies.add(dependency);
 				}

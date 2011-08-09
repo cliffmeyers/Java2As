@@ -95,7 +95,7 @@ public class ServiceDelegateMapper extends AbstractAs3Mapper<ServiceDelegateConf
 			as3Delegate.addMethod(as3Method);
 		}
 
-		as3Delegate.buildMetadata(packageMapper, dependencyResolver);
+		as3Delegate.buildMetadata(packageMapper, dependencyImporter);
 		return as3Delegate;
 
 	}
