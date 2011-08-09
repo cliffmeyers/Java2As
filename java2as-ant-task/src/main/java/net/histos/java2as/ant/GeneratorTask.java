@@ -12,7 +12,9 @@ import org.apache.tools.ant.types.FileSet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -143,6 +145,41 @@ public class GeneratorTask<C extends AbstractAs3Configuration> extends Task {
 		// if all else fails, use the reasonable default
 		if (config.getTypeMatchers().size() == 0)
 			config.addTypeMatcher(new DefaultTypeMatcher());
+
+	}
+
+	protected List<Class<?>> loadCandidateClasses() {
+
+		final String SLASH = File.separator;
+		final String EXT = "class";
+		final String DOT_EXT = "." + EXT;
+		final String PACKAGE_DELIM = ".";
+
+		List<String> candidateClassNames = new LinkedList<String>();
+
+		for (FileSet fileSet : fileSets) {
+			for (String filePath : fileSet.getDirectoryScanner().getIncludedFiles()) {
+				if (filePath.endsWith(DOT_EXT)) {
+					String className = filePath.substring(0, filePath.length() - DOT_EXT.length());
+					className = StringUtils.replace(className, SLASH, PACKAGE_DELIM);
+					candidateClassNames.add(className);
+				}
+			}
+		}
+
+		// now let's load some classes!
+		List<Class<?>> candidateClasses = new ArrayList<Class<?>>(500);
+
+		for (String name : candidateClassNames) {
+			try {
+				Class<?> clazz = Class.forName(name);
+				candidateClasses.add(clazz);
+			} catch (ClassNotFoundException e) {
+				_log.warn("Could not load candidate class: " + name + "; will be ignored");
+			}
+		}
+
+		return candidateClasses;
 
 	}
 
