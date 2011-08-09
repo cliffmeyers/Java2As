@@ -8,7 +8,7 @@ import net.histos.java2as.as3.transfer.As3Dependency;
  *
  * @author cliff.meyers
  */
-public class DefaultDependencyResolver implements DependencyResolver {
+public class DefaultAs3DependencyResolver implements As3DependencyResolver {
 
 	public boolean shouldResolve(String packageName, As3Dependency dependency) {
 

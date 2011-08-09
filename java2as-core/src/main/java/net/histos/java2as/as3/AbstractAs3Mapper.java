@@ -24,7 +24,7 @@ public class AbstractAs3Mapper<C extends AbstractAs3Configuration> {
 	//
 
 	protected C config;
-	protected DependencyResolver dependencyResolver;
+	protected As3DependencyResolver dependencyResolver;
 	protected PackageMapper packageMapper;
 	protected TypeMapper<As3Type> typeMapper;
 
@@ -34,7 +34,7 @@ public class AbstractAs3Mapper<C extends AbstractAs3Configuration> {
 
 	protected AbstractAs3Mapper(C config) {
 		this.config = config;
-		this.dependencyResolver = new DefaultDependencyResolver();
+		this.dependencyResolver = new DefaultAs3DependencyResolver();
 		this.packageMapper = config.getPackageMapper();
 		this.typeMapper = config.getTypeMapper();
 	}

@@ -3,7 +3,7 @@ package net.histos.java2as.as3.service;
 import net.histos.java2as.as3.As3CustomType;
 import net.histos.java2as.as3.As3SimpleType;
 import net.histos.java2as.as3.As3Stereotype;
-import net.histos.java2as.as3.DependencyResolver;
+import net.histos.java2as.as3.As3DependencyResolver;
 import net.histos.java2as.as3.transfer.As3Dependency;
 import net.histos.java2as.core.conf.PackageMapper;
 import net.histos.java2as.core.meta.DependencyKind;
@@ -96,7 +96,7 @@ public class As3ServiceDelegate implements As3Stereotype {
 	 * @param packageMapper      Maps the package for the service.
 	 * @param dependencyResolver DependencyResolver to use for deciding if/how an item gets imported.
 	 */
-	public void buildMetadata(PackageMapper packageMapper, DependencyResolver dependencyResolver) {
+	public void buildMetadata(PackageMapper packageMapper, As3DependencyResolver dependencyResolver) {
 
 		simpleName = service.getSimpleName();
 
@@ -135,7 +135,7 @@ public class As3ServiceDelegate implements As3Stereotype {
 	 *
 	 * @param dependencyResolver DependencyResolver to use for deciding if/how an item gets imported.
 	 */
-	protected void buildImportsFragment(DependencyResolver dependencyResolver) {
+	protected void buildImportsFragment(As3DependencyResolver dependencyResolver) {
 
 		List<String> imports = new ArrayList<String>();
 		imports.add(ASYNC_TOKEN);
@@ -176,7 +176,7 @@ public class As3ServiceDelegate implements As3Stereotype {
 	 *
 	 * @param dependencyResolver DependencyResolver to use for deciding if/how an item gets imported.
 	 */
-	protected void buildPolymorphicsFragment(DependencyResolver dependencyResolver) {
+	protected void buildPolymorphicsFragment(As3DependencyResolver dependencyResolver) {
 
 		String fragment = "";
 

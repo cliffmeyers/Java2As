@@ -2,6 +2,7 @@ package net.histos.java2as.as3.transfer;
 
 import net.histos.java2as.as3.As3SimpleType;
 import net.histos.java2as.as3.As3Type;
+import net.histos.java2as.core.meta.Dependency;
 import net.histos.java2as.core.meta.DependencyKind;
 import org.apache.commons.lang.ArrayUtils;
 
@@ -10,7 +11,7 @@ import org.apache.commons.lang.ArrayUtils;
  *
  * @author cliff.meyers
  */
-public class As3Dependency {
+public class As3Dependency implements Dependency<As3Type> {
 
 	//
 	// Statics
@@ -53,16 +54,24 @@ public class As3Dependency {
 	// Public Methods
 	//
 
-	public boolean requiresImport() {
-		return !ArrayUtils.contains(BUILTIN_TYPES, dependencyType);
-	}
-
 	public String getQualifiedName() {
 		return dependencyType.getQualifiedName();
 	}
 
 	public String getSimpleName() {
 		return getQualifiedName().substring(getQualifiedName().lastIndexOf(".") + 1);
+	}
+
+	public As3Type getDependencyType() {
+		return dependencyType;
+	}
+
+	public DependencyKind getDependencyKind() {
+		return dependencyKind;
+	}
+
+	public boolean requiresImport() {
+		return !ArrayUtils.contains(BUILTIN_TYPES, dependencyType);
 	}
 
 	@Override
@@ -73,25 +82,8 @@ public class As3Dependency {
 				'}';
 	}
 
-
 	//
 	// Getters and Setters
 	//
-
-	public As3Type getDependencyType() {
-		return dependencyType;
-	}
-
-	public void setDependencyType(As3Type dependencyType) {
-		this.dependencyType = dependencyType;
-	}
-
-	public DependencyKind getDependencyKind() {
-		return dependencyKind;
-	}
-
-	public void setDependencyKind(DependencyKind dependencyKind) {
-		this.dependencyKind = dependencyKind;
-	}
 
 }
